@@ -8,7 +8,7 @@ import { Field } from '../components/ui/field';
 import { cn } from '../lib/utils';
 import { Dialog, DialogContent, DialogTrigger } from "../components/ui/dialog";
 import { getCommunities } from '@/lib/firestore';
-import { useAuth } from '@/context/AuthContext';
+import { useAuth } from '@/context/useAuth';
 import { toast } from 'sonner';
 
 const Badge = ({ children, className }: { children: React.ReactNode, className?: string }) => (
@@ -99,7 +99,7 @@ function Communities() {
                         <input
                             type="text"
                             placeholder="Search for Alliances..."
-                            className="w-full h-14 pl-16 pr-6 bg-white border border-[var(--color-surface)] focus:border-[var(--color-accent)] focus:outline-none transition-all font-bold text-xs uppercase tracking-widest rounded-none shadow-sm"
+                            className="w-full h-14 pl-16 pr-6 bg-white border border-[var(--color-surface)] focus:border-[var(--color-accent)] focus:outline-none transition-all font-bold text-xs uppercase tracking-widest rounded-lg shadow-sm"
                         />
                     </div>
                 </Field>
@@ -109,7 +109,7 @@ function Communities() {
                             key={cat}
                             onClick={() => setActiveCategory(cat)}
                             className={cn(
-                                "px-6 py-2.5 text-[10px] font-bold uppercase tracking-widest rounded-none transition-all border",
+                                "px-6 py-2.5 text-[10px] font-bold uppercase tracking-widest rounded-lg transition-all border",
                                 activeCategory === cat
                                     ? "bg-[var(--color-text)] text-white border-[var(--color-text)] shadow-sm"
                                     : "bg-white text-gray-400 border-[var(--color-surface)] hover:text-[var(--color-text)] hover:border-[var(--color-text)]"
@@ -125,13 +125,13 @@ function Communities() {
             {filteredCommunities.length > 0 ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     {filteredCommunities.map(community => (
-                        <div key={community.id} className="group border border-[var(--color-surface)] bg-white hover:border-[var(--color-accent)] transition-all duration-300 shadow-sm rounded-none overflow-hidden flex flex-col h-[400px]">
+                        <div key={community.id} className="group border border-[var(--color-surface)] bg-white hover:border-[var(--color-accent)] transition-all duration-300 shadow-sm rounded-lg overflow-hidden flex flex-col h-[400px]">
 
                             {/* Hero Image */}
                             <div className="h-32 relative overflow-hidden bg-[var(--color-text)] border-b border-[var(--color-surface)]">
                                 <img src={community.image} alt={community.name} className="w-full h-full object-cover transition-all duration-700 opacity-80 group-hover:opacity-100" />
                                 <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors" />
-                                <div className="absolute top-4 right-4 bg-black/50 backdrop-blur-sm px-3 py-1 text-[9px] font-bold text-white uppercase tracking-widest flex items-center gap-2 border border-white/10 rounded-none">
+                                <div className="absolute top-4 right-4 bg-black/50 backdrop-blur-sm px-3 py-1 text-[9px] font-bold text-white uppercase tracking-widest flex items-center gap-2 border border-white/10 rounded-lg">
                                     <Trophy size={10} className="text-[var(--color-accent)]" />
                                     Rank #{community.rank}
                                 </div>
@@ -143,16 +143,16 @@ function Communities() {
                                     <div className="p-6 flex flex-col flex-1 relative cursor-pointer pt-10">
                                         {/* Floating Avatar Logo (Left) */}
                                         <div className="absolute -top-8 left-6">
-                                            <Avatar className="h-16 w-16 border border-[var(--color-surface)] shadow-sm rounded-none bg-white">
+                                            <Avatar className="h-16 w-16 border border-[var(--color-surface)] shadow-sm rounded-lg bg-white">
                                                 <AvatarImage src={community.logo} className="object-cover transition-all" />
-                                                <AvatarFallback className="rounded-none bg-[var(--color-text)] text-white font-bold">{community.name.substring(0, 2)}</AvatarFallback>
+                                                <AvatarFallback className="rounded-lg bg-[var(--color-text)] text-white font-bold">{community.name.substring(0, 2)}</AvatarFallback>
                                             </Avatar>
                                         </div>
 
                                         {/* Floating Member Stack (Right) */}
-                                        <div className="absolute -top-4 right-6 flex -space-x-2 overflow-hidden bg-white border border-[var(--color-surface)] p-1 rounded-none shadow-sm">
+                                        <div className="absolute -top-4 right-6 flex -space-x-2 overflow-hidden bg-white border border-[var(--color-surface)] p-1 rounded-lg shadow-sm">
                                             {[1, 2, 3].map((i) => (
-                                                <Avatar key={i} className="inline-block h-6 w-6 rounded-none border border-white">
+                                                <Avatar key={i} className="inline-block h-6 w-6 rounded-lg border border-white">
                                                     <AvatarImage src={`https://i.pravatar.cc/100?img=${community.id * 5 + i}`} className="object-cover" />
                                                     <AvatarFallback>U{i}</AvatarFallback>
                                                 </Avatar>
@@ -191,24 +191,24 @@ function Communities() {
                                         {/* Tags */}
                                         <div className="flex gap-2 mb-4">
                                             {community.tags?.slice(0, 3).map((tag: string) => (
-                                                <span key={tag} className="text-[8px] font-bold bg-gray-50 text-gray-500 px-1.5 py-0.5 rounded-none border border-gray-100 uppercase tracking-wide">
+                                                <span key={tag} className="text-[8px] font-bold bg-gray-50 text-gray-500 px-1.5 py-0.5 rounded-lg border border-gray-100 uppercase tracking-wide">
                                                     {tag}
                                                 </span>
                                             ))}
                                         </div>
                                     </div>
                                 </DialogTrigger>
-                                <DialogContent className="max-w-3xl p-0 overflow-hidden border-none bg-white rounded-none shadow-md">
+                                <DialogContent className="max-w-3xl p-0 overflow-hidden border-none bg-white rounded-lg shadow-md">
                                     <div className="h-48 relative">
                                         <img src={community.image} alt={community.name} className="w-full h-full object-cover" />
                                         <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
                                         <div className="absolute bottom-6 left-6 flex items-end gap-6">
-                                            <Avatar className="h-24 w-24 border border-white/20 shadow-md rounded-none">
-                                                <AvatarImage src={community.logo} className="rounded-none object-cover" />
-                                                <AvatarFallback className="rounded-none bg-[var(--color-text)] text-white font-bold text-2xl">{community.name.substring(0, 2)}</AvatarFallback>
+                                            <Avatar className="h-24 w-24 border border-white/20 shadow-md rounded-lg">
+                                                <AvatarImage src={community.logo} className="rounded-lg object-cover" />
+                                                <AvatarFallback className="rounded-lg bg-[var(--color-text)] text-white font-bold text-2xl">{community.name.substring(0, 2)}</AvatarFallback>
                                             </Avatar>
                                             <div className="mb-2">
-                                                <Badge className="bg-[var(--color-accent)] text-white rounded-none border-none mb-2 font-mono text-[10px] uppercase">Official Alliance</Badge>
+                                                <Badge className="bg-[var(--color-accent)] text-white rounded-lg border-none mb-2 font-mono text-[10px] uppercase">Official Alliance</Badge>
                                                 <h2 className="text-3xl font-bold text-white uppercase tracking-tighter">c/{community.name}</h2>
                                             </div>
                                         </div>
@@ -257,7 +257,7 @@ function Communities() {
                                                     navigate(`/communities/${community.id}`);
                                                 }}
                                                 className={cn(
-                                                    "w-full font-bold uppercase tracking-widest text-xs h-12 rounded-none",
+                                                    "w-full font-bold uppercase tracking-widest text-xs h-12 rounded-lg",
                                                     "bg-[var(--color-accent)] text-white hover:bg-[var(--color-accent)]/90"
                                                 )}>
                                                 Enter Alliance
@@ -272,7 +272,7 @@ function Communities() {
                                 <Button
                                     onClick={() => navigate(`/communities/${community.id}`)}
                                     className={cn(
-                                        "w-full font-bold uppercase tracking-widest text-[10px] h-10 rounded-none transition-all shadow-none border border-[var(--color-text)]",
+                                        "w-full font-bold uppercase tracking-widest text-[10px] h-10 rounded-lg transition-all shadow-none border border-[var(--color-text)]",
                                         "bg-[var(--color-text)] text-white hover:bg-[var(--color-accent)] hover:border-[var(--color-accent)]"
                                     )}
                                 >

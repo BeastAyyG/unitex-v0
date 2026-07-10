@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Image, Link, Smile, Hash, X, ChevronDown, Send, FileText, Globe } from 'lucide-react';
+import { Image, Link, Smile, Hash, X, ChevronDown, Send, FileText, Globe, Plus } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const POST_LABELS = [
@@ -98,8 +98,8 @@ function CreatePost({ initialExpanded = false, onPost }: { initialExpanded?: boo
 
     return (
         <div className={cn(
-            "bg-white border transition-all duration-300 relative group",
-            isExpanded ? "border-[var(--color-text)] shadow-sm" : "border-[var(--color-surface)] hover:border-[var(--color-text)]"
+            "bg-[var(--color-bg)] transition-all duration-300 relative group border-2 border-[var(--color-text)]",
+            isExpanded ? "shadow-brutal" : "hover:shadow-brutal-sm"
         )}>
             {/* Hidden file input */}
             <input
@@ -113,89 +113,89 @@ function CreatePost({ initialExpanded = false, onPost }: { initialExpanded?: boo
             {/* Header / collapsed state */}
             <div
                 onClick={() => setIsExpanded(true)}
-                className="p-4 flex items-center justify-between cursor-pointer border-b border-transparent group-hover:bg-gray-50/50 transition-colors"
+                className="p-4 flex items-center justify-between cursor-pointer border-b-2 border-transparent group-hover:border-[var(--color-text)] transition-all"
             >
                 <div className="flex items-center gap-4">
                     <div className={cn(
-                        "w-10 h-10 flex items-center justify-center border transition-colors",
-                        isExpanded ? "bg-[var(--color-text)] text-white border-[var(--color-text)]" : "bg-[var(--color-surface)] text-[var(--color-text)] border-transparent"
+                        "w-12 h-12 flex items-center justify-center border-2 transition-all",
+                        isExpanded ? "bg-[var(--color-accent-purple)] text-white border-[var(--color-text)] shadow-brutal-sm" : "bg-white text-[var(--color-text)] border-[var(--color-text)] shadow-[2px_2px_0px_0px_rgba(25,25,25,1)]"
                     )}>
-                        <FileText size={18} />
+                        <FileText size={20} />
                     </div>
                     <div>
-                        <h3 className="text-sm font-bold uppercase tracking-widest text-[var(--color-text)]">
-                            {isExpanded ? "New Post" : "Share Progress"}
+                        <h3 className="text-sm font-syne font-bold uppercase tracking-widest text-[var(--color-text)]">
+                            {isExpanded ? "Initialize Sequence" : "Transmit Data"}
                         </h3>
                         {!isExpanded && (
-                            <p className="text-xs text-[var(--color-text)] opacity-40 font-mono mt-1">
-                                What are you building today?
+                            <p className="text-xs font-outfit text-[var(--color-text)] opacity-70 mt-1">
+                                Share an update with the network.
                             </p>
                         )}
                     </div>
                 </div>
 
                 {!isExpanded && (
-                    <div className="w-8 h-8 flex items-center justify-center border border-[var(--color-surface)]">
-                        <span className="text-lg font-bold text-[var(--color-accent)]">+</span>
+                    <div className="w-10 h-10 flex items-center justify-center border-2 border-[var(--color-text)] bg-[var(--color-accent-yellow)] shadow-[2px_2px_0px_0px_rgba(25,25,25,1)] hover-lift">
+                        <Plus size={24} className="text-[var(--color-text)]" />
                     </div>
                 )}
             </div>
 
             {/* Expanded Form */}
             {isExpanded && (
-                <div className="px-6 pb-6 pt-2">
+                <div className="px-6 pb-6 pt-2 border-t-2 border-[var(--color-text)]">
                     {/* Content Area */}
                     <div className="mb-6 relative">
                         <textarea
                             value={content}
                             onChange={(e) => setContent(e.target.value)}
-                            placeholder="Describe your current status. Be specific..."
-                            className="w-full min-h-[160px] resize-none outline-none text-lg text-[var(--color-text)] placeholder:text-gray-300 font-medium font-sans bg-transparent py-4"
+                            placeholder="Enter data sequence..."
+                            className="w-full min-h-[160px] resize-none outline-none text-xl font-outfit text-[var(--color-text)] placeholder:text-gray-400 font-medium bg-transparent py-4 focus:ring-0"
                             autoFocus
                         />
-                        <div className="absolute bottom-0 right-0 text-[10px] font-mono opacity-30">
+                        <div className="absolute bottom-0 right-0 text-[10px] font-syne font-bold uppercase tracking-widest text-[var(--color-accent-orange)]">
                             MARKDOWN SUPPORTED
                         </div>
                     </div>
 
                     {/* Media Preview */}
                     {mediaPreview && mediaFile && (
-                        <div className="mb-6 relative border border-[var(--color-surface)] bg-gray-50 overflow-hidden">
+                        <div className="mb-6 relative border-2 border-[var(--color-text)] bg-[var(--color-surface)] overflow-hidden shadow-brutal-sm">
                             <button
                                 onClick={removeMedia}
-                                className="absolute top-2 right-2 z-10 w-7 h-7 flex items-center justify-center bg-black/60 text-white hover:bg-red-500 transition-colors"
+                                className="absolute top-2 right-2 z-10 w-8 h-8 flex items-center justify-center border-2 border-[var(--color-text)] bg-[var(--color-accent-red)] text-white hover:scale-110 transition-transform"
                                 title="Remove media"
                             >
-                                <X size={14} />
+                                <X size={16} />
                             </button>
                             {mediaFile.type.startsWith('video') ? (
                                 <video src={mediaPreview} controls className="w-full max-h-[280px] object-contain bg-black" />
                             ) : (
-                                <img src={mediaPreview} alt="Upload preview" className="w-full max-h-[280px] object-contain" />
+                                <img src={mediaPreview} alt="Upload preview" className="w-full max-h-[280px] object-cover" />
                             )}
-                            <div className="px-3 py-2 text-[10px] font-mono text-gray-400 uppercase tracking-widest border-t border-[var(--color-surface)] flex items-center justify-between">
-                                <span>{mediaFile.name}</span>
+                            <div className="px-3 py-2 text-[10px] font-syne font-bold text-[var(--color-text)] uppercase tracking-widest border-t-2 border-[var(--color-text)] bg-white flex items-center justify-between">
+                                <span className="truncate max-w-[70%]">{mediaFile.name}</span>
                                 <span>{(mediaFile.size / 1024).toFixed(0)} KB</span>
                             </div>
                         </div>
                     )}
 
                     {/* Meta Controls */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8 pt-6 border-t border-[var(--color-surface)]">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8 pt-6 border-t-2 border-[var(--color-text)]">
 
                         {/* Label Selector */}
                         <div>
-                            <span className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-3 block">Category <span className="opacity-50">(optional)</span></span>
+                            <span className="text-[10px] font-syne font-bold uppercase tracking-widest text-[var(--color-text)] opacity-70 mb-3 block">Category <span className="opacity-50">(optional)</span></span>
                             <div className="flex flex-wrap gap-2">
                                 {allLabels.map((label) => (
                                     <button
                                         key={label.id}
                                         onClick={() => setSelectedLabel(selectedLabel === label.id ? null : label.id)}
                                         className={cn(
-                                            "px-2 py-1 text-[10px] font-bold uppercase tracking-wider border transition-all",
+                                            "px-3 py-1.5 text-[10px] font-syne font-bold uppercase tracking-widest border-2 transition-all hover-lift",
                                             selectedLabel === label.id
-                                                ? "bg-[var(--color-text)] text-white border-[var(--color-text)]"
-                                                : "border-[var(--color-surface)] text-gray-500 hover:border-gray-400 hover:text-[var(--color-text)]"
+                                                ? "bg-[var(--color-text)] text-white border-[var(--color-text)] shadow-brutal-sm"
+                                                : "bg-white border-[var(--color-text)] text-[var(--color-text)]"
                                         )}
                                     >
                                         {label.label}
@@ -209,19 +209,19 @@ function CreatePost({ initialExpanded = false, onPost }: { initialExpanded?: boo
                                             value={customLabel}
                                             onChange={(e) => setCustomLabel(e.target.value)}
                                             onKeyDown={(e) => e.key === 'Enter' && handleAddCustomLabel()}
-                                            placeholder="Type name..."
-                                            className="h-7 px-2 text-[10px] font-bold uppercase tracking-wider border border-[var(--color-text)] outline-none bg-white w-28"
+                                            placeholder="TYPE..."
+                                            className="h-8 px-2 text-[10px] font-syne font-bold uppercase tracking-widest border-2 border-[var(--color-text)] outline-none bg-white w-28 focus:shadow-brutal-sm transition-all"
                                             autoFocus
                                         />
-                                        <button onClick={handleAddCustomLabel} className="h-7 px-2 text-[10px] font-bold border border-[var(--color-text)] bg-[var(--color-text)] text-white">Add</button>
-                                        <button onClick={() => { setShowCustomInput(false); setCustomLabel(''); }} className="h-7 px-1 text-gray-400 hover:text-[var(--color-text)]">
-                                            <X size={12} />
+                                        <button onClick={handleAddCustomLabel} className="h-8 px-3 text-[10px] font-syne font-bold uppercase tracking-widest border-2 border-[var(--color-text)] bg-[var(--color-accent-purple)] text-white hover-lift">Add</button>
+                                        <button onClick={() => { setShowCustomInput(false); setCustomLabel(''); }} className="h-8 px-2 border-2 border-[var(--color-text)] bg-[var(--color-surface)] hover:bg-[var(--color-accent-red)] hover:text-white transition-colors">
+                                            <X size={14} />
                                         </button>
                                     </div>
                                 ) : (
                                     <button
                                         onClick={() => setShowCustomInput(true)}
-                                        className="px-2 py-1 text-[10px] font-bold uppercase tracking-wider border border-dashed border-gray-300 text-gray-400 hover:border-[var(--color-text)] hover:text-[var(--color-text)] transition-all"
+                                        className="px-3 py-1.5 text-[10px] font-syne font-bold uppercase tracking-widest border-2 border-[var(--color-text)] border-dashed bg-white text-[var(--color-text)] hover:border-solid hover:bg-[var(--color-accent-yellow)] hover-lift transition-all"
                                     >
                                         + Custom
                                     </button>
@@ -231,24 +231,24 @@ function CreatePost({ initialExpanded = false, onPost }: { initialExpanded?: boo
 
                         {/* Attachments */}
                         <div>
-                            <span className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-3 block">Attachments</span>
+                            <span className="text-[10px] font-syne font-bold uppercase tracking-widest text-[var(--color-text)] opacity-70 mb-3 block">Attachments</span>
                             <div className="flex gap-2">
                                 <button
                                     onClick={() => fileInputRef.current?.click()}
                                     className={cn(
-                                        "h-8 px-3 flex items-center gap-2 border transition-colors text-xs font-bold uppercase tracking-wider",
+                                        "h-10 px-4 flex items-center gap-2 border-2 transition-all hover-lift text-xs font-syne font-bold uppercase tracking-widest",
                                         mediaFile
-                                            ? "border-[var(--color-accent)] text-[var(--color-accent)] bg-[var(--color-accent)]/5"
-                                            : "border-[var(--color-surface)] hover:border-[var(--color-text)] text-gray-600"
+                                            ? "border-[var(--color-text)] text-[var(--color-text)] bg-[var(--color-accent-yellow)] shadow-brutal-sm"
+                                            : "border-[var(--color-text)] bg-white hover:bg-[var(--color-accent-yellow)] text-[var(--color-text)]"
                                     )}
                                 >
-                                    <Image size={14} /> {mediaFile ? 'Change' : 'Photo'}
+                                    <Image size={16} /> {mediaFile ? 'Change' : 'Photo'}
                                 </button>
-                                <button className="h-8 px-3 flex items-center gap-2 border border-[var(--color-surface)] hover:border-[var(--color-text)] transition-colors text-xs font-bold uppercase tracking-wider text-gray-600">
-                                    <Link size={14} /> Link
+                                <button className="h-10 px-4 flex items-center gap-2 border-2 border-[var(--color-text)] bg-white hover:bg-[var(--color-accent-yellow)] hover-lift transition-all text-xs font-syne font-bold uppercase tracking-widest text-[var(--color-text)]">
+                                    <Link size={16} /> Link
                                 </button>
-                                <button className="h-8 px-3 flex items-center gap-2 border border-[var(--color-surface)] hover:border-[var(--color-text)] transition-colors text-xs font-bold uppercase tracking-wider text-gray-600">
-                                    <Globe size={14} />
+                                <button className="h-10 px-4 flex items-center gap-2 border-2 border-[var(--color-text)] bg-white hover:bg-[var(--color-accent-yellow)] hover-lift transition-all text-[var(--color-text)]">
+                                    <Globe size={16} />
                                 </button>
                             </div>
                         </div>
@@ -258,18 +258,18 @@ function CreatePost({ initialExpanded = false, onPost }: { initialExpanded?: boo
                     <div className="flex items-center justify-between">
                         <button
                             onClick={() => { setIsExpanded(false); removeMedia(); }}
-                            className="text-xs font-bold uppercase tracking-widest text-gray-400 hover:text-[var(--color-text)] transition-colors"
+                            className="px-6 py-3 border-2 border-[var(--color-text)] bg-white text-sm font-syne font-bold uppercase tracking-widest text-[var(--color-text)] hover:bg-[var(--color-surface)] transition-colors hover-lift"
                         >
-                            Cancel
+                            Abort
                         </button>
 
                         <button
                             disabled={!content.trim() && !mediaFile}
                             onClick={handlePost}
-                            className="flex items-center gap-2 px-8 py-3 bg-[var(--color-text)] text-white hover:bg-[var(--color-accent)] transition-all disabled:opacity-50 disabled:cursor-not-allowed group/btn"
+                            className="flex items-center gap-2 px-8 py-3 bg-[var(--color-accent-purple)] text-white border-2 border-[var(--color-text)] hover:bg-[var(--color-accent-orange)] transition-colors disabled:opacity-50 disabled:cursor-not-allowed group/btn hover-lift"
                         >
-                            <span className="text-xs font-bold uppercase tracking-widest">Post</span>
-                            <Send size={14} className="group-hover/btn:translate-x-1 transition-transform" />
+                            <span className="text-sm font-syne font-bold uppercase tracking-widest">Transmit</span>
+                            <Send size={16} className="group-hover/btn:translate-x-1 transition-transform" />
                         </button>
                     </div>
                 </div>

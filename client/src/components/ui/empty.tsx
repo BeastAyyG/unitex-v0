@@ -36,7 +36,7 @@ const EmptyMedia = React.forwardRef<
         ref={ref}
         className={cn(
             "flex items-center justify-center text-muted-foreground mb-4",
-            variant === "icon" && "h-12 w-12 rounded-none bg-[var(--color-surface)]/50 text-[var(--color-text)]",
+            variant === "icon" && "h-12 w-12 rounded-lg bg-[var(--color-surface)]/50 text-[var(--color-text)]",
             className
         )}
         {...props}

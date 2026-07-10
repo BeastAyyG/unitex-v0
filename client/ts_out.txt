@@ -1,1 +1,0 @@
-﻿src/pages/CommunityDetail.tsx(30,56): error TS2304: Cannot find name 'BookOpen'.

@@ -15,7 +15,7 @@ import { calculateEngagementScore, applyTimeDecay, getRecommendationReason } fro
 // COMPONENT: News Post (Main Feed)
 // --------------------------------------------------------------------------
 const NewsPost = ({ category, source, time, title, content, image, tags, readTime, reason }: { category: string, source: string, time: string, title: string, content: string, image?: string, tags: string[], readTime: string, reason?: string }) => (
-    <div className="bg-white border border-[var(--color-surface)] p-4 md:p-6 shadow-sm rounded-none text-[var(--color-text)] flex flex-col md:flex-row gap-4 group hover:border-gray-300 transition-colors">
+    <div className="bg-white border border-[var(--color-surface)] p-4 md:p-6 shadow-sm rounded-lg text-[var(--color-text)] flex flex-col md:flex-row gap-4 group hover:border-gray-300 transition-colors">
         <div className="flex-1 w-full min-w-0 flex flex-col">
             <div className="flex items-center justify-between flex-wrap gap-2 mb-3">
                 <div className="flex items-center gap-2.5">
@@ -42,7 +42,7 @@ const NewsPost = ({ category, source, time, title, content, image, tags, readTim
             </div>
 
             {image && (
-                <div className="mb-4 border border-[var(--color-surface)] rounded-none w-full relative overflow-hidden group/media">
+                <div className="mb-4 border border-[var(--color-surface)] rounded-lg w-full relative overflow-hidden group/media">
                     <img src={image} alt="Media" className="w-full h-auto max-h-[300px] object-cover mix-blend-multiply group-hover/media:opacity-90 transition-opacity duration-300" />
                 </div>
             )}
@@ -50,7 +50,7 @@ const NewsPost = ({ category, source, time, title, content, image, tags, readTim
             <div className="flex items-center justify-between mt-auto pt-4 border-t border-[var(--color-surface)]/50">
                 <div className="flex gap-2">
                     {tags?.map((tag, i) => (
-                        <span key={i} className="px-2 py-1 bg-gray-50 text-gray-500 text-[9px] font-bold uppercase tracking-wider border border-gray-100 rounded-none">
+                        <span key={i} className="px-2 py-1 bg-gray-50 text-gray-500 text-[9px] font-bold uppercase tracking-wider border border-gray-100 rounded-lg">
                             {tag}
                         </span>
                     ))}
@@ -72,7 +72,7 @@ const NewsPost = ({ category, source, time, title, content, image, tags, readTim
 // --------------------------------------------------------------------------
 const TrendingSlide = ({ title, desc, image, tag, linkTo, isBreaking }: { title: string, desc: string, image: string, tag: string, linkTo: string, isBreaking?: boolean }) => (
     <div 
-        className="w-full h-[280px] md:h-[340px] rounded-none relative overflow-hidden group border border-[var(--color-surface)] bg-white hover:border-[var(--color-accent)] transition-all cursor-pointer"
+        className="w-full h-[280px] md:h-[340px] rounded-lg relative overflow-hidden group border border-[var(--color-surface)] bg-white hover:border-[var(--color-accent)] transition-all cursor-pointer"
         onClick={() => { window.location.href = linkTo; }}
     >
         <img src={image} alt={title} className="absolute right-0 top-0 w-2/3 md:w-1/2 h-full object-cover opacity-80 group-hover:scale-105 group-hover:opacity-100 transition-all duration-700 ease-out mix-blend-multiply [mask-image:linear-gradient(to_left,black_50%,transparent_100%)]" />
@@ -83,7 +83,7 @@ const TrendingSlide = ({ title, desc, image, tag, linkTo, isBreaking }: { title:
                     {tag}
                 </span>
                 {isBreaking && (
-                    <span className="inline-block px-2.5 py-1 bg-red-500 text-white text-[10px] font-black uppercase tracking-widest w-max shadow-[2px_2px_0px_var(--color-text)]">
+                    <span className="inline-block px-2.5 py-1 bg-red-500 text-white text-[10px] font-black uppercase tracking-widest w-max shadow-sm">
                         Breaking
                     </span>
                 )}
@@ -97,7 +97,7 @@ const TrendingSlide = ({ title, desc, image, tag, linkTo, isBreaking }: { title:
             <div className="pointer-events-auto">
                 <button 
                     onClick={(e) => { e.stopPropagation(); window.location.href = linkTo; }}
-                    className="inline-flex items-center gap-2 px-5 py-2.5 bg-white text-[var(--color-text)] text-xs font-bold capitalize tracking-wider hover:bg-gray-100 transition-colors rounded-none w-max group/btn border border-[var(--color-surface)] shadow-sm"
+                    className="inline-flex items-center gap-2 px-5 py-2.5 bg-white text-[var(--color-text)] text-xs font-bold capitalize tracking-wider hover:bg-gray-100 transition-colors rounded-lg w-max group/btn border border-[var(--color-surface)] shadow-sm"
                 >
                     Read Full Story
                     <ArrowUpRight size={14} className="group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-transform" />
@@ -125,9 +125,9 @@ const CategoryFilter = ({ topics, selectedCategory, onSelect }: { topics: any[],
                         key={i}
                         onClick={() => onSelect(cat === 'All' ? null : cat)}
                         className={cn(
-                            "flex-shrink-0 px-5 py-2.5 text-[10px] font-bold uppercase tracking-widest transition-all duration-300 border rounded-none flex items-center gap-2",
+                            "flex-shrink-0 px-5 py-2.5 text-[10px] font-bold uppercase tracking-widest transition-all duration-300 border rounded-lg flex items-center gap-2",
                             (selectedCategory === cat || (cat === 'All' && !selectedCategory))
-                                ? "bg-[var(--color-accent)] text-white border-[var(--color-accent)] shadow-[4px_4px_0px_rgba(0,0,0,0.1)] scale-105"
+                                ? "bg-[var(--color-accent)] text-white border-[var(--color-accent)] shadow-sm scale-105"
                                 : "bg-white text-gray-500 border-[var(--color-surface)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
                         )}
                     >
@@ -151,7 +151,7 @@ interface MiniWidgetProps {
 }
 
 const MiniWidget = ({ title, icon, items, linkTo, className }: MiniWidgetProps) => (
-    <div className={cn("bg-white border border-[var(--color-surface)] p-5 shadow-sm rounded-none text-[var(--color-text)] relative overflow-hidden group/mirror cursor-default shrink-0 flex flex-col justify-between", className)}>
+    <div className={cn("bg-white border border-[var(--color-surface)] p-5 shadow-sm rounded-lg text-[var(--color-text)] relative overflow-hidden group/mirror cursor-default shrink-0 flex flex-col justify-between", className)}>
         {/* Windows Widget Mirror Reflection Effect */}
         <div className="absolute top-0 bottom-0 left-[-100%] w-[100%] bg-gradient-to-r from-transparent via-white/60 to-transparent skew-x-12 group-hover/mirror:animate-[shine_1.5s_ease-in-out_infinite] pointer-events-none z-0 mix-blend-overlay group-active/mirror:-translate-x-full transition-all duration-700" style={{ backgroundImage: 'linear-gradient(110deg, transparent 20%, rgba(200,200,220,0.4) 40%, rgba(255,255,255,0.6) 50%, rgba(200,200,220,0.4) 60%, transparent 80%)', transform: 'translateX(-150%)' }} />
         
@@ -175,7 +175,7 @@ const MiniWidget = ({ title, icon, items, linkTo, className }: MiniWidgetProps) 
                     </div>
                 ))}
             </div>
-            <NavLink to={linkTo} className="block w-full shrink-0 text-center mt-5 py-2 text-xs font-bold capitalize tracking-wider text-[var(--color-accent)] hover:bg-[var(--color-accent)]/5 transition-colors border border-[var(--color-accent)]/20 rounded-none hover:shadow-inner active:scale-95 active:bg-[var(--color-accent)]/10 flex items-center justify-center gap-1">
+            <NavLink to={linkTo} className="block w-full shrink-0 text-center mt-5 py-2 text-xs font-bold capitalize tracking-wider text-[var(--color-accent)] hover:bg-[var(--color-accent)]/5 transition-colors border border-[var(--color-accent)]/20 rounded-lg hover:shadow-inner active:scale-95 active:bg-[var(--color-accent)]/10 flex items-center justify-center gap-1">
                 View More {title.split(' ')[0]} <span className="opacity-70"><ArrowUpRight size={12}/></span>
             </NavLink>
         </div>
@@ -332,7 +332,7 @@ export default function Discover() {
                                         navigate(`/search?q=${encodeURIComponent(localSearch)}`);
                                     }
                                 }}
-                                className="w-full bg-white border border-[var(--color-surface)] rounded-none py-3.5 pl-12 pr-4 text-sm font-bold focus:bg-white focus:outline-none focus:border-[var(--color-accent)] transition-colors placeholder:text-gray-400 text-[var(--color-text)] shadow-sm"
+                                className="w-full bg-white border border-[var(--color-surface)] rounded-lg py-3.5 pl-12 pr-4 text-sm font-bold focus:bg-white focus:outline-none focus:border-[var(--color-accent)] transition-colors placeholder:text-gray-400 text-[var(--color-text)] shadow-sm"
                             />
                             
                             {/* INLINE SEARCH RESULTS */}
@@ -428,7 +428,7 @@ export default function Discover() {
                             </Carousel.Content>
 
                             {/* Dots navigation */}
-                            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-10 w-max px-4 py-2 bg-white/50 backdrop-blur-md rounded-none border border-white">
+                            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-10 w-max px-4 py-2 bg-white/50 backdrop-blur-md rounded-lg border border-white">
                                 <Carousel.Dots count={discoverFeed.length > 0 ? Math.min(10, discoverFeed.length) : 3} />
                             </div>
 
@@ -504,7 +504,7 @@ export default function Discover() {
                                     ));
                                 })()}
 
-                                <button className="w-full mt-4 py-3 border border-[var(--color-surface)] text-xs font-bold capitalize tracking-wider text-gray-500 hover:text-[var(--color-text)] hover:bg-gray-50 transition-all rounded-none flex items-center justify-center gap-2 group">
+                                <button className="w-full mt-4 py-3 border border-[var(--color-surface)] text-xs font-bold capitalize tracking-wider text-gray-500 hover:text-[var(--color-text)] hover:bg-gray-50 transition-all rounded-lg flex items-center justify-center gap-2 group">
                                     View More News
                                     <ArrowUpRight size={14} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                                 </button>

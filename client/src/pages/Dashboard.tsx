@@ -34,7 +34,7 @@ function Dashboard() {
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
                 {/* Level Card */}
-                <div className="bg-[var(--color-text)] text-white p-10 relative overflow-hidden group min-h-[450px] flex flex-col justify-between border border-[var(--color-text)] shadow-sm rounded-none">
+                <div className="bg-[var(--color-text)] text-white p-10 relative overflow-hidden group min-h-[450px] flex flex-col justify-between border border-[var(--color-text)] shadow-sm rounded-lg">
                     <div className="relative z-10">
                         <div className="flex justify-between items-start mb-10">
                             <Award size={48} className="text-[var(--color-accent)]" />
@@ -52,15 +52,15 @@ function Dashboard() {
                                 <span>XP Progress</span>
                                 <span className="text-white font-mono">2,400 / 3,000</span>
                             </div>
-                            <div className="h-2 bg-white/10 border border-white/10 w-full overflow-hidden rounded-none">
-                                <div className="h-full bg-[var(--color-accent)] w-[80%] rounded-none" />
+                            <div className="h-2 bg-white/10 border border-white/10 w-full overflow-hidden rounded-lg">
+                                <div className="h-full bg-[var(--color-accent)] w-[80%] rounded-lg" />
                             </div>
                         </div>
                     </div>
                 </div>
 
                 {/* Chart Section */}
-                <div className="border border-[var(--color-surface)] p-10 bg-white min-h-[450px] flex flex-col shadow-sm rounded-none">
+                <div className="border border-[var(--color-surface)] p-10 bg-white min-h-[450px] flex flex-col shadow-sm rounded-lg">
                     <div className="flex justify-between items-center mb-6 border-b border-[var(--color-surface)] pb-6">
                         <h3 className="text-[10px] font-bold uppercase tracking-widest text-gray-400">
                             Activity Metric // XP Flux

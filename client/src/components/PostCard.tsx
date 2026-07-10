@@ -3,7 +3,7 @@ import { MessageSquare, Share2, Heart, HeartHandshake, ExternalLink, AlertTriang
 import { NavLink } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
-import { useAuth } from '@/context/AuthContext';
+import { useAuth } from '@/context/useAuth';
 import { createNotification } from '@/lib/firestore';
 
 
@@ -61,13 +61,13 @@ interface PostCardProps {
 }
 
 const LABEL_CONFIG = {
-    progress: { text: "Progress Update", bg: "bg-emerald-50 text-emerald-700 border-emerald-200" },
-    failure: { text: "Failure / Lesson", bg: "bg-rose-50 text-rose-700 border-rose-200" },
-    question: { text: "Question", bg: "bg-amber-50 text-amber-700 border-amber-200" },
-    resource: { text: "Resource", bg: "bg-sky-50 text-sky-700 border-sky-200" },
-    discussion: { text: "Discussion", bg: "bg-violet-50 text-violet-700 border-violet-200" },
-    reflection: { text: "Reflection", bg: "bg-slate-50 text-slate-700 border-slate-200" },
-    success: { text: "Success Story", bg: "bg-blue-50 text-blue-700 border-blue-200" },
+    progress: { text: "Progress", bg: "bg-[var(--color-accent-green)] text-white" },
+    failure: { text: "Failure", bg: "bg-[var(--color-accent-red)] text-white" },
+    question: { text: "Question", bg: "bg-[var(--color-accent-yellow)] text-[var(--color-text)]" },
+    resource: { text: "Resource", bg: "bg-[var(--color-accent-purple)] text-white" },
+    discussion: { text: "Discussion", bg: "bg-[var(--color-accent-orange)] text-white" },
+    reflection: { text: "Reflection", bg: "bg-[var(--color-surface)] text-[var(--color-text)]" },
+    success: { text: "Success", bg: "bg-[var(--color-accent-green)] text-white" },
 };
 
 const PLATFORM_CONFIG = {
@@ -195,24 +195,29 @@ function PostCard({ post }: PostCardProps) {
     };
 
     return (
-        <div className={`bg-white p-4 md:p-5 border border-[var(--color-surface)] transition-all group relative rounded-none shadow-sm hover:border-[var(--color-accent)]`}>
+        <div className={`bg-[var(--color-bg)] p-5 border-2 border-[var(--color-text)] shadow-brutal transition-all group relative`}>
 
             {/* Header: Author + Meta */}
-            <div className="flex justify-between items-start mb-4">
+            <div className="flex justify-between items-start mb-6">
                 <NavLink to={`/profile/${post.author.id}`} className="flex items-center gap-3 group/author">
-                    <div className="w-10 h-10 bg-[var(--color-surface)] rounded-none overflow-hidden relative border border-transparent group-hover/author:border-[var(--color-accent)] transition-all">
-                        {post.author.avatar && <img src={post.author.avatar} alt={post.author.name} className="w-full h-full object-cover grayscale group-hover/author:grayscale-0 transition-all duration-500" />}
-                        <div className="absolute inset-0 border border-black/5"></div>
+                    <div className="w-12 h-12 bg-[var(--color-accent-yellow)] border-2 border-[var(--color-text)] relative shadow-[2px_2px_0px_0px_rgba(25,25,25,1)] hover-lift transition-all">
+                        {post.author.avatar ? (
+                            <img src={post.author.avatar} alt={post.author.name} className="w-full h-full object-cover grayscale mix-blend-multiply group-hover/author:grayscale-0 transition-all duration-300" />
+                        ) : (
+                            <div className="w-full h-full flex items-center justify-center font-syne font-bold text-lg">
+                                {post.author.name.charAt(0)}
+                            </div>
+                        )}
                     </div>
                     <div>
                         <div className="flex items-center gap-2">
-                            <h3 className="font-bold text-[var(--color-text)] capitalize tracking-tight leading-none text-base border-b-2 border-transparent group-hover/author:border-[var(--color-accent)] transition-all">{post.author.name}</h3>
-                            {post.author.role && <span className="text-xs capitalize font-mono text-[var(--color-accent)] tracking-wider">{post.author.role}</span>}
+                            <h3 className="font-syne font-bold uppercase tracking-widest text-[var(--color-text)] leading-none text-base group-hover/author:text-[var(--color-accent-orange)] transition-colors">{post.author.name}</h3>
+                            {post.author.role && <span className="px-1.5 py-0.5 border-2 border-[var(--color-text)] bg-[var(--color-accent-purple)] text-white text-[10px] font-syne font-bold uppercase tracking-wider">{post.author.role}</span>}
                         </div>
                         <div className="flex items-center gap-2 mt-1">
-                            <p className="text-[10px] font-bold text-[var(--color-accent)]">{post.author.username || `@${post.author.name.toLowerCase().replace(/\s+/g, '_')}`}</p>
-                            <span className="w-1 h-px bg-[var(--color-accent)]/30"></span>
-                            <p className="text-xs text-[var(--color-text)] opacity-40 font-mono capitalize">{post.timestamp}</p>
+                            <p className="text-xs font-mono font-medium text-[var(--color-text)] opacity-70">{post.author.username || `@${post.author.name.toLowerCase().replace(/\s+/g, '_')}`}</p>
+                            <span className="w-1 h-px bg-[var(--color-text)]"></span>
+                            <p className="text-xs font-mono font-medium text-[var(--color-text)] opacity-70 uppercase">{post.timestamp}</p>
                         </div>
                     </div>
                 </NavLink>
@@ -220,29 +225,29 @@ function PostCard({ post }: PostCardProps) {
                 <div className="flex items-center gap-2">
                     {/* Top Label (if present) */}
                     {labelStyle && (
-                        <span className={`px-2 py-1 text-xs font-bold capitalize tracking-wider border rounded-none ${labelStyle.bg}`}>
+                        <span className={`px-2 py-1 text-xs font-syne font-bold uppercase tracking-widest border-2 border-[var(--color-text)] ${labelStyle.bg}`}>
                             {labelStyle.text}
                         </span>
                     )}
                     {/* More Menu */}
-                    <button className="w-8 h-8 flex items-center justify-center hover:bg-[var(--color-surface)] text-[var(--color-text)] opacity-40 hover:opacity-100 transition-all rounded-none">
+                    <button className="w-8 h-8 flex items-center justify-center border-2 border-transparent hover:border-[var(--color-text)] hover:bg-[var(--color-surface)] text-[var(--color-text)] transition-all">
                         <MoreHorizontal size={16} />
                     </button>
                 </div>
             </div>
 
             {/* Content Body */}
-            <div className="mb-4 pl-0">
-                <p className="text-sm md:text-base leading-relaxed text-[var(--color-text)] font-normal mb-4">
+            <div className="mb-6">
+                <p className="text-lg md:text-xl font-outfit leading-relaxed text-[var(--color-text)] font-normal mb-6">
                     {post.content}
                 </p>
 
                 {/* Media Attachment */}
                 {post.media && (
-                    <div className="mb-4 aspect-video w-full bg-[var(--color-surface)] overflow-hidden border border-[var(--color-surface)] rounded-none relative">
+                    <div className="mb-6 aspect-video w-full bg-[var(--color-surface)] overflow-hidden border-2 border-[var(--color-text)] relative shadow-[4px_4px_0px_0px_rgba(25,25,25,1)]">
                         <div className="absolute inset-0 bg-black/5 group-hover:bg-transparent transition-all z-10 pointer-events-none"></div>
                         {post.media.type === 'image' ? (
-                            <img src={post.media.url} alt="Post attachment" className="w-full h-full object-contain bg-gray-50 transform group-hover:scale-[1.02] transition-transform duration-700 ease-out" />
+                            <img src={post.media.url} alt="Post attachment" className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out grayscale hover:grayscale-0" />
                         ) : (
                             <video src={post.media.url} controls className="w-full h-full object-contain bg-black" />
                         )}
@@ -251,38 +256,36 @@ function PostCard({ post }: PostCardProps) {
 
                 {/* Rich Link Preview Card */}
                 {post.source && sourceStyle && (
-                    <a href={post.source.url} target="_blank" rel="noreferrer" className="block group/link rounded-none overflow-hidden border border-[var(--color-surface)] hover:border-[var(--color-accent)] transition-all">
+                    <a href={post.source.url} target="_blank" rel="noreferrer" className="block group/link border-2 border-[var(--color-text)] bg-white hover:-translate-y-1 hover:shadow-brutal transition-all">
                         <div className="flex flex-col md:flex-row h-auto md:h-32">
                             {/* Preview Image */}
                             {post.source.preview?.image && (
-                                <div className="h-48 md:h-full w-full md:w-48 shrink-0 bg-[var(--color-surface)] overflow-hidden relative">
+                                <div className="h-48 md:h-full w-full md:w-48 shrink-0 bg-[var(--color-surface)] border-b-2 md:border-b-0 md:border-r-2 border-[var(--color-text)] overflow-hidden relative">
                                     <img src={post.source.preview.image} alt="Link preview" className="w-full h-full object-cover group-hover/link:scale-110 transition-transform duration-500 grayscale group-hover/link:grayscale-0" />
                                 </div>
                             )}
 
                             {/* Preview Metadata */}
-                            <div className="p-4 bg-gray-50 flex-1 flex flex-col justify-center">
+                            <div className="p-4 bg-[var(--color-bg)] flex-1 flex flex-col justify-center">
                                 <div className="flex items-center gap-2 mb-2">
-                                    <div className={`w-4 h-4 flex items-center justify-center shrink-0 rounded-none text-[10px] ${sourceStyle.color}`}>
-                                        <ExternalLink size={8} />
+                                    <div className={`px-2 py-1 flex items-center justify-center border-2 border-[var(--color-text)] text-[10px] ${sourceStyle.color}`}>
+                                        <ExternalLink size={10} className="mr-1"/>
+                                        <span className="font-syne font-bold uppercase tracking-widest">{sourceStyle.name}</span>
                                     </div>
-                                    <span className="text-xs font-bold capitalize tracking-tight text-[var(--color-text)] opacity-60">
-                                        {sourceStyle.name}
-                                    </span>
                                 </div>
 
-                                <h4 className="text-sm font-bold text-[var(--color-text)] group-hover/link:text-[var(--color-accent)] transition-colors line-clamp-1 leading-tight mb-1">
+                                <h4 className="text-base font-syne font-bold text-[var(--color-text)] group-hover/link:text-[var(--color-accent-orange)] transition-colors line-clamp-1 leading-tight mb-1">
                                     {post.source.preview?.title || post.source.url}
                                 </h4>
 
                                 {post.source.preview?.description && (
-                                    <p className="text-sm text-[var(--color-text)] opacity-60 line-clamp-1 font-sans">
+                                    <p className="text-sm font-outfit text-[var(--color-text)] opacity-80 line-clamp-1">
                                         {post.source.preview.description}
                                     </p>
                                 )}
                             </div>
-                            <div className="w-8 bg-[var(--color-surface)] group-hover/link:bg-[var(--color-accent)] transition-colors flex items-center justify-center">
-                                <ArrowRight size={14} className="text-[var(--color-text)] group-hover/link:text-white -rotate-45 group-hover/link:rotate-0 transition-all duration-300" />
+                            <div className="w-12 border-l-2 border-[var(--color-text)] bg-[var(--color-accent-yellow)] flex items-center justify-center group-hover/link:bg-[var(--color-accent-orange)] transition-colors">
+                                <ArrowRight size={20} className="text-[var(--color-text)] group-hover/link:text-white -rotate-45 group-hover/link:rotate-0 transition-all duration-300" />
                             </div>
                         </div>
                     </a>
@@ -290,103 +293,77 @@ function PostCard({ post }: PostCardProps) {
             </div>
 
             {/* Interactive Action Bar */}
-            <div className="flex items-center justify-start pl-0 pt-3 border-t border-[var(--color-surface)] gap-1">
+            <div className="flex flex-wrap items-center justify-start border-t-2 border-[var(--color-text)] pt-4 gap-4">
                 <button
                     onClick={() => setShowComments(!showComments)}
                     className={cn(
-                        "flex flex-col items-center justify-center w-10 h-10 hover:bg-gray-50 transition-colors group/btn border border-transparent rounded-none",
-                        showComments && "bg-gray-50"
+                        "flex items-center gap-2 px-4 py-2 border-2 border-[var(--color-text)] hover-lift transition-all font-syne font-bold text-sm uppercase tracking-widest",
+                        showComments ? "bg-[var(--color-accent-purple)] text-white" : "bg-white text-[var(--color-text)]"
                     )}
-                    title="Comments"
                 >
-                    <MessageSquare size={14} className={cn(
-                        "transition-all",
-                        showComments ? "text-[var(--color-accent)]" : "text-[var(--color-text)] opacity-40 group-hover/btn:opacity-100 group-hover/btn:text-[var(--color-accent)]"
-                    )} />
-                    <span className={cn(
-                        "text-[10px] font-mono font-bold capitalize mt-1 transition-all",
-                        showComments ? "text-[var(--color-accent)]" : "text-[var(--color-text)] opacity-40 group-hover/btn:opacity-100 group-hover/btn:text-[var(--color-accent)]"
-                    )}>
-                        {commentCount} comments
-                    </span>
+                    <MessageSquare size={16} />
+                    <span>{commentCount} Replies</span>
                 </button>
 
                 <button
                     onClick={handleLike}
-                    className="flex flex-col items-center justify-center w-10 h-10 hover:bg-gray-50 transition-colors group/btn border border-transparent rounded-none"
-                    title="Like"
+                    className={cn(
+                        "flex items-center gap-2 px-4 py-2 border-2 border-[var(--color-text)] hover-lift transition-all font-syne font-bold text-sm uppercase tracking-widest",
+                        liked ? "bg-[var(--color-accent-red)] text-white" : "bg-white text-[var(--color-text)]"
+                    )}
                 >
-                    <Heart size={14} className={cn(
-                        "transition-all",
-                        liked ? "text-rose-500 fill-rose-500 scale-110" : "text-[var(--color-text)] opacity-40 group-hover/btn:opacity-100 group-hover/btn:text-rose-500"
-                    )} />
-                    <span className={cn(
-                        "text-[10px] font-mono font-bold capitalize mt-1 transition-all",
-                        liked ? "text-rose-500" : "text-[var(--color-text)] opacity-40 group-hover/btn:opacity-100 group-hover/btn:text-rose-500"
-                    )}>
-                        {likeCount} likes
-                    </span>
+                    <Heart size={16} className={liked ? "fill-white" : ""} />
+                    <span>{likeCount} Likes</span>
                 </button>
 
                 <button
                     onClick={handleSupport}
-                    className="flex flex-col items-center justify-center w-10 h-10 hover:bg-gray-50 transition-colors group/btn border border-transparent rounded-none"
-                    title="Support"
+                    className={cn(
+                        "flex items-center gap-2 px-4 py-2 border-2 border-[var(--color-text)] hover-lift transition-all font-syne font-bold text-sm uppercase tracking-widest",
+                        supported ? "bg-[var(--color-accent-green)] text-white" : "bg-white text-[var(--color-text)]"
+                    )}
                 >
-                    <HeartHandshake size={14} className={cn(
-                        "transition-all",
-                        supported ? "text-amber-500 fill-amber-500 scale-110" : "text-[var(--color-text)] opacity-40 group-hover/btn:opacity-100 group-hover/btn:text-amber-500"
-                    )} />
-                    <span className={cn(
-                        "text-[10px] font-mono font-bold capitalize mt-1 transition-all",
-                        supported ? "text-amber-500" : "text-[var(--color-text)] opacity-40 group-hover/btn:opacity-100 group-hover/btn:text-amber-500"
-                    )}>
-                        {supportCount} support
-                    </span>
+                    <HeartHandshake size={16} />
+                    <span>{supportCount} Support</span>
                 </button>
 
                 <button
                     onClick={handleShare}
-                    className="flex flex-col items-center justify-center w-24 h-10 hover:bg-gray-50 transition-colors group/btn border border-transparent rounded-none"
-                    title="Share"
+                    className="flex items-center gap-2 px-4 py-2 border-2 border-[var(--color-text)] hover-lift transition-all font-syne font-bold text-sm uppercase tracking-widest bg-[var(--color-accent-yellow)] text-[var(--color-text)]"
                 >
                     {shared ? (
                         <>
-                            <Check size={14} className="text-emerald-500 transition-all" />
-                            <span className="text-[10px] font-mono font-bold capitalize text-emerald-500 mt-1">
-                                Link copied!
-                            </span>
+                            <Check size={16} />
+                            <span>Copied</span>
                         </>
                     ) : (
                         <>
-                            <Share2 size={14} className="text-[var(--color-text)] opacity-40 group-hover/btn:opacity-100 group-hover/btn:text-[var(--color-accent)] transition-all" />
-                            <span className="text-[10px] font-mono font-bold capitalize text-[var(--color-text)] mt-1 opacity-40 group-hover/btn:opacity-100 group-hover/btn:text-[var(--color-accent)]">
-                                Share
-                            </span>
+                            <Share2 size={16} />
+                            <span>Share</span>
                         </>
                     )}
                 </button>
             </div>
 
             {/* Comments Section */}
-            <div className={cn("mt-4 pl-0 space-y-4 relative", !showComments && localComments.length === 0 && "hidden")}>
+            <div className={cn("mt-6 space-y-4", !showComments && localComments.length === 0 && "hidden")}>
                 {showComments && localComments.length > 0 && (
                     <div className="space-y-4">
-                        {/* The Connecting Line */}
-                        <div className="absolute left-[16px] top-0 bottom-16 w-px bg-gray-200 -z-10" />
-
                         {localComments.map((c) => (
-                            <div key={c.id} className="flex gap-3 relative">
-                                <div className="absolute left-[16px] top-[16px] w-3 h-px bg-gray-200" />
-                                <div className="w-8 h-8 bg-[var(--color-surface)] shrink-0 overflow-hidden border border-[var(--color-surface)] relative">
-                                    {c.avatar && <img src={c.avatar} className="w-full h-full object-cover grayscale" />}
+                            <div key={c.id} className="flex gap-4">
+                                <div className="w-10 h-10 border-2 border-[var(--color-text)] bg-[var(--color-surface)] shrink-0 overflow-hidden shadow-brutal-sm">
+                                    {c.avatar ? (
+                                        <img src={c.avatar} className="w-full h-full object-cover grayscale mix-blend-multiply" />
+                                    ) : (
+                                        <div className="w-full h-full flex items-center justify-center font-syne font-bold">{c.author.charAt(0)}</div>
+                                    )}
                                 </div>
-                                <div className="flex-1 bg-gray-50 p-3 border border-[var(--color-surface)] hover:border-gray-200 transition-colors rounded-none">
-                                    <div className="flex justify-between items-center mb-1">
-                                        <NavLink to={`/profile/${c.authorId}`} className="text-xs font-bold capitalize tracking-wider border-b border-transparent hover:border-[var(--color-text)] transition-all cursor-pointer">{c.author}</NavLink>
-                                        <span className="text-[10px] font-mono text-gray-400">{c.time}</span>
+                                <div className="flex-1 bg-white p-4 border-2 border-[var(--color-text)] shadow-brutal-sm">
+                                    <div className="flex justify-between items-center mb-2 border-b-2 border-transparent hover:border-[var(--color-text)] transition-all">
+                                        <NavLink to={`/profile/${c.authorId}`} className="text-sm font-syne font-bold uppercase tracking-widest text-[var(--color-text)]">{c.author}</NavLink>
+                                        <span className="text-xs font-mono font-medium text-[var(--color-text)] opacity-70 uppercase">{c.time}</span>
                                     </div>
-                                    <p className="text-xs text-gray-600 leading-relaxed font-sans">
+                                    <p className="text-sm font-outfit text-[var(--color-text)] leading-relaxed">
                                         {c.text}
                                     </p>
                                 </div>
@@ -397,17 +374,17 @@ function PostCard({ post }: PostCardProps) {
 
                 {/* Quick Reply Box */}
                 {showComments && (
-                    <div className="flex gap-3 mt-2 px-1">
-                        <div className="w-8 h-8 bg-gray-50 flex items-center justify-center shrink-0 border border-transparent">
-                            <MessageSquare size={14} className="text-gray-300" />
+                    <div className="flex gap-4 mt-4">
+                        <div className="w-10 h-10 border-2 border-[var(--color-text)] bg-[var(--color-accent-yellow)] flex items-center justify-center shrink-0 shadow-brutal-sm">
+                            <MessageSquare size={16} className="text-[var(--color-text)]" />
                         </div>
                         <input
                             type="text"
                             value={commentText}
                             onChange={(e) => setCommentText(e.target.value)}
                             onKeyDown={(e) => e.key === 'Enter' && handleAddComment()}
-                            placeholder="Add a quick reply... (press Enter)"
-                            className="flex-1 bg-white border border-gray-100 focus:border-[var(--color-accent)] focus:bg-gray-50 px-4 py-2 text-[10px] font-medium outline-none transition-all placeholder:capitalize placeholder:tracking-tight rounded-none"
+                            placeholder="Add a reply... (press Enter)"
+                            className="flex-1 bg-white border-2 border-[var(--color-text)] px-4 py-2 font-outfit text-sm text-[var(--color-text)] focus:outline-none focus:ring-0 focus:shadow-brutal-sm transition-all"
                         />
                     </div>
                 )}

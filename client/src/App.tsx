@@ -19,7 +19,8 @@ import DiscoverDetail from '@/pages/DiscoverDetail';
 import Login from './pages/Login';
 import { Onboarding } from '@/pages/Onboarding';
 import { NotificationProvider } from './context/NotificationContext';
-import { AuthProvider, useAuth } from './context/AuthContext';
+import { AuthProvider } from './context/AuthContext';
+import { useAuth } from './context/useAuth';
 import { Toaster } from 'sonner';
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
@@ -51,7 +52,6 @@ function AppRoutes() {
                 <Route path="events/:eventId" element={<EventDetail />} />
                 <Route path="networking" element={<Networking />} />
                 <Route path="roadmaps" element={<Resources />} />
-                <Route path="courses" element={<Resources />} />
                 <Route path="resources" element={<Resources />} />
                 <Route path="messages" element={<Messages />} />
                 <Route path="vault" element={<Vault />} />

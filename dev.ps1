@@ -1,35 +1,56 @@
+param(
+    [string]$ProjectRoot = $PSScriptRoot
+)
+
 # UniteX Dev Orchestrator for Windows
 Write-Host "Starting UniteX Platform..." -ForegroundColor Cyan
+
+# Stop any existing jobs with these names
+Get-Job | Where-Object { $_.Name -match "^UniteX-" } | Stop-Job -PassThru | Remove-Job
 
 $jobs = @()
 
 # 1. Start Client
 $jobs += Start-Job -ScriptBlock { 
-    Set-Location "c:\Users\chava\Downloads\u\client"
+    param($root)
+    Set-Location (Join-Path $root "client")
     npm run dev
-} -Name "UniteX-Client"
+} -ArgumentList $ProjectRoot -Name "UniteX-Client"
 
 # 2. Start Server
 $jobs += Start-Job -ScriptBlock {
-    Set-Location "c:\Users\chava\Downloads\u\server"
+    param($root)
+    Set-Location (Join-Path $root "server")
     npm run dev
-} -Name "UniteX-Server"
+} -ArgumentList $ProjectRoot -Name "UniteX-Server"
 
 # 3. Start Media Service
 $jobs += Start-Job -ScriptBlock {
-    Set-Location "c:\Users\chava\Downloads\u\media-service"
+    param($root)
+    Set-Location (Join-Path $root "media-service")
     npm run dev
-} -Name "UniteX-Media"
+} -ArgumentList $ProjectRoot -Name "UniteX-Media"
 
 # 4. Start Blockchain
 $jobs += Start-Job -ScriptBlock {
-    Set-Location "c:\Users\chava\Downloads\u\blockchain"
+    param($root)
+    Set-Location (Join-Path $root "blockchain")
     npx hardhat node
-} -Name "UniteX-Blockchain"
+} -ArgumentList $ProjectRoot -Name "UniteX-Blockchain"
 
-Write-Host "Services started in background jobs." -ForegroundColor Green
-Write-Host "Use 'Get-Job' to see status and 'Receive-Job -Name <Name> -Keep' to see logs."
-Write-Host "Press Ctrl+C to stop this script (Note: background jobs will still run until stopped)."
+Write-Host "`nServices started in background jobs." -ForegroundColor Green
+Write-Host "Use 'Get-Job -Name UniteX-*' to see status." -ForegroundColor Yellow
+Write-Host "Use 'Receive-Job -Name UniteX-Client -Keep' to see logs." -ForegroundColor Yellow
+Write-Host "Press Ctrl+C to stop monitoring (background jobs continue)." -ForegroundColor Yellow
+Write-Host "Use '.\dev.ps1 -Stop' to stop all UniteX jobs." -ForegroundColor Yellow
 
-# Keep open to allow seeing the message
-while($true) { Start-Sleep 1 }
+# Keep open to show live status
+while($true) {
+    $running = @(Get-Job | Where-Object { $_.Name -match "^UniteX-" -and $_.State -eq "Running" }).Count
+    $failed = @(Get-Job | Where-Object { $_.Name -match "^UniteX-" -and $_.State -eq "Failed" }).Count
+    if ($running -eq 0 -and $failed -gt 0) {
+        Write-Host "`nSome services have failed. Check with 'Receive-Job -Name <Name>'." -ForegroundColor Red
+        break
+    }
+    Start-Sleep 5
+}

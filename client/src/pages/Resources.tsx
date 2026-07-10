@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { BookOpen, Video, FileText, Wrench, LayoutTemplate, Search, Bookmark, Clock, ArrowUpRight, Star, Zap, Globe, Cpu, Code, Layout, Users, CheckCircle, ArrowRight, Play, Filter } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { useAuth } from '@/context/AuthContext';
+import { useAuth } from '@/context/useAuth';
 import { subscribeToCourses, subscribeToResources, subscribeToEnrolledCourses, enrollCourse, subscribeToSavedResources, toggleResourceSave } from '@/lib/firestore';
 import { collection, setDoc, doc, getDocs } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
@@ -111,6 +111,7 @@ function Resources() {
         // One-time seeding script if exactly 0 courses/resources are found after a short delay
         let mounted = true;
         const seedDb = async () => {
+            if (!db) return;
             if (dbCourses.length === 0) {
                 const snap = await getDocs(collection(db, 'courses'));
                 if (snap.empty && mounted) {

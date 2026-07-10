@@ -11,7 +11,7 @@ import { Input } from '../components/ui/input';
 import { Textarea } from '../components/ui/textarea';
 import { Button } from '../components/ui/button';
 import { Link } from 'react-router-dom';
-import { useAuth } from '@/context/AuthContext';
+import { useAuth } from '@/context/useAuth';
 import { subscribeToEvents, createEvent, rsvpEvent } from '@/lib/firestore';
 import { toast } from 'sonner';
 
@@ -131,7 +131,7 @@ function Events() {
                 <Button 
                     onClick={handleCreate} 
                     disabled={loading || !title || !desc || !time}
-                    className="w-full bg-[var(--color-accent)] text-white font-bold uppercase tracking-widest hover:opacity-90 transition-opacity rounded-none mt-2"
+                    className="w-full bg-[var(--color-accent)] text-white font-bold uppercase tracking-widest hover:opacity-90 transition-opacity rounded-lg mt-2"
                 >
                     {loading ? "Publishing..." : "Publish Event"}
                 </Button>
@@ -155,7 +155,7 @@ function Events() {
                         <Dialog open={createEventOpen} onOpenChange={setCreateEventOpen}>
                             <DialogTrigger asChild>
                                 <button
-                                    className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest px-6 py-3 transition-all border border-[var(--color-surface)] bg-white text-[var(--color-text)] shadow-sm hover:bg-gray-50 rounded-none"
+                                    className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest px-6 py-3 transition-all border border-[var(--color-surface)] bg-white text-[var(--color-text)] shadow-sm hover:bg-gray-50 rounded-lg"
                                 >
                                     <Plus size={16} /> Create Event
                                 </button>
@@ -206,7 +206,7 @@ function Events() {
                         </Drawer>
                     )}
 
-                    <button className="flex items-center gap-2 text-[var(--color-text)] text-xs font-bold uppercase tracking-widest border border-[var(--color-surface)] px-6 py-3 bg-white shadow-sm hover:bg-gray-50 transition-all rounded-none">
+                    <button className="flex items-center gap-2 text-[var(--color-text)] text-xs font-bold uppercase tracking-widest border border-[var(--color-surface)] px-6 py-3 bg-white shadow-sm hover:bg-gray-50 transition-all rounded-lg">
                         <Filter size={16} /> Filter
                     </button>
                 </div>
@@ -218,7 +218,7 @@ function Events() {
                     {events.length > 0 ? (
                         events.map((event) => (
                             <div key={event.id} className="group relative">
-                                <Link to={`/events/${event.id}`} className="flex flex-col sm:flex-row bg-white border border-[var(--color-surface)] overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 mb-2 rounded-none">
+                                <Link to={`/events/${event.id}`} className="flex flex-col sm:flex-row bg-white border border-[var(--color-surface)] overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 mb-2 rounded-lg">
                                     {/* Date Badge */}
                                     <div className="sm:w-32 bg-gray-50 flex flex-row sm:flex-col items-center justify-between sm:justify-center p-2 border-b sm:border-b-0 sm:border-r border-[var(--color-surface)] group-hover:bg-[var(--color-surface)] transition-colors">
                                         <div className="flex flex-col items-center">
@@ -231,8 +231,8 @@ function Events() {
                                     {/* Content */}
                                     <div className="p-4 flex-1 flex flex-col text-[var(--color-text)]">
                                         <div className="flex gap-4 text-[10px] mb-3 font-bold uppercase tracking-widest">
-                                            <span className="flex items-center gap-1.5 bg-[var(--color-surface)] px-2 py-0.5 rounded-none"><MapPin size={12} /> {event.mode}</span>
-                                            <span className="hidden sm:flex items-center gap-1.5 border border-[var(--color-surface)] px-2 py-0.5 rounded-none font-medium opacity-60"><CalendarIcon size={12} /> {event.time}</span>
+                                            <span className="flex items-center gap-1.5 bg-[var(--color-surface)] px-2 py-0.5 rounded-lg"><MapPin size={12} /> {event.mode}</span>
+                                            <span className="hidden sm:flex items-center gap-1.5 border border-[var(--color-surface)] px-2 py-0.5 rounded-lg font-medium opacity-60"><CalendarIcon size={12} /> {event.time}</span>
                                         </div>
 
                                         <h3 className="text-2xl md:text-3xl font-bold mb-2 uppercase tracking-tight leading-none group-hover:text-[var(--color-accent)] transition-colors">{event.title}</h3>
@@ -254,7 +254,7 @@ function Events() {
                                                     }
                                                 }}
                                                 className={cn(
-                                                    "px-8 py-3 text-[10px] font-bold uppercase tracking-widest transition-all border border-[var(--color-surface)] rounded-none relative z-10",
+                                                    "px-8 py-3 text-[10px] font-bold uppercase tracking-widest transition-all border border-[var(--color-surface)] rounded-lg relative z-10",
                                                     rsvpedEvents.includes(event.id)
                                                         ? "bg-emerald-50 text-emerald-600 border-emerald-100"
                                                         : "bg-[var(--color-text)] text-white hover:bg-[var(--color-accent)] shadow-sm"
@@ -281,7 +281,7 @@ function Events() {
                             <EmptyContent>
                                 <Button
                                     onClick={() => setCreateEventOpen(true)}
-                                    className="bg-[var(--color-text)] text-white hover:bg-[var(--color-accent)] font-bold uppercase tracking-widest text-xs h-9 rounded-none"
+                                    className="bg-[var(--color-text)] text-white hover:bg-[var(--color-accent)] font-bold uppercase tracking-widest text-xs h-9 rounded-lg"
                                 >
                                     Host an Event
                                 </Button>
@@ -297,15 +297,15 @@ function Events() {
                             <h3 className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-6 pb-2 border-b border-[var(--color-surface)] inline-block">Categories</h3>
                             <div className="flex flex-col gap-3">
                                 {["General Events", "Workshops", "Hackathons", "Competitions", "Bootcamps"].map(tag => (
-                                    <div key={tag} className="flex items-center justify-between group cursor-pointer border border-transparent hover:border-[var(--color-surface)] hover:bg-gray-50 p-2.5 transition-all -mx-2 rounded-none">
+                                    <div key={tag} className="flex items-center justify-between group cursor-pointer border border-transparent hover:border-[var(--color-surface)] hover:bg-gray-50 p-2.5 transition-all -mx-2 rounded-lg">
                                         <span className="text-[11px] font-bold text-[var(--color-text)] uppercase tracking-tight">{tag}</span>
-                                        <span className="text-[10px] font-bold bg-[var(--color-surface)] text-[var(--color-text)] px-2 py-0.5 rounded-none">12</span>
+                                        <span className="text-[10px] font-bold bg-[var(--color-surface)] text-[var(--color-text)] px-2 py-0.5 rounded-lg">12</span>
                                     </div>
                                 ))}
                             </div>
                         </div>
 
-                        <div className="p-8 bg-white border border-[var(--color-surface)] shadow-sm rounded-none">
+                        <div className="p-8 bg-white border border-[var(--color-surface)] shadow-sm rounded-lg">
                             <h4 className="font-bold uppercase tracking-widest text-[10px] text-gray-400 mb-4 flex items-center gap-2">
                                 <Sparkles size={14} className="text-[var(--color-accent)]" /> Pro Tip
                             </h4>
@@ -322,7 +322,7 @@ function Events() {
                     <div className="p-8">
                         {regSuccess ? (
                             <div className="flex flex-col items-center justify-center py-10 text-center space-y-4 animate-in fade-in zoom-in duration-300">
-                                <div className="w-16 h-16 bg-emerald-50 text-emerald-500 rounded-none flex items-center justify-center border border-emerald-100 italic">
+                                <div className="w-16 h-16 bg-emerald-50 text-emerald-500 rounded-lg flex items-center justify-center border border-emerald-100 italic">
                                     <CheckCircle size={32} />
                                 </div>
                                 <div>
@@ -364,7 +364,7 @@ function Events() {
                                     <Field>
                                         <FieldLabel>Number of Seats</FieldLabel>
                                         <select 
-                                            className="w-full bg-gray-50 border border-gray-100 p-4 text-xs font-bold uppercase tracking-widest focus:bg-white focus:outline-none rounded-none"
+                                            className="w-full bg-gray-50 border border-gray-100 p-4 text-xs font-bold uppercase tracking-widest focus:bg-white focus:outline-none rounded-lg"
                                             value={regSeats}
                                             onChange={(e) => setRegSeats(e.target.value)}
                                         >
@@ -378,7 +378,7 @@ function Events() {
                                         <Button 
                                             onClick={handleRegister}
                                             disabled={!regName.trim() || !regEmail.trim()}
-                                            className="w-full bg-[var(--color-text)] text-white hover:bg-[var(--color-accent)] font-bold uppercase tracking-widest text-xs h-14 rounded-none disabled:opacity-50"
+                                            className="w-full bg-[var(--color-text)] text-white hover:bg-[var(--color-accent)] font-bold uppercase tracking-widest text-xs h-14 rounded-lg disabled:opacity-50"
                                         >
                                             Confirm Registration
                                         </Button>

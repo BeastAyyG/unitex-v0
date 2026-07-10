@@ -67,7 +67,7 @@ export default function CommunityPage() {
             
             {/* Nav Header */}
             <div className="py-6 flex items-center gap-4 mb-4">
-                <Link to="/communities" className="p-3 hover:bg-gray-50 transition-all rounded-none border border-[var(--color-surface)] shadow-sm">
+                <Link to="/communities" className="p-3 hover:bg-gray-50 transition-all rounded-lg border border-[var(--color-surface)] shadow-sm">
                     <ArrowLeft size={18} />
                 </Link>
                 <div className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">
@@ -76,15 +76,15 @@ export default function CommunityPage() {
             </div>
 
             {/* Community Identity Header */}
-            <header className="relative mb-10 border border-[var(--color-surface)] bg-white overflow-hidden shadow-sm rounded-none">
+            <header className="relative mb-10 border border-[var(--color-surface)] bg-white overflow-hidden shadow-sm rounded-lg">
                 <div className="h-64 relative bg-[var(--color-surface)]">
                      <img src={community.image} alt={community.name} className="w-full h-full object-cover opacity-80 grayscale hover:grayscale-0 transition-all duration-700" />
                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                      
                      <div className="absolute bottom-8 left-8 md:left-12 flex items-end gap-8">
-                         <Avatar className="h-32 w-32 md:h-40 md:w-40 border border-white shadow-md rounded-none bg-white">
+                         <Avatar className="h-32 w-32 md:h-40 md:w-40 border border-white shadow-md rounded-lg bg-white">
                              <AvatarImage src={community.logo} className="object-cover transition-all" />
-                             <AvatarFallback className="rounded-none bg-[var(--color-text)] text-white font-bold text-4xl">{community.name.substring(0, 2)}</AvatarFallback>
+                             <AvatarFallback className="rounded-lg bg-[var(--color-text)] text-white font-bold text-4xl">{community.name.substring(0, 2)}</AvatarFallback>
                          </Avatar>
                          <div className="mb-4">
                              <h1 className="text-4xl md:text-6xl font-bold text-white uppercase tracking-tight leading-none">
@@ -115,13 +115,13 @@ export default function CommunityPage() {
                 <div className="lg:col-span-3 space-y-6">
                     
                     {/* Adaptive Composer */}
-                    <section className={cn("border border-[var(--color-surface)] bg-white p-8 transition-all duration-300 shadow-sm rounded-none")}>
+                    <section className={cn("border border-[var(--color-surface)] bg-white p-8 transition-all duration-300 shadow-sm rounded-lg")}>
                         {!composerOpen ? (
                              <div className="flex items-center gap-6 cursor-text group" onClick={() => setComposerOpen(true)}>
-                                 <Avatar className="h-10 w-10 rounded-none border border-gray-100 shrink-0">
+                                 <Avatar className="h-10 w-10 rounded-lg border border-gray-100 shrink-0">
                                      <AvatarImage src="https://github.com/shadcn.png" />
                                  </Avatar>
-                                 <div className="flex-1 border bg-gray-50 border-gray-100 h-12 flex items-center px-6 text-[11px] text-gray-400 font-bold uppercase tracking-widest group-hover:bg-white group-hover:border-gray-200 transition-all rounded-none">
+                                 <div className="flex-1 border bg-gray-50 border-gray-100 h-12 flex items-center px-6 text-[11px] text-gray-400 font-bold uppercase tracking-widest group-hover:bg-white group-hover:border-gray-200 transition-all rounded-lg">
                                      Share knowledge with the {community.name}...
                                  </div>
                              </div>
@@ -142,7 +142,7 @@ export default function CommunityPage() {
                                                 key={intent.id}
                                                 onClick={() => setSelectedIntent(intent.id)}
                                                 className={cn(
-                                                    "text-left p-4 border transition-all duration-200 group flex flex-col gap-3 relative overflow-hidden rounded-none",
+                                                    "text-left p-4 border transition-all duration-200 group flex flex-col gap-3 relative overflow-hidden rounded-lg",
                                                     isActive 
                                                         ? "border-[var(--color-accent)] bg-[var(--color-accent)]/5 text-[var(--color-accent)]" 
                                                         : "border-[var(--color-surface)] bg-white hover:bg-gray-50 text-gray-400 hover:text-[var(--color-text)]"
@@ -176,19 +176,19 @@ export default function CommunityPage() {
                                         </div>
 
                                         {/* Dynamic Fields */}
-                                        <div className="space-y-6 bg-white p-6 border border-[var(--color-surface)] shadow-sm rounded-none">
+                                        <div className="space-y-6 bg-white p-6 border border-[var(--color-surface)] shadow-sm rounded-lg">
                                             {selectedIntent === 'ask' && (
                                                 <>
-                                                    <Field><textarea placeholder="1. Problem Description (be specific)" className="w-full min-h-[100px] text-xs font-bold uppercase tracking-widest bg-gray-50 border border-gray-100 p-4 focus:bg-white focus:outline-none resize-none rounded-none" /></Field>
-                                                    <Field><textarea placeholder="2. Attempts & Failures" className="w-full min-h-[80px] text-xs font-bold uppercase tracking-widest bg-gray-50 border border-gray-100 p-4 focus:bg-white focus:outline-none resize-none rounded-none" /></Field>
-                                                    <Field><textarea placeholder="3. Context" className="w-full min-h-[80px] text-xs font-bold uppercase tracking-widest bg-gray-50 border border-gray-100 p-4 focus:bg-white focus:outline-none resize-none rounded-none" /></Field>
+                                                    <Field><textarea placeholder="1. Problem Description (be specific)" className="w-full min-h-[100px] text-xs font-bold uppercase tracking-widest bg-gray-50 border border-gray-100 p-4 focus:bg-white focus:outline-none resize-none rounded-lg" /></Field>
+                                                    <Field><textarea placeholder="2. Attempts & Failures" className="w-full min-h-[80px] text-xs font-bold uppercase tracking-widest bg-gray-50 border border-gray-100 p-4 focus:bg-white focus:outline-none resize-none rounded-lg" /></Field>
+                                                    <Field><textarea placeholder="3. Context" className="w-full min-h-[80px] text-xs font-bold uppercase tracking-widest bg-gray-50 border border-gray-100 p-4 focus:bg-white focus:outline-none resize-none rounded-lg" /></Field>
                                                 </>
                                             )}
                                         </div>
 
                                         <div className="mt-6 flex justify-end gap-4">
-                                            <Button variant="outline" className="rounded-none border border-[var(--color-surface)] text-gray-400 font-bold uppercase tracking-widest text-[10px] px-6 h-12 shadow-sm hover:bg-gray-50" onClick={() => {setComposerOpen(false); setSelectedIntent(null)}}>Discard Buffer</Button>
-                                            <Button className="rounded-none bg-[var(--color-text)] hover:bg-[var(--color-accent)] text-white font-bold uppercase tracking-widest text-[10px] px-10 h-12 shadow-sm">Broadcast Knowledge</Button>
+                                            <Button variant="outline" className="rounded-lg border border-[var(--color-surface)] text-gray-400 font-bold uppercase tracking-widest text-[10px] px-6 h-12 shadow-sm hover:bg-gray-50" onClick={() => {setComposerOpen(false); setSelectedIntent(null)}}>Discard Buffer</Button>
+                                            <Button className="rounded-lg bg-[var(--color-text)] hover:bg-[var(--color-accent)] text-white font-bold uppercase tracking-widest text-[10px] px-10 h-12 shadow-sm">Broadcast Knowledge</Button>
                                         </div>
                                     </div>
                                 )}
@@ -204,7 +204,7 @@ export default function CommunityPage() {
                          </div>
                          <div className="flex gap-2">
                              {filters.map(f => (
-                                 <button key={f} onClick={() => setActiveFilter(f)} className={cn("px-3 py-1 text-[9px] font-bold uppercase tracking-wider rounded-none transition-colors border", activeFilter === f ? "bg-[var(--color-text)] text-white border-[var(--color-text)]" : "bg-transparent text-gray-500 border-transparent hover:border-gray-200")}>
+                                 <button key={f} onClick={() => setActiveFilter(f)} className={cn("px-3 py-1 text-[9px] font-bold uppercase tracking-wider rounded-lg transition-colors border", activeFilter === f ? "bg-[var(--color-text)] text-white border-[var(--color-text)]" : "bg-transparent text-gray-500 border-transparent hover:border-gray-200")}>
                                      {f}
                                  </button>
                              ))}
@@ -224,7 +224,7 @@ export default function CommunityPage() {
                              const isShared = sharedPostId === post.id;
                              
                              return (
-                                 <article key={post.id} className="border border-[var(--color-surface)] bg-white hover:border-[var(--color-accent)] transition-all duration-300 relative overflow-hidden group flex flex-col shadow-sm rounded-none">
+                                 <article key={post.id} className="border border-[var(--color-surface)] bg-white hover:border-[var(--color-accent)] transition-all duration-300 relative overflow-hidden group flex flex-col shadow-sm rounded-lg">
                                      
                                      {/* Signal Layer Striping */}
                                      {post.score > 100 && <div className="absolute top-0 left-0 w-full h-[2px] bg-[var(--color-accent)]" />}
@@ -232,7 +232,7 @@ export default function CommunityPage() {
                                      <div className="p-5 md:p-6">
                                          <div className="flex justify-between items-start mb-4">
                                               <NavLink to={`/profile/${post.authorId}`} className="flex items-center gap-3">
-                                                  <Avatar className="h-8 w-8 rounded-none border border-[var(--color-surface)]">
+                                                  <Avatar className="h-8 w-8 rounded-lg border border-[var(--color-surface)]">
                                                       <AvatarImage src={post.authorAvatar} />
                                                   </Avatar>
                                                   <div>
@@ -312,7 +312,7 @@ export default function CommunityPage() {
                                                      post.comments.map((comment: any) => (
                                                          <div key={comment.id} className="flex gap-3 text-sm">
                                                              <NavLink to={`/profile/${comment.authorId}`} className="shrink-0 mt-1">
-                                                                 <Avatar className="h-6 w-6 rounded-none border border-[var(--color-surface)]">
+                                                                 <Avatar className="h-6 w-6 rounded-lg border border-[var(--color-surface)]">
                                                                      <AvatarImage src={comment.avatar} />
                                                                  </Avatar>
                                                              </NavLink>
@@ -332,7 +332,7 @@ export default function CommunityPage() {
 
                                              {/* Reply Input */}
                                              <div className="mt-6 flex gap-3">
-                                                  <Avatar className="h-8 w-8 rounded-none border border-[var(--color-surface)] shrink-0">
+                                                  <Avatar className="h-8 w-8 rounded-lg border border-[var(--color-surface)] shrink-0">
                                                       <AvatarImage src="https://github.com/shadcn.png" />
                                                   </Avatar>
                                                   <div className="flex-1 relative">
@@ -350,7 +350,7 @@ export default function CommunityPage() {
 
                 {/* Sidebar - About Community */}
                 <div className="hidden lg:block space-y-6">
-                    <div className="border border-[var(--color-surface)] bg-white p-8 sticky top-24 shadow-sm rounded-none">
+                    <div className="border border-[var(--color-surface)] bg-white p-8 sticky top-24 shadow-sm rounded-lg">
                         <h4 className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-6 border-b border-[var(--color-surface)] pb-4">Protocol // Rules</h4>
                         
                         <div className="space-y-4 mb-6 text-sm text-gray-600 leading-relaxed font-medium">
@@ -370,7 +370,7 @@ export default function CommunityPage() {
                             })}
                         </ul>
 
-                        <div className="bg-gray-50 p-3 border border-gray-100 rounded-none">
+                        <div className="bg-gray-50 p-3 border border-gray-100 rounded-lg">
                              <div className="text-[9px] uppercase tracking-widest text-gray-400 font-bold mb-1">Your Standing</div>
                              <div className="font-mono text-sm font-bold text-[var(--color-text)]">Neutral Participant</div>
                              <div className="mt-2 w-full bg-gray-200 h-1">

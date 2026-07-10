@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { cn } from '../lib/utils';
 import { MessageSquare, Search, Send, Phone, Video, MoreVertical } from 'lucide-react';
 import { NavLink } from 'react-router-dom';
-import { useAuth } from '@/context/AuthContext';
+import { useAuth } from '@/context/useAuth';
 import { subscribeToConversations, subscribeToMessages, sendMessage } from '@/lib/firestore';
 
 function Messages() {
@@ -75,8 +75,8 @@ function Messages() {
     return (
         <div className="pt-8 max-w-7xl mx-auto h-[calc(100vh-6rem)] flex gap-6 px-6">
             {/* Thread List */}
-            <div className="w-[340px] flex flex-col h-full border border-[var(--color-surface)] bg-white shadow-sm overflow-hidden rounded-none">
-                <div className="p-5 border-b border-[var(--color-surface)] bg-gray-50/50 rounded-none">
+            <div className="w-[340px] flex flex-col h-full border border-[var(--color-surface)] bg-white shadow-sm overflow-hidden rounded-lg">
+                <div className="p-5 border-b border-[var(--color-surface)] bg-gray-50/50 rounded-lg">
                     <h1 className="text-xl font-bold tracking-tight mb-4 text-[var(--color-text)]">Messages</h1>
                     <div className="relative group">
                         <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[var(--color-accent)] transition-colors" />
@@ -113,7 +113,7 @@ function Messages() {
                                         className="shrink-0 group/avatar"
                                         onClick={(e) => e.stopPropagation()}
                                     >
-                                        <div className="w-12 h-12 bg-[var(--color-surface)] flex items-center justify-center font-bold text-xs text-[var(--color-text)] rounded-none border border-[var(--color-surface)] group-hover/avatar:border-[var(--color-accent)] transition-all">
+                                        <div className="w-12 h-12 bg-[var(--color-surface)] flex items-center justify-center font-bold text-xs text-[var(--color-text)] rounded-lg border border-[var(--color-surface)] group-hover/avatar:border-[var(--color-accent)] transition-all">
                                             {chat.initials}
                                         </div>
                                     </NavLink>
@@ -128,7 +128,7 @@ function Messages() {
                                                 onClick={(e) => e.stopPropagation()}
                                             >
                                                 {chat.user}
-                                                {chat.online && <span className="w-1.5 h-1.5 bg-green-500 rounded-none shrink-0" />}
+                                                {chat.online && <span className="w-1.5 h-1.5 bg-green-500 rounded-lg shrink-0" />}
                                             </NavLink>
                                             <span className="text-[10px] text-gray-400 font-mono">{chat.time}</span>
                                         </div>
@@ -153,14 +153,14 @@ function Messages() {
                         <div className="h-16 border-b border-[var(--color-surface)] flex items-center justify-between px-6 bg-white shrink-0">
                             <div className="flex items-center gap-3">
                                 <NavLink to={activeChatMeta.isGroup ? "/communities" : `/profile/${activeChatMeta.userId}`} className="flex items-center gap-3 hover:opacity-80 transition-opacity">
-                                    <div className="w-10 h-10 bg-[var(--color-surface)] flex items-center justify-center font-bold text-xs text-[var(--color-text)] rounded-none">
+                                    <div className="w-10 h-10 bg-[var(--color-surface)] flex items-center justify-center font-bold text-xs text-[var(--color-text)] rounded-lg">
                                         {activeChatMeta.initials}
                                     </div>
                                     <div>
                                         <h2 className="font-bold text-base tracking-tight text-[var(--color-text)]">{activeChatMeta.user}</h2>
                                         <div className="flex items-center gap-2">
                                             <span className={cn(
-                                                "w-1.5 h-1.5 rounded-none",
+                                                "w-1.5 h-1.5 rounded-lg",
                                                 activeChatMeta.online ? "bg-green-500" : "bg-gray-300"
                                             )}></span>
                                             <span className="text-[10px] font-medium text-gray-400">
@@ -192,7 +192,7 @@ function Messages() {
                                     isMe ? "ml-auto items-end" : "mr-auto items-start"
                                 )}>
                                     <div className={cn(
-                                        "p-4 text-sm leading-relaxed transition-all rounded-none",
+                                        "p-4 text-sm leading-relaxed transition-all rounded-lg",
                                         isMe
                                             ? "bg-[var(--color-text)] text-white shadow-sm"
                                             : "bg-white border border-[var(--color-surface)] text-[var(--color-text)] shadow-sm"
@@ -207,7 +207,7 @@ function Messages() {
                         </div>
 
                         {/* Input Area */}
-                        <div className="p-4 bg-white border-t border-[var(--color-surface)] shrink-0 rounded-none">
+                        <div className="p-4 bg-white border-t border-[var(--color-surface)] shrink-0 rounded-lg">
                             <div className="flex gap-3">
                                 <input
                                     type="text"
@@ -215,12 +215,12 @@ function Messages() {
                                     onChange={(e) => setNewMessage(e.target.value)}
                                     onKeyDown={(e) => e.key === 'Enter' && handleSendMessage()}
                                     placeholder="Type a message..."
-                                    className="flex-1 bg-gray-50 border border-[var(--color-surface)] p-3 text-sm focus:outline-none focus:border-[var(--color-accent)] focus:bg-white transition-all text-[var(--color-text)] rounded-none"
+                                    className="flex-1 bg-gray-50 border border-[var(--color-surface)] p-3 text-sm focus:outline-none focus:border-[var(--color-accent)] focus:bg-white transition-all text-[var(--color-text)] rounded-lg"
                                 />
                                 <button
                                     onClick={handleSendMessage}
                                     disabled={!newMessage.trim()}
-                                    className="px-6 bg-[var(--color-text)] text-white hover:bg-[var(--color-accent)] disabled:opacity-50 transition-all flex items-center justify-center font-bold text-xs uppercase tracking-widest h-12 rounded-none"
+                                    className="px-6 bg-[var(--color-text)] text-white hover:bg-[var(--color-accent)] disabled:opacity-50 transition-all flex items-center justify-center font-bold text-xs uppercase tracking-widest h-12 rounded-lg"
                                 >
                                     <Send size={18} />
                                 </button>

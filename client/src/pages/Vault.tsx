@@ -19,7 +19,7 @@ import {
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
-import { useAuth } from '@/context/AuthContext';
+import { useAuth } from '@/context/useAuth';
 import { ref, onValue, set } from 'firebase/database';
 import { rtdb } from '@/lib/firebase';
 
@@ -131,15 +131,19 @@ function Vault() {
     const [vp, setVp] = useState(0);
 
     useEffect(() => {
-        if (!currentUser?.uid) return;
+        if (!currentUser?.uid || !rtdb) return;
         
-        const userRef = ref(rtdb, `users/${currentUser.uid}/vp`);
-        const unsubscribe = onValue(userRef, (snapshot) => {
-            const data = snapshot.val();
-            setVp(data || 0);
-        });
-        
-        return () => unsubscribe();
+        try {
+            const userRef = ref(rtdb, `users/${currentUser.uid}/vp`);
+            const unsubscribe = onValue(userRef, (snapshot) => {
+                const data = snapshot.val();
+                setVp(data || 0);
+            });
+            
+            return () => unsubscribe();
+        } catch (err) {
+            console.warn("RTDB VP fetch failed:", err);
+        }
     }, [currentUser]);
     const [activeTab, setActiveTab] = useState<'store' | 'instructions'>('store');
     const [activeCategory, setActiveCategory] = useState<'All' | VaultItem['category']>('All');
@@ -174,7 +178,7 @@ function Vault() {
     };
 
     const copyReferral = () => {
-        navigator.clipboard.writeText('unitex.io/join/alexander_552');
+        navigator.clipboard.writeText(`${window.location.origin}/join/${currentUser?.uid || ''}`);
         toast.success('Referral link copied!');
     };
 
@@ -216,7 +220,7 @@ function Vault() {
                             </div>
                         )}
 
-                        <div className="flex p-1 bg-gray-50 border border-gray-100 rounded-none self-start md:self-center">
+                        <div className="flex p-1 bg-gray-50 border border-gray-100 rounded-lg self-start md:self-center">
                             <button 
                                 onClick={() => setActiveTab('store')}
                                 className={cn(
@@ -451,7 +455,7 @@ function Vault() {
                     </div>
                     <div className="flex -space-x-5 px-4">
                         {[1, 2, 3, 4, 5].map(i => (
-                            <div key={i} className="w-16 h-16 bg-gray-900 border-4 border-black group cursor-pointer relative overflow-hidden transition-transform hover:scale-110 z-10 hover:z-20 shadow-2xl">
+                            <div key={i} className="w-16 h-16 bg-gray-900 border-2 border-black group cursor-pointer relative overflow-hidden transition-transform hover:scale-110 z-10 hover:z-20 shadow-2xl">
                                 <img src={`https://i.pravatar.cc/150?u=${i+10}`} alt="user" className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" />
                                 <div className="absolute inset-0 bg-[var(--color-accent)] opacity-0 group-hover:opacity-20 transition-opacity" />
                             </div>

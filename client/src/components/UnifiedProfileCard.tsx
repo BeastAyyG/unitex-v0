@@ -5,7 +5,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
-import { useAuth } from '@/context/AuthContext';
+import { useAuth } from '@/context/useAuth';
 import { ref, onValue } from 'firebase/database';
 import { rtdb } from '@/lib/firebase';
 
@@ -19,22 +19,26 @@ export function UnifiedProfileCard() {
     const [photoURL, setPhotoURL] = useState<string>('https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=200&auto=format&fit=crop');
 
     useEffect(() => {
-        if (!currentUser?.uid) return;
+        if (!currentUser?.uid || !rtdb) return;
         
-        const userRef = ref(rtdb, `users/${currentUser.uid}`);
-        const unsubscribe = onValue(userRef, (snapshot) => {
-            const data = snapshot.val();
-            if (data) {
-                setVp(data.vp || 0);
-                setNiche(data.niche || (data.tags && data.tags.length > 0 ? data.tags[0] : 'General Node'));
-                setUsername(data.username || '');
-                setUsercode(data.usercode || '');
-                setDisplayName(data.displayName || currentUser?.displayName || 'Anonymous Node');
-                setPhotoURL(data.photoURL || currentUser?.photoURL || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=200&auto=format&fit=crop');
-            }
-        });
-        
-        return () => unsubscribe();
+        try {
+            const userRef = ref(rtdb, `users/${currentUser.uid}`);
+            const unsubscribe = onValue(userRef, (snapshot) => {
+                const data = snapshot.val();
+                if (data) {
+                    setVp(data.vp || 0);
+                    setNiche(data.niche || (data.tags && data.tags.length > 0 ? data.tags[0] : 'General Node'));
+                    setUsername(data.username || '');
+                    setUsercode(data.usercode || '');
+                    setDisplayName(data.displayName || currentUser?.displayName || 'Anonymous Node');
+                    setPhotoURL(data.photoURL || currentUser?.photoURL || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=200&auto=format&fit=crop');
+                }
+            });
+            
+            return () => unsubscribe();
+        } catch (err) {
+            console.warn("RTDB subscription failed:", err);
+        }
     }, [currentUser]);
 
     const profileUrl = `https://unitex.io/profile/${username || currentUser?.uid || 'guest'}`;
@@ -51,9 +55,9 @@ export function UnifiedProfileCard() {
 
             {/* Photo Underneath Left-Aligned */}
             <NavLink to="/profile" className="px-4 -mt-8 mb-4 block hover:opacity-80 transition-opacity">
-                <Avatar className="w-16 h-16 rounded-none border-4 border-white shadow-sm">
+                <Avatar className="w-16 h-16 rounded-lg border-2 border-white shadow-sm">
                     <AvatarImage src={photoURL} />
-                    <AvatarFallback className="bg-[#09090b] text-white rounded-none">{displayName.charAt(0)}</AvatarFallback>
+                    <AvatarFallback className="bg-[#09090b] text-white rounded-lg">{displayName.charAt(0)}</AvatarFallback>
                 </Avatar>
             </NavLink>
 
@@ -84,7 +88,7 @@ export function UnifiedProfileCard() {
                     <Button
                         variant="outline"
                         size="sm"
-                        className="w-full justify-start gap-2 text-[9px] font-bold capitalize tracking-tight h-8 border-[var(--color-surface)] hover:border-[var(--color-text)] rounded-none"
+                        className="w-full justify-start gap-2 text-[9px] font-bold capitalize tracking-tight h-8 border-[var(--color-surface)] hover:border-[var(--color-text)] rounded-lg"
                         onClick={copyProfileUrl}
                     >
                         <Copy size={12} />
@@ -94,7 +98,7 @@ export function UnifiedProfileCard() {
                         <Button
                             variant="ghost"
                             size="sm"
-                            className="w-full justify-start gap-2 text-[9px] font-bold capitalize tracking-tight h-8 text-gray-400 hover:text-[var(--color-text)] rounded-none"
+                            className="w-full justify-start gap-2 text-[9px] font-bold capitalize tracking-tight h-8 text-gray-400 hover:text-[var(--color-text)] rounded-lg"
                         >
                             <Users size={12} />
                             My network

@@ -105,7 +105,7 @@ function DiscoverDetail() {
                     {content.title}
                 </h1>
                 <div className="flex items-center gap-4 border-y border-[var(--color-surface)] py-6">
-                    <div className="w-10 h-10 bg-gray-100 flex items-center justify-center rounded-none border border-gray-200">
+                    <div className="w-10 h-10 bg-gray-100 flex items-center justify-center rounded-lg border border-gray-200">
                         <User size={20} className="opacity-40" />
                     </div>
                     <div>
@@ -113,10 +113,10 @@ function DiscoverDetail() {
                         <p className="text-sm font-bold uppercase tracking-tight">{content.author}</p>
                     </div>
                     <div className="ml-auto flex gap-2">
-                        <Button variant="outline" size="icon" className="h-10 w-10 border-[var(--color-surface)] hover:bg-gray-50 rounded-none">
+                        <Button variant="outline" size="icon" className="h-10 w-10 border-[var(--color-surface)] hover:bg-gray-50 rounded-lg">
                             <Share2 size={16} />
                         </Button>
-                        <Button variant="outline" size="icon" className="h-10 w-10 border-[var(--color-surface)] hover:bg-gray-50 rounded-none">
+                        <Button variant="outline" size="icon" className="h-10 w-10 border-[var(--color-surface)] hover:bg-gray-50 rounded-lg">
                             <Bookmark size={16} />
                         </Button>
                     </div>
@@ -128,7 +128,7 @@ function DiscoverDetail() {
             </div>
 
             <article className="prose prose-zinc max-w-none">
-                <div className="text-lg md:text-xl font-medium leading-relaxed opacity-80 uppercase tracking-tight italic border-l-4 border-[var(--color-accent)] pl-8 my-10">
+                <div className="text-lg md:text-xl font-medium leading-relaxed opacity-80 uppercase tracking-tight italic border-l-2 border-[var(--color-accent)] pl-8 my-10">
                     "This signal represents a primary inflection point in the current {content.category.toLowerCase()} trajectory."
                 </div>
                 <p className="text-lg md:text-xl leading-relaxed font-sans mb-8">

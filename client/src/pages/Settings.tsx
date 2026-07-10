@@ -35,7 +35,7 @@ import { Input } from '../components/ui/input';
 import { Button } from '../components/ui/button';
 import { Separator } from '../components/ui/separator';
 import { Textarea } from '../components/ui/textarea';
-import { useAuth } from '@/context/AuthContext';
+import { useAuth } from '@/context/useAuth';
 import { useNavigate } from 'react-router-dom';
 import { updateUser, uploadAvatar, getUser, isUsernameAvailable, getUserRewards, getReferralStats, saveReferralCode } from '@/lib/firestore';
 import { syncUserToRTDB } from '@/lib/rtdb';
@@ -177,7 +177,7 @@ function Settings() {
                                     <FieldLabel className="uppercase tracking-widest opacity-40 text-[10px] font-bold mb-3">Email Address</FieldLabel>
                                     <div className="relative group">
                                         <AtSign className="absolute left-4 top-1/2 -translate-y-1/2 opacity-20 text-[var(--color-text)] group-focus-within:text-[var(--color-accent)] transition-all" size={16} />
-                                        <Input value={currentUser?.email || ''} readOnly disabled className="pl-12 h-14 bg-gray-50 border border-[var(--color-surface)] rounded-none font-medium text-sm opacity-60 cursor-not-allowed" />
+                                        <Input value={currentUser?.email || ''} readOnly disabled className="pl-12 h-14 bg-gray-50 border border-[var(--color-surface)] rounded-lg font-medium text-sm opacity-60 cursor-not-allowed" />
                                     </div>
                                     <p className="mt-2 text-[9px] font-bold uppercase opacity-30 tracking-widest italic">Primary communication channel for system alerts.</p>
                                 </Field>
@@ -190,7 +190,7 @@ function Settings() {
                                         <FieldLabel className="uppercase tracking-widest opacity-40 text-[10px] font-bold mb-3">Current password</FieldLabel>
                                         <div className="relative group">
                                             <Shield className="absolute left-4 top-1/2 -translate-y-1/2 opacity-20 text-[var(--color-text)] group-focus-within:text-[#6366f1] transition-all" size={18} />
-                                            <Input type="password" placeholder="••••••••" className="pl-12 h-14 bg-white border border-[var(--color-surface)] rounded-none font-medium text-sm tracking-widest transition-all focus:ring-0 focus:border-[#6366f1] shadow-sm" />
+                                            <Input type="password" placeholder="••••••••" className="pl-12 h-14 bg-white border border-[var(--color-surface)] rounded-lg font-medium text-sm tracking-widest transition-all focus:ring-0 focus:border-[#6366f1] shadow-sm" />
                                         </div>
                                     </Field>
 
@@ -198,11 +198,11 @@ function Settings() {
                                         <FieldLabel className="uppercase tracking-widest opacity-40 text-[10px] font-bold mb-3">New password</FieldLabel>
                                         <div className="relative group">
                                             <Lock className="absolute left-4 top-1/2 -translate-y-1/2 opacity-20 text-[var(--color-text)] group-focus-within:text-[var(--color-accent)] transition-all" size={18} />
-                                            <Input type="password" placeholder="Enter new secret" className="pl-12 h-14 bg-white border border-[var(--color-surface)] rounded-none font-medium text-sm tracking-widest transition-all focus:ring-0 focus:border-[var(--color-accent)] shadow-sm" />
+                                            <Input type="password" placeholder="Enter new secret" className="pl-12 h-14 bg-white border border-[var(--color-surface)] rounded-lg font-medium text-sm tracking-widest transition-all focus:ring-0 focus:border-[var(--color-accent)] shadow-sm" />
                                         </div>
                                     </Field>
 
-                                    <Button className="w-full h-16 bg-[var(--color-text)] text-white hover:bg-[var(--color-accent)] font-bold uppercase tracking-widest rounded-none shadow-md transition-all active:scale-[0.98] text-xs">
+                                    <Button className="w-full h-16 bg-[var(--color-text)] text-white hover:bg-[var(--color-accent)] font-bold uppercase tracking-widest rounded-lg shadow-md transition-all active:scale-[0.98] text-xs">
                                         Update Security Protocol
                                     </Button>
                                 </div>
@@ -221,7 +221,7 @@ function Settings() {
                                 <div>
                                     <label className="block text-[10px] font-bold mb-4 uppercase tracking-widest opacity-40">Identity Visualizer</label>
                                     <div className="flex flex-col sm:flex-row items-center sm:items-center gap-6">
-                                        <div className="w-24 h-24 rounded-none bg-cover bg-center border border-[var(--color-surface)] shadow-sm relative group" 
+                                        <div className="w-24 h-24 rounded-lg bg-cover bg-center border border-[var(--color-surface)] shadow-sm relative group" 
                                              style={{ backgroundImage: `url(${currentUser?.photoURL || 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?q=80&w=256&h=256&auto=format&fit=crop'})` }}>
                                              <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center cursor-pointer">
                                                  <Camera size={20} className="text-white" />
@@ -241,7 +241,7 @@ function Settings() {
                                     <FieldLabel className="uppercase tracking-widest opacity-40 text-[10px] font-bold mb-3">Display Name</FieldLabel>
                                     <div className="relative group">
                                         <UserIcon className="absolute left-4 top-1/2 -translate-y-1/2 opacity-20 text-[var(--color-text)] group-focus-within:text-[var(--color-accent)] group-focus-within:opacity-100 transition-all" size={16} />
-                                        <Input value={displayName} onChange={(e) => setDisplayName(e.target.value)} placeholder="Full Name" className="pl-12 h-14 bg-white border border-[var(--color-surface)] rounded-none font-medium text-sm transition-all focus:ring-0 focus:border-[var(--color-accent)] shadow-sm" />
+                                        <Input value={displayName} onChange={(e) => setDisplayName(e.target.value)} placeholder="Full Name" className="pl-12 h-14 bg-white border border-[var(--color-surface)] rounded-lg font-medium text-sm transition-all focus:ring-0 focus:border-[var(--color-accent)] shadow-sm" />
                                     </div>
                                 </Field>
 
@@ -249,7 +249,7 @@ function Settings() {
                                     <FieldLabel className="uppercase tracking-widest opacity-40 text-[10px] font-bold mb-3">Protocol Handle (@)</FieldLabel>
                                     <div className="relative group">
                                         <AtSign className="absolute left-4 top-1/2 -translate-y-1/2 opacity-20 text-[var(--color-text)] group-focus-within:text-[var(--color-accent)] group-focus-within:opacity-100 transition-all" size={16} />
-                                        <Input value={username} onChange={(e) => setUsername(e.target.value)} placeholder="username" className="pl-12 h-14 bg-white border border-[var(--color-surface)] rounded-none font-medium text-sm transition-all focus:ring-0 focus:border-[var(--color-accent)] shadow-sm" />
+                                        <Input value={username} onChange={(e) => setUsername(e.target.value)} placeholder="username" className="pl-12 h-14 bg-white border border-[var(--color-surface)] rounded-lg font-medium text-sm transition-all focus:ring-0 focus:border-[var(--color-accent)] shadow-sm" />
                                     </div>
                                 </Field>
 
@@ -257,7 +257,7 @@ function Settings() {
                                     <FieldLabel className="uppercase tracking-widest opacity-40 text-[10px] font-bold mb-3">Node Core ID</FieldLabel>
                                     <div className="relative group">
                                         <Fingerprint className="absolute left-4 top-1/2 -translate-y-1/2 opacity-20 text-[var(--color-text)] group-focus-within:text-[var(--color-accent)] group-focus-within:opacity-100 transition-all" size={16} />
-                                        <Input value={usercode} readOnly disabled className="pl-12 h-14 bg-gray-50 border border-[var(--color-surface)] rounded-none font-mono text-sm tracking-widest opacity-60 cursor-not-allowed" />
+                                        <Input value={usercode} readOnly disabled className="pl-12 h-14 bg-gray-50 border border-[var(--color-surface)] rounded-lg font-mono text-sm tracking-widest opacity-60 cursor-not-allowed" />
                                     </div>
                                     <p className="mt-2 text-[9px] font-bold uppercase opacity-30 tracking-widest italic">Immutable network identifier.</p>
                                 </Field>
@@ -266,7 +266,7 @@ function Settings() {
                                     <FieldLabel className="uppercase tracking-widest opacity-40 text-[10px] font-bold mb-3">Base Location</FieldLabel>
                                     <div className="relative group">
                                         <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 opacity-20 text-[var(--color-text)] group-focus-within:text-[var(--color-accent)] group-focus-within:opacity-100 transition-all" size={16} />
-                                        <Input value={location} onChange={(e) => setLocation(e.target.value)} placeholder="Physical Node Location" className="pl-12 h-14 bg-white border border-[var(--color-surface)] rounded-none font-medium text-sm transition-all focus:ring-0 focus:border-[var(--color-accent)] shadow-sm" />
+                                        <Input value={location} onChange={(e) => setLocation(e.target.value)} placeholder="Physical Node Location" className="pl-12 h-14 bg-white border border-[var(--color-surface)] rounded-lg font-medium text-sm transition-all focus:ring-0 focus:border-[var(--color-accent)] shadow-sm" />
                                     </div>
                                 </Field>
 
@@ -277,11 +277,11 @@ function Settings() {
                                     </div>
                                     <div className="relative group">
                                         <MessageSquare className="absolute left-4 top-5 opacity-20 text-[var(--color-text)] group-focus-within:text-[var(--color-accent)] group-focus-within:opacity-100 transition-all" size={16} />
-                                        <Textarea value={bio} onChange={(e) => setBio(e.target.value)} maxLength={280} placeholder="Share your focus area..." className="pl-12 pt-4 min-h-[140px] bg-white border border-[var(--color-surface)] rounded-none font-medium text-sm resize-none transition-all focus:ring-0 focus:border-[var(--color-accent)] shadow-sm" />
+                                        <Textarea value={bio} onChange={(e) => setBio(e.target.value)} maxLength={280} placeholder="Share your focus area..." className="pl-12 pt-4 min-h-[140px] bg-white border border-[var(--color-surface)] rounded-lg font-medium text-sm resize-none transition-all focus:ring-0 focus:border-[var(--color-accent)] shadow-sm" />
                                     </div>
                                 </Field>
 
-                                <Button onClick={handleSaveProfile} disabled={updating} className="w-full h-16 bg-[var(--color-accent)] text-white hover:opacity-90 font-bold uppercase tracking-widest rounded-none shadow-sm transition-all active:scale-[0.98] text-xs">
+                                <Button onClick={handleSaveProfile} disabled={updating} className="w-full h-16 bg-[var(--color-accent)] text-white hover:opacity-90 font-bold uppercase tracking-widest rounded-lg shadow-sm transition-all active:scale-[0.98] text-xs">
                                     {updating ? 'Processing Synchronization...' : 'Commit Persona Changes'}
                                 </Button>
                             </div>
@@ -328,7 +328,7 @@ function Settings() {
                                                 <p className="text-[9px] font-bold text-red-500 uppercase tracking-tighter">Deactivated • High Risk</p>
                                             </div>
                                         </div>
-                                        <Button variant="outline" className="h-10 px-6 text-[10px] font-bold uppercase tracking-widest rounded-none border-gray-200 hover:bg-white transition-all">Enable</Button>
+                                        <Button variant="outline" className="h-10 px-6 text-[10px] font-bold uppercase tracking-widest rounded-lg border-gray-200 hover:bg-white transition-all">Enable</Button>
                                     </div>
                                 </div>
                             </div>
@@ -454,7 +454,7 @@ function Settings() {
                                                 {referralCode || 'Generating...'}
                                             </div>
                                             <Button
-                                                className="w-14 h-14 bg-white text-black hover:bg-[var(--color-accent)] hover:text-white transition-all rounded-none p-0 flex items-center justify-center"
+                                                className="w-14 h-14 bg-white text-black hover:bg-[var(--color-accent)] hover:text-white transition-all rounded-lg p-0 flex items-center justify-center"
                                                 onClick={() => { navigator.clipboard.writeText(referralCode); toast.success('Code copied!'); }}
                                             >
                                                 <Share2 size={18} />
@@ -502,7 +502,7 @@ function Settings() {
                                         <h4 className="text-xs font-bold uppercase tracking-widest">Network Cache</h4>
                                         <p className="text-[10px] opacity-40 font-medium tracking-tight">Clear 1.2GB of temporary discover data.</p>
                                     </div>
-                                    <Button variant="outline" className="h-10 px-8 text-[10px] font-bold uppercase tracking-widest border-gray-200 hover:bg-gray-50 rounded-none transition-all">Flush Logs</Button>
+                                    <Button variant="outline" className="h-10 px-8 text-[10px] font-bold uppercase tracking-widest border-gray-200 hover:bg-gray-50 rounded-lg transition-all">Flush Logs</Button>
                                 </div>
 
                                 <div className="p-6 border border-red-50 bg-red-50/10 flex flex-col sm:flex-row items-center justify-between gap-4">
@@ -544,7 +544,7 @@ function Settings() {
                                     key={section.id}
                                     onClick={() => setActiveSection(section.id)}
                                     className={cn(
-                                        "w-full flex items-center gap-4 px-6 py-4 transition-all duration-200 group border border-transparent rounded-none",
+                                        "w-full flex items-center gap-4 px-6 py-4 transition-all duration-200 group border border-transparent rounded-lg",
                                         activeSection === section.id
                                             ? "bg-white text-[var(--color-text)] border-[var(--color-surface)] shadow-sm"
                                             : "text-gray-400 hover:text-[var(--color-text)] hover:bg-white/50"
@@ -566,11 +566,11 @@ function Settings() {
                         </nav>
                         
                         <div className="mt-12 pt-12 border-t border-[var(--color-surface)]">
-                            <button onClick={handleSignOut} className="flex items-center gap-4 px-6 py-4 text-red-500 hover:text-red-600 transition-all group w-full text-left rounded-none hover:bg-red-50/50">
+                            <button onClick={handleSignOut} className="flex items-center gap-4 px-6 py-4 text-red-500 hover:text-red-600 transition-all group w-full text-left rounded-lg hover:bg-red-50/50">
                                 <LogOut size={18} />
                                 <span className="text-xs font-bold uppercase tracking-widest">Sign Out Terminal</span>
                             </button>
-                            <button className="flex items-center gap-4 px-6 py-4 text-gray-400 hover:text-red-600 transition-all group w-full text-left rounded-none hover:bg-red-50/50 mt-2">
+                            <button className="flex items-center gap-4 px-6 py-4 text-gray-400 hover:text-red-600 transition-all group w-full text-left rounded-lg hover:bg-red-50/50 mt-2">
                                 <Trash2 size={18} />
                                 <span className="text-xs font-bold uppercase tracking-widest">Delete account</span>
                             </button>
@@ -578,7 +578,7 @@ function Settings() {
                     </aside>
 
                     {/* Content Area */}
-                    <main className="flex-1 max-w-2xl bg-white border border-[var(--color-surface)] p-6 lg:p-8 shadow-sm rounded-none min-h-[600px]">
+                    <main className="flex-1 max-w-2xl bg-white border border-[var(--color-surface)] p-6 lg:p-8 shadow-sm rounded-lg min-h-[600px]">
                         {renderContent()}
                     </main>
                 </div>

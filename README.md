@@ -36,10 +36,10 @@ cd client
 npm install
 npm run dev
 ```
-
 ### Access
-- **Frontend**: http://localhost:3000
-- **API**: http://localhost:5000/api/health
+
+-   **Frontend**: http://localhost:3004
+-   **API**: http://localhost:5002/api/health
 
 ## Environment Variables
 

@@ -76,7 +76,7 @@ export function NotificationsList({ isSheet = false }: { isSheet?: boolean }) {
                             : 'border-transparent text-gray-400 hover:text-[var(--color-text)]'
                             }`}
                     >
-                        {filter} {filter === 'Unread' && unreadCount > 0 && <span className="bg-[var(--color-accent)] text-white px-1.5 py-0.5 rounded-none text-[8px] ml-1">{unreadCount}</span>}
+                        {filter} {filter === 'Unread' && unreadCount > 0 && <span className="bg-[var(--color-accent)] text-white px-1.5 py-0.5 rounded-lg text-[8px] ml-1">{unreadCount}</span>}
                     </button>
                 ))}
             </div>
@@ -105,7 +105,7 @@ export function NotificationsList({ isSheet = false }: { isSheet?: boolean }) {
                                     )}
 
                                     {/* Icon Badge */}
-                                    <div className={`w-8 h-8 flex items-center justify-center shrink-0 border border-[var(--color-text)] transition-transform group-hover:scale-110 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] ${notif.type === 'like' ? 'bg-rose-50 text-[var(--color-text)]' :
+                                    <div className={`w-8 h-8 flex items-center justify-center shrink-0 border border-[var(--color-text)] transition-transform group-hover:scale-110 shadow-sm ${notif.type === 'like' ? 'bg-rose-50 text-[var(--color-text)]' :
                                         notif.type === 'follow' ? 'bg-blue-50 text-[var(--color-text)]' :
                                             notif.type === 'support' ? 'bg-green-50 text-[var(--color-text)]' :
                                                 'bg-purple-50 text-[var(--color-text)]'
@@ -151,7 +151,7 @@ export function NotificationsList({ isSheet = false }: { isSheet?: boolean }) {
                                         }`}
                                 >
                                     {/* Icon Badge */}
-                                    <div className={`w-8 h-8 flex items-center justify-center shrink-0 border border-[var(--color-text)] transition-transform group-hover:scale-110 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] bg-gray-50 text-gray-400 group-hover:text-[var(--color-text)]`}>
+                                    <div className={`w-8 h-8 flex items-center justify-center shrink-0 border border-[var(--color-text)] transition-transform group-hover:scale-110 shadow-sm bg-gray-50 text-gray-400 group-hover:text-[var(--color-text)]`}>
                                         {notif.type === 'comment' && <MessageSquare size={14} strokeWidth={2.5} />}
                                         {notif.type === 'support' && <HeartHandshake size={14} strokeWidth={2.5} />}
                                         {notif.type === 'like' && <Heart size={14} strokeWidth={2.5} />}

@@ -124,7 +124,7 @@ export const Carousel = ({ items, initialScroll = 0 }: CarouselProps) => {
                                     },
                                 }}
                                 key={"card" + index}
-                                className="rounded-none last:pr-[5%] md:last:pr-[33%]"
+                                className="rounded-lg last:pr-[5%] md:last:pr-[33%]"
                             >
                                 {item}
                             </motion.div>
@@ -133,14 +133,14 @@ export const Carousel = ({ items, initialScroll = 0 }: CarouselProps) => {
                 </div>
                 <div className="mr-10 flex justify-end gap-2">
                     <button
-                        className="relative z-40 flex h-10 w-10 items-center justify-center rounded-none bg-gray-100 disabled:opacity-50"
+                        className="relative z-40 flex h-10 w-10 items-center justify-center rounded-lg bg-gray-100 disabled:opacity-50"
                         onClick={scrollLeft}
                         disabled={!canScrollLeft}
                     >
                         <IconArrowNarrowLeft className="h-6 w-6 text-gray-500" />
                     </button>
                     <button
-                        className="relative z-40 flex h-10 w-10 items-center justify-center rounded-none bg-gray-100 disabled:opacity-50"
+                        className="relative z-40 flex h-10 w-10 items-center justify-center rounded-lg bg-gray-100 disabled:opacity-50"
                         onClick={scrollRight}
                         disabled={!canScrollRight}
                     >
@@ -210,10 +210,10 @@ export const Card = ({
                             exit={{ opacity: 0 }}
                             ref={containerRef}
                             layoutId={layout ? `card-${card.title}` : undefined}
-                            className="relative z-[60] mx-auto my-10 h-fit max-w-5xl rounded-none bg-[#ededed] p-4 font-sans md:p-10 border border-[#ced0ce]"
+                            className="relative z-[60] mx-auto my-10 h-fit max-w-5xl rounded-lg bg-[#ededed] p-4 font-sans md:p-10 border border-[#ced0ce]"
                         >
                             <button
-                                className="sticky top-4 right-0 ml-auto flex h-8 w-8 items-center justify-center rounded-none bg-[#191919] hover:bg-[#f45025] transition-colors"
+                                className="sticky top-4 right-0 ml-auto flex h-8 w-8 items-center justify-center rounded-lg bg-[#191919] hover:bg-[#f45025] transition-colors"
                                 onClick={handleClose}
                             >
                                 <IconX className="h-6 w-6 text-white" />
@@ -238,7 +238,7 @@ export const Card = ({
             <motion.button
                 layoutId={layout ? `card-${card.title}` : undefined}
                 onClick={handleOpen}
-                className="relative z-10 flex h-80 w-56 flex-col items-start justify-start overflow-hidden rounded-none bg-white md:h-[40rem] md:w-96 border border-[#ced0ce] hover:border-[#f45025] transition-colors"
+                className="relative z-10 flex h-80 w-56 flex-col items-start justify-start overflow-hidden rounded-lg bg-white md:h-[40rem] md:w-96 border border-[#ced0ce] hover:border-[#f45025] transition-colors"
             >
                 <div className="pointer-events-none absolute inset-x-0 top-0 z-30 h-full bg-gradient-to-b from-black/80 via-transparent to-transparent" />
                 <div className="relative z-40 p-8">

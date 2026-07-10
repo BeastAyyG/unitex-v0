@@ -162,7 +162,7 @@ const CarouselPrevious = React.forwardRef<
         <button
             ref={ref}
             className={cn(
-                "absolute left-4 top-1/2 -translate-y-1/2 h-8 w-8 rounded-none bg-white/80 border border-[var(--color-surface)] flex items-center justify-center hover:bg-white transition-colors disabled:opacity-50 z-10",
+                "absolute left-4 top-1/2 -translate-y-1/2 h-8 w-8 rounded-lg bg-white/80 border border-[var(--color-surface)] flex items-center justify-center hover:bg-white transition-colors disabled:opacity-50 z-10",
                 className
             )}
             disabled={!api?.canScrollPrev}
@@ -186,7 +186,7 @@ const CarouselNext = React.forwardRef<
         <button
             ref={ref}
             className={cn(
-                "absolute right-4 top-1/2 -translate-y-1/2 h-8 w-8 rounded-none bg-white/80 border border-[var(--color-surface)] flex items-center justify-center hover:bg-white transition-colors disabled:opacity-50 z-10",
+                "absolute right-4 top-1/2 -translate-y-1/2 h-8 w-8 rounded-lg bg-white/80 border border-[var(--color-surface)] flex items-center justify-center hover:bg-white transition-colors disabled:opacity-50 z-10",
                 className
             )}
             onClick={api?.scrollNext}
@@ -216,7 +216,7 @@ const CarouselDots = React.forwardRef<
                     key={i}
                     onClick={() => api?.scrollTo(i)}
                     className={cn(
-                        "h-1.5 transition-all duration-300 rounded-none", // Rectangles
+                        "h-1.5 transition-all duration-300 rounded-lg", // Rectangles
                         currentIndex === i ? "w-8 bg-[var(--color-accent)]" : "w-4 bg-[var(--color-text)]/20 hover:bg-[var(--color-text)]/40"
                     )}
                     aria-label={`Go to slide ${i + 1}`}

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '@/context/AuthContext';
+import { useAuth } from '@/context/useAuth';
 import { getUser, updateUser, isUsernameAvailable } from '@/lib/firestore';
 import { syncUserToRTDB } from '@/lib/rtdb';
 import { Shield, Zap, User, Briefcase, GraduationCap, MapPin, Check, ChevronRight, Hash, Hash as HashIcon, Map, Users, Target, Camera, X, Crop, ArrowRight, ArrowLeft } from 'lucide-react';
@@ -238,7 +238,7 @@ export const Onboarding = () => {
                 {/* Left Progress Tracker */}
                 <div className="md:w-64 shrink-0 flex flex-col">
                     <div className="flex items-center gap-3 mb-16">
-                        <div className="w-10 h-10 bg-[var(--color-accent)] flex items-center justify-center rounded-none rotate-3">
+                        <div className="w-10 h-10 bg-[var(--color-accent)] flex items-center justify-center rounded-lg rotate-3">
                             <Zap size={20} className="text-white fill-white" />
                         </div>
                         <span className="text-2xl font-black tracking-tighter uppercase italic text-[var(--color-text)]">UniteX</span>
@@ -252,7 +252,7 @@ export const Onboarding = () => {
                             return (
                                 <div key={s.id} className="flex items-center gap-4 group">
                                     <div className={cn(
-                                        "w-8 h-8 rounded-none flex items-center justify-center border transition-all duration-300",
+                                        "w-8 h-8 rounded-lg flex items-center justify-center border transition-all duration-300",
                                         isActive ? "bg-[var(--color-accent)] border-[var(--color-accent)] text-white shadow-lg" : 
                                         isPast ? "bg-emerald-50 text-emerald-600 border-emerald-200" : "bg-white border-gray-200 text-gray-400"
                                     )}>
@@ -292,7 +292,7 @@ export const Onboarding = () => {
                                     <div className="bg-gray-50 p-6 border border-[var(--color-surface)] flex items-center justify-between">
                                         <div>
                                             <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">User ID</p>
-                                            <p className="text-3xl font-black font-mono tracking-widest text-[var(--color-accent)]">{userData.userId || userData.usercode}</p>
+                                            <p className="text-3xl font-black font-mono tracking-widest text-[var(--color-accent)]">{userData?.userId || userData?.usercode || currentUser?.uid || "DEMO01"}</p>
                                         </div>
                                         <Shield size={40} className="text-gray-200" />
                                     </div>
@@ -365,12 +365,12 @@ export const Onboarding = () => {
                                         />
                                         <label 
                                             htmlFor="avatar-upload"
-                                            className="w-32 h-32 rounded-none border border-[var(--color-surface)] overflow-hidden bg-gray-50 flex items-center justify-center cursor-pointer block relative"
+                                            className="w-32 h-32 rounded-lg border border-[var(--color-surface)] overflow-hidden bg-gray-50 flex items-center justify-center cursor-pointer block relative"
                                         >
                                             {photoURL ? (
                                                 <img src={photoURL} alt="Avatar" className="w-full h-full object-cover" />
                                             ) : (
-                                                <img src={`https://api.dicebear.com/7.x/pixel-art/svg?seed=${username || userData.uid}`} alt="Avatar" className="w-full h-full object-cover grayscale" />
+                                                <img src={`https://api.dicebear.com/7.x/pixel-art/svg?seed=${username || userData?.uid || currentUser?.uid || "demo"}`} alt="Avatar" className="w-full h-full object-cover grayscale" />
                                             )}
                                             <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                                                 <span className="text-[10px] font-bold text-white uppercase tracking-widest">Upload Photo</span>
@@ -538,7 +538,7 @@ export const Onboarding = () => {
 
             {/* CROP MODAL */}
             <Dialog open={isCropModalOpen} onOpenChange={setIsCropModalOpen}>
-                <DialogContent className="max-w-md bg-white border border-[var(--color-surface)] rounded-none p-0 overflow-hidden">
+                <DialogContent className="max-w-md bg-white border border-[var(--color-surface)] rounded-lg p-0 overflow-hidden">
                     <div className="p-6 border-b border-[var(--color-surface)]">
                         <DialogTitle className="text-xl font-black uppercase tracking-tighter">Adjust Profile Picture</DialogTitle>
                     </div>
@@ -567,7 +567,7 @@ export const Onboarding = () => {
                                     draggable={false}
                                 />
                             )}
-                            <div className="absolute inset-0 border-4 border-white pointer-events-none opacity-50" />
+                            <div className="absolute inset-0 border-2 border-white pointer-events-none opacity-50" />
                         </div>
                         
                         <div className="w-full space-y-4">
@@ -589,13 +589,13 @@ export const Onboarding = () => {
                         <div className="flex gap-4 w-full">
                             <Button 
                                 variant="outline" 
-                                className="flex-1 rounded-none border-[var(--color-surface)] font-bold text-xs uppercase"
+                                className="flex-1 rounded-lg border-[var(--color-surface)] font-bold text-xs uppercase"
                                 onClick={() => setIsCropModalOpen(false)}
                             >
                                 Cancel
                             </Button>
                             <Button 
-                                className="flex-1 rounded-none bg-[var(--color-text)] text-white hover:bg-[var(--color-accent)] font-bold text-xs uppercase"
+                                className="flex-1 rounded-lg bg-[var(--color-text)] text-white hover:bg-[var(--color-accent)] font-bold text-xs uppercase"
                                 onClick={applyCrop}
                             >
                                 Apply Crop

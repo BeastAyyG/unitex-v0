@@ -46,7 +46,7 @@ function EventDetail() {
                 <div className="bg-[var(--color-surface)]/10 p-8 md:p-10 border-b border-[var(--color-surface)]">
                     <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-8">
                         <div className="space-y-3">
-                            <span className="px-3 py-1 bg-[var(--color-text)] text-white text-[9px] font-bold uppercase tracking-widest rounded-none">
+                            <span className="px-3 py-1 bg-[var(--color-text)] text-white text-[9px] font-bold uppercase tracking-widest rounded-lg">
                                 {event.community}
                             </span>
                             <h1 className="text-4xl md:text-5xl font-bold tracking-tight leading-none uppercase">
@@ -62,7 +62,7 @@ function EventDetail() {
                                 }
                             }}
                             className={cn(
-                                "h-12 px-8 rounded-none border border-[var(--color-text)] font-bold uppercase tracking-widest text-[10px] transition-all",
+                                "h-12 px-8 rounded-lg border border-[var(--color-text)] font-bold uppercase tracking-widest text-[10px] transition-all",
                                 isGoing ? "bg-emerald-50 text-emerald-600 border-emerald-100" : "bg-[var(--color-text)] text-white hover:bg-[var(--color-accent)]"
                             )}
                         >
@@ -110,7 +110,7 @@ function EventDetail() {
                             </div>
                         </section>
 
-                        <section className="bg-blue-50/30 border border-blue-100 p-6 rounded-none">
+                        <section className="bg-blue-50/30 border border-blue-100 p-6 rounded-lg">
                             <h4 className="font-bold uppercase tracking-widest text-[9px] text-blue-900 mb-3 flex items-center gap-2">
                                 <ShieldCheck size={16} /> Community Integrity
                             </h4>
@@ -123,8 +123,8 @@ function EventDetail() {
                     <aside className="space-y-8">
                         <div>
                             <h3 className="text-[9px] font-bold uppercase tracking-widest text-gray-400 mb-4 pb-2 border-b border-[var(--color-surface)] inline-block">Hosted by</h3>
-                            <Link to={`/profile/${event.host.id}`} className="flex items-center gap-4 p-4 bg-white border border-[var(--color-surface)] shadow-sm group cursor-pointer hover:border-[var(--color-accent)] transition-all rounded-none">
-                                <Avatar className="w-10 h-10 rounded-none border border-[var(--color-surface)]">
+                            <Link to={`/profile/${event.host.id}`} className="flex items-center gap-4 p-4 bg-white border border-[var(--color-surface)] shadow-sm group cursor-pointer hover:border-[var(--color-accent)] transition-all rounded-lg">
+                                <Avatar className="w-10 h-10 rounded-lg border border-[var(--color-surface)]">
                                     <AvatarImage src={event.host.avatar} className="grayscale group-hover:grayscale-0 transition-all" />
                                     <AvatarFallback>{event.host.name[0]}</AvatarFallback>
                                 </Avatar>
@@ -138,8 +138,8 @@ function EventDetail() {
                         <div className="border-t border-[var(--color-surface)] pt-6">
                             <h3 className="text-[9px] font-bold uppercase tracking-widest text-gray-400 mb-4">Share Event</h3>
                             <div className="flex flex-col gap-2">
-                                <Button className="w-full rounded-none border border-[var(--color-surface)] bg-white text-[var(--color-text)] font-bold text-[9px] uppercase tracking-widest hover:bg-gray-50 transition-all h-10">Share on Twitter</Button>
-                                <Button className="w-full rounded-none border border-[var(--color-surface)] bg-white text-[var(--color-text)] font-bold text-[9px] uppercase tracking-widest hover:bg-gray-50 transition-all h-10">Share on LinkedIn</Button>
+                                <Button className="w-full rounded-lg border border-[var(--color-surface)] bg-white text-[var(--color-text)] font-bold text-[9px] uppercase tracking-widest hover:bg-gray-50 transition-all h-10">Share on Twitter</Button>
+                                <Button className="w-full rounded-lg border border-[var(--color-surface)] bg-white text-[var(--color-text)] font-bold text-[9px] uppercase tracking-widest hover:bg-gray-50 transition-all h-10">Share on LinkedIn</Button>
                             </div>
                         </div>
                     </aside>
@@ -152,7 +152,7 @@ function EventDetail() {
                     <div className="p-8">
                         {regSuccess ? (
                             <div className="flex flex-col items-center justify-center py-10 text-center space-y-4 animate-in fade-in zoom-in duration-300">
-                                <div className="w-16 h-16 bg-emerald-50 text-emerald-500 rounded-none flex items-center justify-center border border-emerald-100 italic">
+                                <div className="w-16 h-16 bg-emerald-50 text-emerald-500 rounded-lg flex items-center justify-center border border-emerald-100 italic">
                                     <CheckCircle size={32} />
                                 </div>
                                 <div>
@@ -194,7 +194,7 @@ function EventDetail() {
                                     <Field>
                                         <FieldLabel>Number of Seats</FieldLabel>
                                         <select 
-                                            className="w-full bg-gray-50 border border-gray-100 p-4 text-xs font-bold uppercase tracking-widest focus:bg-white focus:outline-none rounded-none"
+                                            className="w-full bg-gray-50 border border-gray-100 p-4 text-xs font-bold uppercase tracking-widest focus:bg-white focus:outline-none rounded-lg"
                                             value={regSeats}
                                             onChange={(e) => setRegSeats(e.target.value)}
                                         >
@@ -208,7 +208,7 @@ function EventDetail() {
                                         <Button 
                                             onClick={handleRegister}
                                             disabled={!regName.trim() || !regEmail.trim()}
-                                            className="w-full bg-[var(--color-text)] text-white hover:bg-[var(--color-accent)] font-bold uppercase tracking-widest text-xs h-14 rounded-none disabled:opacity-50"
+                                            className="w-full bg-[var(--color-text)] text-white hover:bg-[var(--color-accent)] font-bold uppercase tracking-widest text-xs h-14 rounded-lg disabled:opacity-50"
                                         >
                                             Confirm Registration
                                         </Button>

@@ -19,37 +19,28 @@ const FEEDS = [
 let db = null;
 try {
     const serviceAccountPath = path.resolve(__dirname, '../../service-account.json');
-    console.log(`[Discovery] Resolving credentials at: ${serviceAccountPath}`);
     
     let sa = null;
     if (fs.existsSync(serviceAccountPath)) {
-        console.log('[Discovery] File exists at expected path');
         sa = JSON.parse(fs.readFileSync(serviceAccountPath, 'utf8'));
     } else {
         console.warn(`[Discovery] Service account missing at ${serviceAccountPath}. Searching root...`);
         const rootPath = path.resolve(__dirname, '../../../service-account.json');
         if (fs.existsSync(rootPath)) {
-            console.log('[Discovery] File exists at root path');
             sa = JSON.parse(fs.readFileSync(rootPath, 'utf8'));
         }
     }
 
     if (sa) {
-        console.log(`[Discovery] Credential loaded for project: ${sa.project_id}`);
         if (!admin.apps.length) {
             admin.initializeApp({
                 credential: admin.credential.cert(sa)
             });
-            console.log('✅ [Discovery] Firebase Admin Initialized');
         }
         db = admin.firestore();
-        if (db) console.log('✅ [Discovery] Firestore instance acquired');
-        else console.error('❌ [Discovery] admin.firestore() returned null');
+        if (!db) console.error('[Discovery] admin.firestore() returned null');
     } else {
-        console.error('❌ [Discovery] CRITICAL: No service account found. Discover feed will not update.');
-        console.error('Expected locations:');
-        console.error(`- ${serviceAccountPath}`);
-        console.error(`- ${path.resolve(__dirname, '../../../service-account.json')}`);
+        console.warn('[Discovery] No service account found. Discover feed running in mock mode.');
     }
 } catch (error) {
     console.error('❌ [Discovery] Initialization error:', error.message);
@@ -63,11 +54,11 @@ async function scrapeFeeds() {
         return;
     }
 
-    console.log('--- Starting Scrape:', new Date().toLocaleString(), '---');
+    if (process.env.DEBUG) console.log('--- Starting Scrape:', new Date().toLocaleString(), '---');
 
     for (const feed of FEEDS) {
         try {
-            console.log(`Fetching ${feed.name}...`);
+            if (process.env.DEBUG) console.log(`Fetching ${feed.name}...`);
             const data = await parser.parseURL(feed.url);
             
             for (const item of data.items.slice(0, 5)) { // Top 5 from each feed
@@ -155,15 +146,13 @@ async function scrapeFeeds() {
                     }
                 });
                 
-                console.log(`Indexed & Scored: ${item.title} (Score: ${trendScore.toFixed(2)})`);
-                
-                console.log(`Added: ${item.title}`);
+                if (process.env.DEBUG) console.log(`Indexed: ${item.title}`);
             }
         } catch (error) {
             console.error(`Error scraping ${feed.name}:`, error.message);
         }
     }
-    console.log('--- Scrape Finished ---');
+    if (process.env.DEBUG) console.log('--- Scrape Finished ---');
 }
 
 // Schedule: Every 30 minutes
@@ -173,7 +162,7 @@ cron.schedule('0,30 * * * *', () => {
 });
 
 async function runMockScrape() {
-    console.log('🚀 [Discovery] Running Mock Scrape Protocol...');
+    if (process.env.DEBUG) console.log('[Discovery] Running Mock Scrape Protocol...');
     const mockData = [
         {
             title: "UniteX Social Ecosystem v2.0 Launches",
@@ -200,7 +189,7 @@ async function runMockScrape() {
     if (!fs.existsSync(path.dirname(fallbackPath))) fs.mkdirSync(path.dirname(fallbackPath), { recursive: true });
     
     fs.writeFileSync(fallbackPath, JSON.stringify(mockData, null, 2));
-    console.log(`✅ [Discovery] Mock data saved to: ${fallbackPath}`);
+    if (process.env.DEBUG) console.log(`[Discovery] Mock data saved to: ${fallbackPath}`);
 }
 
 // Run once on startup

@@ -12,7 +12,7 @@ import { Field } from '../components/ui/field'
 import { Input } from '../components/ui/input'
 import { cn } from '../lib/utils';
 import { NavLink } from 'react-router-dom';
-import { useAuth } from '@/context/AuthContext';
+import { useAuth } from '@/context/useAuth';
 import { toast } from 'sonner';
 import { performGlobalSearch, SearchResult as GlobalSearchResult } from '@/lib/search';
 import { 
@@ -427,11 +427,11 @@ function Networking() {
     // Helper to get ability icon
     const AbilityIcon = ({ icon: Icon, label }: { icon: any, label: string }) => (
         <div className="flex flex-col items-center gap-1 group/icon cursor-default relative">
-            <div className="w-8 h-8 rounded-none bg-[var(--color-surface)] flex items-center justify-center border border-transparent group-hover/icon:border-[var(--color-accent)] group-hover/icon:bg-[var(--color-accent)]/10 transition-all duration-300">
+            <div className="w-8 h-8 rounded-lg bg-[var(--color-surface)] flex items-center justify-center border border-transparent group-hover/icon:border-[var(--color-accent)] group-hover/icon:bg-[var(--color-accent)]/10 transition-all duration-300">
                 <Icon size={14} className="text-[var(--color-text)] group-hover/icon:text-[var(--color-accent)]" />
             </div>
             {/* Tooltip-like label on hover for cleaner look */}
-            <span className="hidden group-hover/icon:block absolute bottom-full mb-2 text-[9px] font-bold uppercase bg-black text-white px-2 py-1 rounded-none tracking-widest whitespace-nowrap z-10 animate-in fade-in slide-in-from-bottom-1 pointer-events-none">
+            <span className="hidden group-hover/icon:block absolute bottom-full mb-2 text-[9px] font-bold uppercase bg-black text-white px-2 py-1 rounded-lg tracking-widest whitespace-nowrap z-10 animate-in fade-in slide-in-from-bottom-1 pointer-events-none">
                 {label}
             </span>
         </div>
@@ -468,7 +468,7 @@ function Networking() {
                             placeholder="Search by name, @code or ID..."
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
-                            className="w-full bg-white border border-[var(--color-surface)] pl-10 pr-4 py-2 text-xs font-medium outline-none focus:border-[var(--color-accent)] shadow-sm transition-all rounded-none"
+                            className="w-full bg-white border border-[var(--color-surface)] pl-10 pr-4 py-2 text-xs font-medium outline-none focus:border-[var(--color-accent)] shadow-sm transition-all rounded-lg"
                         />
                         {isSearching && (
                             <div className="absolute right-3 top-1/2 -translate-y-1/2">
@@ -477,12 +477,12 @@ function Networking() {
                         )}
                     </div>
 
-                    <div className="flex bg-[var(--color-surface)]/30 p-1 rounded-none">
+                    <div className="flex bg-[var(--color-surface)]/30 p-1 rounded-lg">
                         {['discovery', 'requests', 'network'].map((tab) => (
                             <button
                                 key={tab}
                                 className={cn(
-                                    "px-6 py-2 text-xs font-bold uppercase tracking-widest rounded-none transition-all duration-300",
+                                    "px-6 py-2 text-xs font-bold uppercase tracking-widest rounded-lg transition-all duration-300",
                                     activeTab === tab
                                         ? "bg-[var(--color-accent)] text-white shadow-sm"
                                         : "text-[var(--color-text)] opacity-60 hover:opacity-100 hover:bg-white/50"
@@ -502,7 +502,7 @@ function Networking() {
                 (searchTerm.length >= 2 ? searchResults : activeList).length > 0 ? (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                         {(searchTerm.length >= 2 ? searchResults : activeList).map((char: any) => (
-                            <div key={char.id} className="flex flex-col h-[480px] border border-[var(--color-surface)] bg-white group hover:border-[var(--color-text)] transition-all duration-300 rounded-none overflow-hidden relative shadow-sm hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,0.05)]">
+                            <div key={char.id} className="flex flex-col h-[480px] border border-[var(--color-surface)] bg-white group hover:border-[var(--color-text)] transition-all duration-300 rounded-lg overflow-hidden relative shadow-sm hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,0.05)]">
 
 
                                 <NavLink to={`/profile/${char.id}`} className="h-[48%] relative overflow-hidden bg-[var(--color-text)] block">
@@ -560,7 +560,7 @@ function Networking() {
                                         onClick={() => char.connectionStatus === 'none' && handleConnect(char)}
                                         disabled={char.connectionStatus !== 'none'}
                                         className={cn(
-                                            "w-full h-10 mt-6 text-[10px] font-bold uppercase tracking-widest flex items-center justify-center gap-2 transition-all rounded-none border border-transparent shadow-[4px_4px_0px_0px_rgba(0,0,0,0.1)]",
+                                            "w-full h-10 mt-6 text-[10px] font-bold uppercase tracking-widest flex items-center justify-center gap-2 transition-all rounded-lg border border-transparent shadow-sm",
                                             char.connectionStatus === 'none' && "bg-orange-500 hover:bg-orange-600 text-white hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px]",
                                             char.connectionStatus === 'pending_sent' && "bg-gray-100 text-gray-400 cursor-not-allowed",
                                             char.connectionStatus === 'connected' && "bg-emerald-500 text-white cursor-default"
@@ -593,11 +593,11 @@ function Networking() {
                 activeList.length > 0 ? (
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                         {activeList.map(char => (
-                            <div key={char.id} className="flex items-center p-4 bg-white border border-[var(--color-surface)] hover:border-[var(--color-accent)] transition-all duration-300 rounded-none group hover:shadow-sm">
+                            <div key={char.id} className="flex items-center p-4 bg-white border border-[var(--color-surface)] hover:border-[var(--color-accent)] transition-all duration-300 rounded-lg group hover:shadow-sm">
                                 <NavLink to={`/profile/${char.id}`} className="mr-4 shrink-0">
-                                    <Avatar className="h-14 w-14 border border-[var(--color-surface)] shadow-sm rounded-none">
-                                        <AvatarImage src={char.image} alt={char.name} className="rounded-none" />
-                                        <AvatarFallback className="rounded-none">{char.initials}</AvatarFallback>
+                                    <Avatar className="h-14 w-14 border border-[var(--color-surface)] shadow-sm rounded-lg">
+                                        <AvatarImage src={char.image} alt={char.name} className="rounded-lg" />
+                                        <AvatarFallback className="rounded-lg">{char.initials}</AvatarFallback>
                                     </Avatar>
                                 </NavLink>
 
@@ -610,8 +610,8 @@ function Networking() {
                                             </h3>
                                         </NavLink>
                                         {activeTab === 'network' && (
-                                            <div className="px-1.5 py-0.5 bg-emerald-50 text-emerald-700 text-[8px] font-bold uppercase tracking-wider flex items-center gap-1 border border-emerald-100 rounded-none">
-                                                <span className="w-1.5 h-1.5 rounded-none bg-emerald-500" />
+                                            <div className="px-1.5 py-0.5 bg-emerald-50 text-emerald-700 text-[8px] font-bold uppercase tracking-wider flex items-center gap-1 border border-emerald-100 rounded-lg">
+                                                <span className="w-1.5 h-1.5 rounded-lg bg-emerald-500" />
                                                 Online
                                             </div>
                                         )}
@@ -637,24 +637,24 @@ function Networking() {
                                         <div className="flex gap-2">
                                             <button
                                                 onClick={() => handleReject(char)}
-                                                className="h-8 w-8 flex items-center justify-center bg-gray-50 border border-gray-100 hover:bg-rose-50 hover:text-rose-600 hover:border-rose-200 rounded-none transition-colors text-gray-400" title="Reject"
+                                                className="h-8 w-8 flex items-center justify-center bg-gray-50 border border-gray-100 hover:bg-rose-50 hover:text-rose-600 hover:border-rose-200 rounded-lg transition-colors text-gray-400" title="Reject"
                                             >
                                                 <X size={14} />
                                             </button>
                                             <button
                                                 onClick={() => handleAccept(char)}
-                                                className="h-8 w-8 flex items-center justify-center bg-[var(--color-text)] hover:bg-[var(--color-accent)] text-white rounded-none transition-colors shadow-sm" title="Accept"
+                                                className="h-8 w-8 flex items-center justify-center bg-[var(--color-text)] hover:bg-[var(--color-accent)] text-white rounded-lg transition-colors shadow-sm" title="Accept"
                                             >
                                                 <Check size={14} />
                                             </button>
                                         </div>
                                     ) : (
                                         <div className="flex gap-2">
-                                            <button className="px-3 h-8 border border-gray-200 hover:border-[var(--color-text)] hover:bg-gray-50 text-[9px] font-bold uppercase tracking-wider rounded-none transition-colors flex items-center gap-2">
+                                            <button className="px-3 h-8 border border-gray-200 hover:border-[var(--color-text)] hover:bg-gray-50 text-[9px] font-bold uppercase tracking-wider rounded-lg transition-colors flex items-center gap-2">
                                                 <MessageSquare size={12} />
                                                 <span className="hidden sm:inline">Message</span>
                                             </button>
-                                            <button className="h-8 w-8 flex items-center justify-center border border-gray-200 hover:bg-gray-50 rounded-none transition-colors text-gray-400 hover:text-[var(--color-text)]">
+                                            <button className="h-8 w-8 flex items-center justify-center border border-gray-200 hover:bg-gray-50 rounded-lg transition-colors text-gray-400 hover:text-[var(--color-text)]">
                                                 <MoreHorizontal size={14} />
                                             </button>
                                         </div>

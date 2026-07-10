@@ -13,7 +13,7 @@
  */
 
 import { useState, useCallback } from 'react';
-import { useAuth } from '@/context/AuthContext';
+import { useAuth } from '@/context/useAuth';
 import { getDoc, doc } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 

@@ -1,21 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import PostCard, { Post } from '@/components/PostCard';
 import CreatePost, { CreatePostMedia } from '@/components/CreatePost';
 import { UnifiedProfileCard } from '@/components/UnifiedProfileCard';
-import { TrendingUp, Users, Zap, ArrowUpRight, Image as ImageIcon, Link, Plus, Rocket, UserPlus, Activity } from 'lucide-react';
+import { TrendingUp, Users, ArrowUpRight, Image as ImageIcon, Link, Plus, Rocket, UserPlus, Activity, ShieldCheck, Zap, Globe, MessageSquare } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { cn } from '@/lib/utils';
 import { Dialog, DialogContent, DialogTrigger, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { useNotifications } from '@/context/NotificationContext';
-import { useAuth } from '@/context/AuthContext';
+import { useAuth } from '@/context/useAuth';
 import { subscribeToRealtimePosts, createRealtimePost } from '@/lib/rtdb';
 import { calculateRankScore, calculateTrendingVelocity, generateNicheVector } from '@/lib/intelligence';
 import { getUser, updateUser, createNotification } from '@/lib/firestore';
 import { toast } from 'sonner';
-import { useNavigate } from 'react-router-dom';
-
-
 
 function Home() {
     const { currentUser } = useAuth();
@@ -39,26 +36,28 @@ function Home() {
         }
     }, [currentUser, navigate]);
 
-    // Subscribe to live Realtime Database posts
     useEffect(() => {
         const unsub = subscribeToRealtimePosts((livePosts) => {
             if (livePosts.length > 0) {
                 setPosts(livePosts as Post[]);
+            } else if (posts.length === 0) {
+                setPosts([
+                    { id: 'demo-1', author: { id: 'system', name: 'UniteX', avatar: '', role: 'Admin' }, timestamp: '1m ago', content: 'Welcome to UniteX! This is a demo instance running without Firebase. Sign up for a real account to unlock all features.', stats: { likes: 42, support: 12, comments: 7, shares: 0 }, ai: { qualityScore: 95, tags: [] }, createdAtMillis: Date.now() - 1000 },
+                    { id: 'demo-2', author: { id: 'system', name: 'Hermes Agent', avatar: '', role: 'AI' }, timestamp: '2m ago', content: 'Hermes Agent is online. Running Ponytail analysis on community engagement patterns. All systems nominal.', stats: { likes: 28, support: 8, comments: 3, shares: 0 }, ai: { qualityScore: 88, tags: [] }, createdAtMillis: Date.now() - 2000 },
+                    { id: 'demo-3', author: { id: 'system', name: 'UnitexBot', avatar: '', role: 'Bot' }, timestamp: '3m ago', content: 'VP Engine active. Quality scoring, anti-spam, and niche routing are operational. Start posting to earn Value Points!', stats: { likes: 15, support: 5, comments: 2, shares: 0 }, ai: { qualityScore: 72, tags: [] }, createdAtMillis: Date.now() - 3000 },
+                ] as Post[]);
             }
         });
         return () => unsub();
     }, []);
 
-    // Simulated User Niche Vector for the Relevance Engine
     const userVector = React.useMemo(() => generateNicheVector(['Frontend', 'React', 'AI/ML']), []);
 
-    // Apply 12-Layer Algorithmic Sorting 
     const sortedPosts = React.useMemo(() => {
         const now = Date.now();
         let postsToSort = [...posts];
 
         if (activeSort === 'hot') {
-            // Apply Trending Velocity Algorithm
             postsToSort.sort((a, b) => {
                 const velA = calculateTrendingVelocity(
                     { postNicheVector: a.ai?.tags ? generateNicheVector(a.ai.tags) : [], qScore: a.ai?.qualityScore || 50, interactions: a.stats, authorVp: 100, createdAtMillis: a.createdAtMillis || now },
@@ -73,7 +72,6 @@ function Home() {
                 return velB - velA;
             });
         } else if (activeSort === 'top') {
-            // Apply 'For You' Relevance Algorithm
             postsToSort.sort((a, b) => {
                 const rankA = calculateRankScore(
                     userVector,
@@ -88,8 +86,6 @@ function Home() {
                 return rankB - rankA;
             });
         }
-        // 'new' relies on the default order returned by subscribeToRealtimePosts
-        
         return postsToSort;
     }, [posts, activeSort, userVector]);
 
@@ -115,7 +111,6 @@ function Home() {
             toast.success("Post published successfully");
         } catch (err) {
             console.error('Failed to create post:', err);
-            // Optimistic fallback
             const newPost: Post = {
                 id: Date.now().toString(),
                 author: {
@@ -147,210 +142,219 @@ function Home() {
         { name: "UI/UX Strategists", members: "15.7k", logo: "https://images.unsplash.com/photo-1558655146-d09347e92766?q=80&w=100&auto=format&fit=crop" }
     ];
 
+    const MARQUEE_ITEMS = [
+        { text: "REAL-TIME ROSTER", icon: Activity },
+        { text: "VP ENGINE", icon: Zap },
+        { text: "HYBRID STORAGE", icon: Globe },
+        { text: "HERMES NODE", icon: MessageSquare },
+        { text: "NICHE INTELLIGENCE", icon: ShieldCheck },
+    ];
+
     return (
-        <div className="grid grid-cols-1 lg:grid-cols-[2.5fr_8.5fr_2.5fr] gap-6 w-full max-w-full px-0.5 lg:px-0.5 pt-1 pb-8 mx-auto">
-            {/* Right Sidebar - Profile & Stats + Connections (2.5/12 approx) */}
-            <aside className="hidden lg:flex flex-col gap-6 sticky top-2 h-[calc(100vh-2rem)] overflow-y-auto pr-2 no-scrollbar pb-10">
-                <UnifiedProfileCard />
-
-                {/* Recommended Connections */}
-                <div className="bg-white border border-[var(--color-surface)] p-4 shadow-sm rounded-none text-[var(--color-text)]">
-                    <div className="flex items-center justify-between mb-4">
-                        <h3 className="text-xs font-bold capitalize tracking-wider text-gray-400">Recommended connections</h3>
-                        <UserPlus size={14} className="text-[var(--color-accent)]" />
-                    </div>
-                    <div className="flex flex-col gap-3">
-                        {[
-                            { id: 'alex-thorne', name: "Alex Thorne", role: "Startup Founder", avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=400&auto=format&fit=crop" },
-                            { id: 'priya-patel', name: "Priya Patel", role: "Full Stack Dev", avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=400&auto=format&fit=crop" },
-                            { id: 'liam-oconnor', name: "Liam O'Connor", role: "Game DevOps", avatar: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?q=80&w=400&auto=format&fit=crop" }
-                        ].map((person, i) => (
-                            <NavLink key={i} to={`/profile/${person.id}`} className="flex items-center justify-between group cursor-pointer">
-                                <div className="flex items-center gap-2.5">
-                                    <Avatar className="h-8 w-8 rounded-none border border-gray-100 shrink-0">
-                                        <AvatarImage src={person.avatar} />
-                                        <AvatarFallback className="text-[10px] font-bold bg-black text-white rounded-none">{person.name[0]}</AvatarFallback>
-                                    </Avatar>
-                                    <div>
-                                        <div className="text-xs font-bold capitalize tracking-tight text-[var(--color-text)] group-hover:text-[var(--color-accent)] transition-colors">{person.name}</div>
-                                        <div className="text-[10px] text-gray-400 font-mono capitalize tracking-wider">{person.role}</div>
-                                    </div>
-                                </div>
-                                <Plus size={13} className="text-gray-300 group-hover:text-[var(--color-accent)] transition-colors" />
-                            </NavLink>
-                        ))}
-                    </div>
-                    <button className="w-full mt-4 py-1.5 text-[10px] font-bold capitalize tracking-wider text-[var(--color-accent)] hover:bg-[var(--color-accent)]/5 transition-colors border border-[var(--color-accent)]/20 rounded-none">Find more people</button>
+        <div className="w-full flex flex-col items-center">
+            {/* HERO SECTION */}
+            <section className="relative w-full h-[60vh] md:h-[70vh] bg-[var(--color-text)] flex items-center justify-center overflow-hidden border-b-2 border-[var(--color-text)]">
+                <div className="absolute inset-0 opacity-40 mix-blend-overlay">
+                    <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=2000&auto=format&fit=crop" alt="Hero Background" className="w-full h-full object-cover" />
                 </div>
-            </aside>
+                <div className="relative z-10 flex flex-col items-center justify-center text-center px-4">
+                    <h1 className="font-syne text-5xl md:text-7xl lg:text-8xl font-bold text-white mb-6 uppercase tracking-tighter max-w-5xl leading-[0.9]">
+                        Nodes of the uniquely intelligent.
+                    </h1>
+                    <p className="font-outfit text-xl md:text-2xl text-[var(--color-bg)] max-w-2xl font-light mb-10 opacity-90">
+                        An all-inclusive intelligence network providing everything you need to connect, build, and deploy.
+                    </p>
+                    <Dialog open={isPostDialogOpen} onOpenChange={setIsPostDialogOpen}>
+                        <DialogTrigger asChild>
+                            <button className="group relative px-8 py-4 bg-[var(--color-accent-yellow)] text-[var(--color-text)] font-syne font-bold uppercase tracking-widest text-lg md:text-xl border-2 border-[var(--color-text)] shadow-brutal hover-lift overflow-hidden">
+                                <span className="relative z-10">Initialize Sequence</span>
+                                <div className="absolute inset-0 bg-[var(--color-accent-red)] translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-in-out z-0"></div>
+                            </button>
+                        </DialogTrigger>
+                    </Dialog>
+                </div>
+            </section>
 
-            {/* Main Feed - Center Column (8/13 approx) */}
-            <main className="flex flex-col gap-6">
-                {/* Feed Controls - Non-sticky */}
-                <div className="bg-white border border-[var(--color-surface)] flex px-0 shadow-sm rounded-none">
-                    <div className="flex w-full">
+            {/* MARQUEE SECTION */}
+            <section className="w-full bg-[var(--color-accent-green)] border-b-2 border-[var(--color-text)] overflow-hidden flex items-center py-4">
+                <div className="flex whitespace-nowrap animate-marquee">
+                    {[...MARQUEE_ITEMS, ...MARQUEE_ITEMS, ...MARQUEE_ITEMS, ...MARQUEE_ITEMS].map((item, idx) => (
+                        <div key={idx} className="flex items-center mx-8 text-[var(--color-bg)]">
+                            <span className="font-syne font-bold uppercase tracking-widest text-xl">{item.text}</span>
+                            <item.icon className="ml-4 w-6 h-6 text-[var(--color-accent-yellow)]" strokeWidth={2.5} />
+                        </div>
+                    ))}
+                </div>
+            </section>
+
+            {/* DASHBOARD GRID */}
+            <div className="grid grid-cols-1 lg:grid-cols-[3fr_6fr_3fr] gap-8 w-full max-w-7xl px-4 md:px-8 py-12">
+                
+                {/* Left Sidebar - Profile & Connections */}
+                <aside className="hidden lg:flex flex-col gap-8">
+                    <div className="bg-[var(--color-bg)] border-2 border-[var(--color-text)] p-6 shadow-brutal">
+                        <UnifiedProfileCard />
+                    </div>
+
+                    <div className="bg-[var(--color-bg)] border-2 border-[var(--color-text)] p-6 shadow-brutal">
+                        <div className="flex items-center justify-between mb-6 border-b-2 border-[var(--color-text)] pb-2">
+                            <h3 className="font-syne font-bold uppercase tracking-widest text-[var(--color-text)]">Network Links</h3>
+                            <UserPlus size={20} className="text-[var(--color-accent-purple)]" />
+                        </div>
+                        <div className="flex flex-col gap-4">
+                            {[
+                                { id: 'alex-thorne', name: "Alex Thorne", role: "Startup Founder", avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=400&auto=format&fit=crop" },
+                                { id: 'priya-patel', name: "Priya Patel", role: "Full Stack Dev", avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=400&auto=format&fit=crop" },
+                                { id: 'liam-oconnor', name: "Liam O'Connor", role: "Game DevOps", avatar: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?q=80&w=400&auto=format&fit=crop" }
+                            ].map((person, i) => (
+                                <NavLink key={i} to={`/profile/${person.id}`} className="flex items-center justify-between group cursor-pointer p-2 border-2 border-transparent hover:border-[var(--color-text)] hover:bg-[var(--color-accent-yellow)] transition-all">
+                                    <div className="flex items-center gap-3">
+                                        <div className="w-10 h-10 border-2 border-[var(--color-text)] bg-white overflow-hidden shrink-0">
+                                            <img src={person.avatar} className="w-full h-full object-cover grayscale mix-blend-multiply" alt={person.name} />
+                                        </div>
+                                        <div>
+                                            <div className="font-syne font-bold text-sm uppercase tracking-tight text-[var(--color-text)] group-hover:text-[var(--color-text)]">{person.name}</div>
+                                            <div className="font-mono text-[10px] text-[var(--color-text)] opacity-70 uppercase tracking-wider">{person.role}</div>
+                                        </div>
+                                    </div>
+                                    <Plus size={16} className="text-[var(--color-text)] opacity-0 group-hover:opacity-100 transition-opacity" />
+                                </NavLink>
+                            ))}
+                        </div>
+                        <button className="w-full mt-6 py-3 font-syne font-bold uppercase tracking-widest text-[var(--color-text)] border-2 border-[var(--color-text)] hover:bg-[var(--color-accent-red)] hover:text-white transition-colors">Expand Network</button>
+                    </div>
+                </aside>
+
+                {/* Main Feed */}
+                <main className="flex flex-col gap-8">
+                    {/* Feed Tabs */}
+                    <div className="flex border-2 border-[var(--color-text)] bg-[var(--color-bg)] shadow-brutal-sm">
                         <button
                             onClick={() => setFeedType('for-you')}
                             className={cn(
-                                "flex-1 py-3 text-sm font-bold capitalize tracking-tight transition-all relative border-r border-[var(--color-surface)]",
-                                feedType === 'for-you' ? "bg-gray-50 text-[var(--color-text)]" : "bg-white text-gray-400 hover:text-[var(--color-text)] hover:bg-gray-50"
+                                "flex-1 py-4 font-syne font-bold uppercase tracking-widest transition-all border-r-2 border-[var(--color-text)]",
+                                feedType === 'for-you' ? "bg-[var(--color-accent-purple)] text-white" : "hover:bg-[var(--color-surface)] text-[var(--color-text)]"
                             )}>
                             For you
                         </button>
                         <button
                             onClick={() => setFeedType('following')}
                             className={cn(
-                                "flex-1 py-3 text-sm font-bold capitalize tracking-tight transition-all relative",
-                                feedType === 'following' ? "bg-gray-50 text-[var(--color-text)]" : "bg-white text-gray-400 hover:text-[var(--color-text)] hover:bg-gray-50"
+                                "flex-1 py-4 font-syne font-bold uppercase tracking-widest transition-all",
+                                feedType === 'following' ? "bg-[var(--color-accent-purple)] text-white" : "hover:bg-[var(--color-surface)] text-[var(--color-text)]"
                             )}>
                             Following
                         </button>
                     </div>
-                </div>
 
-                {/* Create Post Interface */}
-                <div className="bg-white border border-[var(--color-surface)] p-4 flex flex-col gap-4 shadow-sm rounded-none">
-                    <div className="flex gap-4">
-                        <Avatar className="h-10 w-10 border border-gray-100 rounded-none shrink-0 cursor-pointer hover:opacity-80 transition-opacity">
-                            <AvatarImage src={userData?.photoURL || currentUser?.photoURL || "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=100&auto=format&fit=crop"} />
-                            <AvatarFallback>{(userData?.displayName || currentUser?.displayName || 'U').charAt(0).toUpperCase()}</AvatarFallback>
-                        </Avatar>
-                        <Dialog open={isPostDialogOpen} onOpenChange={setIsPostDialogOpen}>
-                            <DialogTrigger asChild>
-                                <input
-                                    type="text"
-                                    placeholder="Start a post..."
-                                    className="flex-1 bg-gray-50 border border-gray-100 hover:border-gray-200 hover:bg-white px-3 py-1.5 text-xs text-[var(--color-text)] transition-all cursor-pointer outline-none font-medium rounded-none"
-                                    readOnly
-                                />
-                            </DialogTrigger>
-                            <DialogContent className="p-0 border-none bg-transparent shadow-none max-w-2xl">
-                                <DialogTitle className="sr-only">Create New Post</DialogTitle>
-                                <DialogDescription className="sr-only">Share your progress with the community.</DialogDescription>
-                                <CreatePost initialExpanded={true} onPost={handleCreatePost} />
-                            </DialogContent>
-                        </Dialog>
-                        <div className="flex gap-1">
-                            <button onClick={() => setIsPostDialogOpen(true)} className="p-2 text-gray-400 hover:text-[var(--color-accent)] hover:bg-gray-50 transition-all group rounded-none" title="Upload Media">
-                                <ImageIcon size={20} strokeWidth={1.5} className="group-hover:scale-110 transition-transform" />
-                            </button>
-                            <button className="p-2 text-gray-400 hover:text-[var(--color-accent)] hover:bg-gray-50 transition-all group rounded-none" title="Add Link">
-                                <Link size={20} strokeWidth={1.5} className="group-hover:scale-110 transition-transform" />
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                {/* Post Feed */}
-                <div className="flex flex-col gap-2">
-                    <div className="flex flex-col md:flex-row items-end justify-between px-1 mb-2 gap-4 border-b border-[var(--color-surface)] pb-2">
-                        <div className="flex items-center gap-3 text-[var(--color-text)]">
-                            <Activity size={24} className="text-[var(--color-accent)]" />
-                            <h2 className="text-xl font-bold capitalize tracking-wider leading-none">Activity log</h2>
-                        </div>
-                        <div className="flex items-center p-0.5 bg-white border border-[var(--color-surface)] shadow-sm rounded-none">
-                            {['new', 'hot', 'top'].map((sort) => (
-                                <button
-                                    key={sort}
-                                    onClick={() => setActiveSort(sort)}
-                                    className={cn(
-                                        "px-4 py-1.5 text-xs font-bold capitalize tracking-wider transition-all rounded-none",
-                                        activeSort === sort
-                                            ? "bg-[var(--color-text)] text-white"
-                                            : "text-gray-400 hover:text-[var(--color-text)] hover:bg-gray-100"
-                                    )}>
-                                    {sort === 'new' ? 'Recent' : sort}
+                    {/* Create Post Interface */}
+                    <div className="bg-[var(--color-bg)] border-2 border-[var(--color-text)] p-4 flex flex-col gap-4 shadow-brutal">
+                        <div className="flex gap-4">
+                            <div className="w-12 h-12 border-2 border-[var(--color-text)] bg-[var(--color-accent-yellow)] shrink-0 overflow-hidden cursor-pointer">
+                                {userData?.photoURL ? (
+                                    <img src={userData.photoURL} className="w-full h-full object-cover grayscale mix-blend-multiply" alt="You" />
+                                ) : (
+                                    <div className="w-full h-full flex items-center justify-center font-syne font-bold text-xl">
+                                        {(userData?.displayName || currentUser?.displayName || 'U').charAt(0).toUpperCase()}
+                                    </div>
+                                )}
+                            </div>
+                            <Dialog open={isPostDialogOpen} onOpenChange={setIsPostDialogOpen}>
+                                <DialogTrigger asChild>
+                                    <input
+                                        type="text"
+                                        placeholder="Transmit to network..."
+                                        className="flex-1 bg-white border-2 border-[var(--color-text)] px-4 py-3 font-outfit text-lg text-[var(--color-text)] placeholder:text-gray-400 focus:outline-none focus:ring-0 cursor-pointer shadow-[2px_2px_0px_0px_rgba(25,25,25,1)]"
+                                        readOnly
+                                    />
+                                </DialogTrigger>
+                            </Dialog>
+                            <div className="flex gap-2">
+                                <button onClick={() => setIsPostDialogOpen(true)} className="p-3 border-2 border-[var(--color-text)] bg-white hover:bg-[var(--color-accent-yellow)] hover:-translate-y-1 transition-all shadow-[2px_2px_0px_0px_rgba(25,25,25,1)]" title="Upload Media">
+                                    <ImageIcon size={20} strokeWidth={2} />
                                 </button>
-                            ))}
+                            </div>
                         </div>
                     </div>
 
                     {/* Feed Content */}
-                    <div className="flex flex-col gap-2">
-                        {(feedType === 'for-you' ? sortedPosts : []).map((post) => (
-                            <PostCard key={post.id} post={post} />
-                        ))}
-
-                    </div>
-                </div>
-            </main>
-
-            {/* Left Sidebar - Recommendations & Trending (2.5/12 approx) */}
-            <aside className="hidden lg:flex flex-col gap-6 sticky top-2 h-[calc(100vh-2rem)] overflow-y-auto pr-2 no-scrollbar pb-10">
-                {/* Recommended Projects */}
-                <div className="bg-white border border-[var(--color-surface)] p-6 shadow-sm rounded-none">
-                    <div className="flex items-center justify-between mb-6">
-                        <h3 className="text-xs font-bold capitalize tracking-wider text-gray-400">Recommended projects</h3>
-                        <Rocket size={16} className="text-[var(--color-accent)]" />
-                    </div>
-                    <div className="space-y-4">
-                        {[
-                            { id: 'sarah-jenkins', title: "Quantum State Sync", creator: "Sarah Jenkins", type: "Infrastructure" },
-                            { id: 'nina-vo', title: "Bespoke Animations", creator: "Nina Vo", type: "UI/UX" },
-                            { id: 'dr-connor', title: "Mesh Protocols", creator: "Dr. Connor", type: "Core Architecture" }
-                        ].map((project, i) => (
-                            <NavLink key={i} to={`/profile/${project.id}`} className="group cursor-pointer block">
-                                <div className="flex justify-between items-start mb-1">
-                                    <h4 className="text-sm font-bold capitalize tracking-tight group-hover:text-[var(--color-accent)] transition-colors">{project.title}</h4>
-                                    <ArrowUpRight size={14} className="text-gray-300 group-hover:text-[var(--color-accent)] transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-                                </div>
-                                <div className="flex items-center gap-2 text-[10px] font-mono text-gray-400 capitalize tracking-wider">
-                                    <span>{project.creator}</span>
-                                    <span className="w-1 h-px bg-gray-200"></span>
-                                    <span>{project.type}</span>
-                                </div>
-                            </NavLink>
-                        ))}
-                    </div>
-                    <button className="w-full mt-6 py-2 text-xs font-bold capitalize tracking-wider text-gray-400 hover:text-[var(--color-text)] hover:bg-gray-50 transition-colors border border-gray-100 rounded-none">Browse all projects</button>
-                </div>
-
-                {/* Trending */}
-                <div className="bg-white border border-[var(--color-surface)] p-6 shadow-sm rounded-none text-[var(--color-text)]">
-                    <div className="flex items-center justify-between mb-6">
-                        <h3 className="text-xs font-bold capitalize tracking-wider text-gray-400">Trending now</h3>
-                        <TrendingUp size={16} className="text-[var(--color-accent)]" />
-                    </div>
-                    <div className="flex flex-col gap-5">
-                        {TRENDING_TOPICS.slice(0, 3).map((topic) => (
-                            <div key={topic.name} className="group cursor-pointer">
-                                <div className="text-[10px] font-mono text-gray-400 capitalize tracking-wider mb-1 group-hover:text-[var(--color-accent)] transition-colors">Trending in Architecture</div>
-                                <div className="text-sm font-bold capitalize tracking-tight text-[var(--color-text)] mb-1">#{topic.name.replace(/\s+/g, '')}</div>
-                                <div className="text-xs text-gray-400 font-medium capitalize tracking-normal">{topic.count} posts</div>
+                    <div className="flex flex-col gap-6">
+                        <div className="flex flex-col md:flex-row items-center justify-between border-b-2 border-[var(--color-text)] pb-4">
+                            <div className="flex items-center gap-3">
+                                <Activity size={28} className="text-[var(--color-accent-red)]" />
+                                <h2 className="font-syne font-bold text-2xl uppercase tracking-widest text-[var(--color-text)]">Live Feed</h2>
                             </div>
-                        ))}
-                    </div>
-                    <button className="w-full mt-6 py-2 text-xs font-bold capitalize tracking-wider text-[var(--color-accent)] hover:bg-[var(--color-accent)]/5 transition-colors border border-[var(--color-accent)]/20 rounded-none">Show more</button>
-                </div>
+                            <div className="flex bg-[var(--color-surface)] border-2 border-[var(--color-text)] mt-4 md:mt-0 shadow-brutal-sm">
+                                {['new', 'hot', 'top'].map((sort) => (
+                                    <button
+                                        key={sort}
+                                        onClick={() => setActiveSort(sort)}
+                                        className={cn(
+                                            "px-4 py-2 font-syne font-bold text-sm uppercase tracking-widest transition-all",
+                                            activeSort === sort
+                                                ? "bg-[var(--color-text)] text-white"
+                                                : "text-[var(--color-text)] hover:bg-[var(--color-accent-yellow)]"
+                                        )}>
+                                        {sort === 'new' ? 'Recent' : sort}
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
 
-                {/* Recommended Communities */}
-                <div className="bg-white border border-[var(--color-surface)] p-6 shadow-sm rounded-none text-[var(--color-text)]">
-                    <div className="flex items-center justify-between mb-6">
-                        <h3 className="text-xs font-bold capitalize tracking-wider text-gray-400">Recommended communities</h3>
-                        <Users size={16} className="text-[var(--color-accent)]" />
+                        <div className="flex flex-col gap-6">
+                            {(feedType === 'for-you' ? sortedPosts : []).map((post) => (
+                                <PostCard key={post.id} post={post} />
+                            ))}
+                        </div>
                     </div>
-                    <div className="flex flex-col gap-5">
-                        {COMMUNITIES.map((community) => (
-                            <div key={community.name} className="flex items-center justify-between group cursor-pointer">
-                                <div className="flex items-center gap-3">
-                                    <Avatar className="h-8 w-8 rounded-none border border-gray-100 shrink-0">
-                                        <AvatarImage src={community.logo} />
-                                        <AvatarFallback className="text-[10px] font-bold bg-black text-white rounded-none">{community.name[0]}</AvatarFallback>
-                                    </Avatar>
-                                    <div>
-                                        <div className="text-sm font-bold capitalize tracking-tight text-[var(--color-text)] group-hover:text-[var(--color-accent)] transition-colors">c/{community.name.toLowerCase().replace(/\s+/g, '')}</div>
-                                        <div className="text-xs text-gray-400 font-mono capitalize tracking-wider">{community.members} nodes</div>
+                </main>
+
+                {/* Right Sidebar - Trending & Communities */}
+                <aside className="hidden lg:flex flex-col gap-8">
+                    {/* Trending */}
+                    <div className="bg-[var(--color-bg)] border-2 border-[var(--color-text)] p-6 shadow-brutal">
+                        <div className="flex items-center justify-between mb-6 border-b-2 border-[var(--color-text)] pb-2">
+                            <h3 className="font-syne font-bold uppercase tracking-widest text-[var(--color-text)]">Trending</h3>
+                            <TrendingUp size={20} className="text-[var(--color-accent-orange)]" />
+                        </div>
+                        <div className="flex flex-col gap-4">
+                            {TRENDING_TOPICS.slice(0, 3).map((topic) => (
+                                <div key={topic.name} className="group cursor-pointer p-2 border-2 border-transparent hover:border-[var(--color-text)] hover:bg-white transition-all">
+                                    <div className="font-mono text-[10px] text-[var(--color-text)] opacity-70 uppercase tracking-wider mb-1">Architecture</div>
+                                    <div className="font-syne font-bold uppercase tracking-tight text-[var(--color-text)] mb-1 group-hover:text-[var(--color-accent-orange)] transition-colors">#{topic.name.replace(/\s+/g, '')}</div>
+                                    <div className="font-outfit text-xs font-medium">{topic.count}</div>
+                                </div>
+                            ))}
+                        </div>
+                        <button className="w-full mt-6 py-3 font-syne font-bold uppercase tracking-widest text-[var(--color-text)] border-2 border-[var(--color-text)] hover:bg-[var(--color-accent-orange)] hover:text-white transition-colors">View All Metrics</button>
+                    </div>
+
+                    {/* Recommended Communities */}
+                    <div className="bg-[var(--color-bg)] border-2 border-[var(--color-text)] p-6 shadow-brutal">
+                        <div className="flex items-center justify-between mb-6 border-b-2 border-[var(--color-text)] pb-2">
+                            <h3 className="font-syne font-bold uppercase tracking-widest text-[var(--color-text)]">Alliances</h3>
+                            <Users size={20} className="text-[var(--color-accent-green)]" />
+                        </div>
+                        <div className="flex flex-col gap-4">
+                            {COMMUNITIES.map((community) => (
+                                <div key={community.name} className="flex items-center justify-between group cursor-pointer p-2 border-2 border-transparent hover:border-[var(--color-text)] hover:bg-white transition-all">
+                                    <div className="flex items-center gap-3">
+                                        <div className="w-10 h-10 border-2 border-[var(--color-text)] bg-[var(--color-surface)] shrink-0 overflow-hidden">
+                                            <img src={community.logo} className="w-full h-full object-cover grayscale mix-blend-multiply" alt={community.name} />
+                                        </div>
+                                        <div>
+                                            <div className="font-syne font-bold uppercase tracking-tight text-sm text-[var(--color-text)] group-hover:text-[var(--color-accent-green)] transition-colors">/{community.name.toLowerCase().replace(/\s+/g, '')}</div>
+                                            <div className="font-mono text-[10px] text-[var(--color-text)] opacity-70 uppercase tracking-wider">{community.members} nodes</div>
+                                        </div>
                                     </div>
+                                    <Plus size={16} className="text-[var(--color-text)] opacity-0 group-hover:opacity-100 transition-opacity" />
                                 </div>
-                                <Plus size={14} className="text-gray-300 group-hover:text-[var(--color-accent)] transition-colors" />
-                            </div>
-                        ))}
+                            ))}
+                        </div>
+                        <button className="w-full mt-6 py-3 font-syne font-bold uppercase tracking-widest text-[var(--color-text)] border-2 border-[var(--color-text)] hover:bg-[var(--color-accent-green)] hover:text-white transition-colors">Browse Directory</button>
                     </div>
-                    <button className="w-full mt-6 py-2 text-xs font-bold capitalize tracking-wider text-gray-400 hover:text-[var(--color-text)] hover:bg-gray-50 transition-colors border border-gray-100 rounded-none">Browse all alliances</button>
-                </div>
-
-            </aside>
-
+                </aside>
+            </div>
         </div>
     );
 }
