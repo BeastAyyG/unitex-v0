@@ -18,16 +18,29 @@ const FEEDS = [
 // Initialize Firebase Admin
 let db = null;
 try {
-    const serviceAccountPath = path.resolve(__dirname, '../../service-account.json');
-    
     let sa = null;
-    if (fs.existsSync(serviceAccountPath)) {
-        sa = JSON.parse(fs.readFileSync(serviceAccountPath, 'utf8'));
-    } else {
-        console.warn(`[Discovery] Service account missing at ${serviceAccountPath}. Searching root...`);
-        const rootPath = path.resolve(__dirname, '../../../service-account.json');
-        if (fs.existsSync(rootPath)) {
-            sa = JSON.parse(fs.readFileSync(rootPath, 'utf8'));
+
+    // First try loading from environment variable (ideal for Vercel/production)
+    if (process.env.FIREBASE_SERVICE_ACCOUNT) {
+        try {
+            sa = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
+            if (process.env.DEBUG) console.log('[Discovery] Loaded service account from environment variable.');
+        } catch (jsonErr) {
+            console.error('❌ [Discovery] Failed to parse FIREBASE_SERVICE_ACCOUNT env variable:', jsonErr.message);
+        }
+    }
+
+    // Fallback to local file paths
+    if (!sa) {
+        const serviceAccountPath = path.resolve(__dirname, '../../service-account.json');
+        if (fs.existsSync(serviceAccountPath)) {
+            sa = JSON.parse(fs.readFileSync(serviceAccountPath, 'utf8'));
+        } else {
+            console.warn(`[Discovery] Service account missing at ${serviceAccountPath}. Searching root...`);
+            const rootPath = path.resolve(__dirname, '../../../service-account.json');
+            if (fs.existsSync(rootPath)) {
+                sa = JSON.parse(fs.readFileSync(rootPath, 'utf8'));
+            }
         }
     }
 
@@ -40,7 +53,7 @@ try {
         db = admin.firestore();
         if (!db) console.error('[Discovery] admin.firestore() returned null');
     } else {
-        console.warn('[Discovery] No service account found. Discover feed running in mock mode.');
+        console.warn('[Discovery] No service account credentials found. Discover feed running in mock mode.');
     }
 } catch (error) {
     console.error('❌ [Discovery] Initialization error:', error.message);

@@ -67,7 +67,7 @@ Edit `/client/src/` files that make API calls:
 const API_URL = 'http://localhost:5000';
 
 // After
-const API_URL = process.env.VITE_API_URL || 'https://your-server-mvp.vercel.app';
+const API_URL = import.meta.env.VITE_API_URL || 'https://your-server-mvp.vercel.app';
 ```
 
 Add `.env.local` to client:
