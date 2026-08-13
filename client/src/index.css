@@ -192,6 +192,22 @@ a, button, select, input, textarea, [role="button"] {
     transform-origin: left bottom;
 }
 
+@media (prefers-reduced-motion: no-preference) {
+    .brand-wordmark span {
+        transition: transform .28s cubic-bezier(.2, .9, .25, 1.35), text-shadow .28s ease;
+    }
+
+    .brand-lockup:hover .brand-wordmark span,
+    .brand-lockup:focus-within .brand-wordmark span {
+        text-shadow: 3px 3px 0 var(--color-accent-yellow);
+        transform: translate(5px, -7px) rotate(-14deg) scale(1.08);
+    }
+
+    .brand-lockup:active .brand-wordmark span {
+        transform: translate(3px, -2px) rotate(-4deg) scale(.96);
+    }
+}
+
 .landing-page { width: 100%; overflow: hidden; }
 .landing-hero { min-height: 590px; padding: 76px clamp(24px, 7vw, 112px); background: var(--color-text); color: white; display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(260px, .85fr); gap: 8vw; align-items: center; position: relative; }
 .landing-hero-grid { position: absolute; inset: 0; opacity: .14; background-image: linear-gradient(rgba(255,255,255,.45) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.45) 1px, transparent 1px); background-size: 48px 48px; mask-image: linear-gradient(90deg, black, transparent 80%); }
