@@ -18,8 +18,9 @@ import path from 'path';
 import fs from 'fs';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import { fileTypeFromBuffer } from 'file-type';
 
-import { initFirebase, saveMediaMetadata, updateBlockchainProof } from './services/firebase.js';
+import { initFirebase, saveMediaMetadata, updateBlockchainProof, verifyIdToken, getUsercode } from './services/firebase.js';
 import { storeMediaRecord } from './services/blockchain.js';
 
 dotenv.config();
@@ -57,8 +58,47 @@ function getMediaType(mimeType) {
     return null;
 }
 
-app.use(cors());
-app.use(express.json());
+const allowedOrigins = (process.env.CORS_ALLOWED_ORIGINS || '')
+    .split(',')
+    .map((origin) => origin.trim())
+    .filter(Boolean);
+
+function requireFirebaseAuth(req, res, next) {
+    const header = req.get('authorization');
+    const token = header?.startsWith('Bearer ') ? header.slice(7).trim() : '';
+    if (!token) return res.status(401).json({ error: 'A Firebase ID token is required.' });
+    verifyIdToken(token)
+        .then((user) => {
+            req.user = user;
+            next();
+        })
+        .catch((error) => {
+            const status = error.message === 'Firebase Admin is not configured.' ? 503 : 401;
+            res.status(status).json({ error: status === 503 ? error.message : 'The Firebase ID token is invalid or expired.' });
+        });
+}
+
+app.disable('x-powered-by');
+app.use((req, res, next) => {
+    res.set({
+        'X-Content-Type-Options': 'nosniff',
+        'X-Frame-Options': 'DENY',
+        'Referrer-Policy': 'strict-origin-when-cross-origin',
+        'Permissions-Policy': 'camera=(), microphone=(), geolocation=()',
+    });
+    next();
+});
+app.use(cors({
+    origin(origin, callback) {
+        if (!origin) return callback(null, true);
+        if (allowedOrigins.includes(origin)) return callback(null, true);
+        return callback(new Error('Origin is not allowed by CORS policy.'));
+    },
+    methods: ['GET', 'POST'],
+    allowedHeaders: ['Authorization', 'Content-Type'],
+    maxAge: 86400,
+}));
+app.use(express.json({ limit: '64kb' }));
 
 // Ensure upload directory exists (backed by Docker volume)
 const UPLOAD_DIR = '/app/uploads';
@@ -96,22 +136,27 @@ app.get('/health', (req, res) => {
 });
 
 // ─── ROUTE: Upload media ──────────────────────────────────────────────────────
-app.post('/upload', upload.single('file'), async (req, res) => {
+app.post('/upload', requireFirebaseAuth, upload.single('file'), async (req, res) => {
     try {
-        const { usercode, uid } = req.body;
-
-        if (!usercode || !uid) {
-            return res.status(400).json({ error: 'usercode and uid are required' });
-        }
-
         if (!req.file) {
             return res.status(400).json({ error: 'No file provided' });
         }
 
-        const mediaType = getMediaType(req.file.mimetype);
+        const detectedFile = await fileTypeFromBuffer(req.file.buffer);
+        if (!detectedFile || !ALLOWED_MIME_TYPES.has(detectedFile.mime)) {
+            return res.status(415).json({ error: 'The uploaded file content is not a supported media format.' });
+        }
+
+        const mediaType = getMediaType(detectedFile.mime);
+        if (!mediaType || mediaType !== getMediaType(req.file.mimetype)) {
+            return res.status(415).json({ error: 'The upload MIME type does not match the file content.' });
+        }
+
+        const uid = req.user.uid;
+        const usercode = await getUsercode(uid);
         const isVideo = mediaType === 'video';
         const timestamp = Date.now();
-        const ext = mediaType === 'image' ? '.webp' : (MIME_EXTENSIONS[req.file.mimetype] || '.bin');
+        const ext = mediaType === 'image' ? '.webp' : (MIME_EXTENSIONS[detectedFile.mime] || '.bin');
         const safeUsercode = String(usercode).replace(/[^a-z0-9_-]/gi, '_').slice(0, 64) || 'user';
         const filename = `${safeUsercode}_${timestamp}${ext}`;
         const filePath = path.join(UPLOAD_DIR, filename);
@@ -146,7 +191,7 @@ app.post('/upload', upload.single('file'), async (req, res) => {
             mediaURL,
             fileHash,
             fileSizeBytes,
-            mimeType: req.file.mimetype,
+            mimeType: detectedFile.mime,
             mediaType,
             isVideo,
             createdAt: new Date().toISOString(),

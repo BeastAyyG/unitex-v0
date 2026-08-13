@@ -25,8 +25,7 @@ import {
     getIncomingRequests as apiGetRequests,
     acceptConnectionRequest as apiAcceptRequest,
     rejectConnectionRequest as apiRejectRequest,
-    getConnectionStatus as apiGetStatus,
-    removeConnection as apiRemoveConnection
+    getConnectionStatus as apiGetStatus
 } from '@/lib/connections';
 
 // Shared "Character" Data Structure
@@ -340,7 +339,7 @@ function Networking() {
             // 4. Fetch status for each discovery user to show correct button
             const updatedDiscovery = await Promise.all(discovery.map(async (p) => {
                 try {
-                    const status = await apiGetStatus(currentUser.uid, p.id);
+                    const status = await apiGetStatus(p.id);
                     return { ...p, connectionStatus: status };
                 } catch {
                     return { ...p, connectionStatus: 'none' as const };
@@ -395,7 +394,7 @@ function Networking() {
         ));
         
         try {
-            await apiSendRequest(currentUser.uid, profile.id);
+            await apiSendRequest(profile.id);
             toast.success("Connection request sent", { description: `To ${profile.name}` });
         } catch (err: any) {
             toast.error("Failed to send request", { description: err.message });
@@ -413,7 +412,7 @@ function Networking() {
         setRequestsList(prev => prev.filter(p => p.id !== profile.id));
         
         try {
-            await apiAcceptRequest(Number(profile.requestId), profile.id, currentUser.uid);
+            await apiAcceptRequest(Number(profile.requestId));
             toast.success("Connection accepted");
             // Add to network list
             setNetworkList(prev => [...prev, { ...profile, connectionStatus: 'connected' }]);

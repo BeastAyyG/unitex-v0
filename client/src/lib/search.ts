@@ -76,7 +76,7 @@ export async function performGlobalSearch(term: string): Promise<SearchResult[]>
             const item = res.item as any;
             let title = '';
             let subtitle = '';
-            let type: 'user' | 'post' | 'topic' = item.type;
+            const type: 'user' | 'post' | 'topic' = item.type;
 
             if (type === 'user') {
                 title = item.displayName || 'Anonymous';

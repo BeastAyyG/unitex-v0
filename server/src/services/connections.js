@@ -79,17 +79,20 @@ function localGetIncomingRequests(userId) {
         .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
 }
 
-function localAcceptRequest(requestId, senderId, receiverId) {
+function localAcceptRequest(requestId, receiverId) {
     const store = readLocalStore();
     const req = store.requests.find(r => Number(r.id) === Number(requestId));
     if (!req) {
         throw new Error('Request not found');
     }
+    if (req.receiver_id !== receiverId || req.status !== 'pending') {
+        throw new Error('Only the recipient can accept a pending request');
+    }
 
     req.status = 'accepted';
     req.updated_at = new Date().toISOString();
 
-    const [u1, u2] = normalizePair(senderId, receiverId);
+    const [u1, u2] = normalizePair(req.sender_id, req.receiver_id);
     if (!store.connections.some(c => c.user1_id === u1 && c.user2_id === u2)) {
         store.connections.push({
             user1_id: u1,
@@ -102,11 +105,14 @@ function localAcceptRequest(requestId, senderId, receiverId) {
     return { success: true };
 }
 
-function localRejectRequest(requestId) {
+function localRejectRequest(requestId, receiverId) {
     const store = readLocalStore();
     const req = store.requests.find(r => Number(r.id) === Number(requestId));
     if (!req) {
         throw new Error('Request not found');
+    }
+    if (req.receiver_id !== receiverId || req.status !== 'pending') {
+        throw new Error('Only the recipient can reject a pending request');
     }
     req.status = 'rejected';
     req.updated_at = new Date().toISOString();
@@ -203,20 +209,29 @@ async function getIncomingRequests(userId) {
 /**
  * Accept a connection request
  */
-async function acceptRequest(requestId, senderId, receiverId) {
+async function acceptRequest(requestId, receiverId) {
     if (dbAvailable) {
         const client = await pool.connect();
         try {
             await client.query('BEGIN');
 
+            const request = await client.query(
+                'SELECT sender_id, receiver_id, status FROM connection_requests WHERE id = $1 FOR UPDATE',
+                [requestId]
+            );
+            const pendingRequest = request.rows[0];
+            if (!pendingRequest || pendingRequest.receiver_id !== receiverId || pendingRequest.status !== 'pending') {
+                throw new Error('Only the recipient can accept a pending request');
+            }
+
             // Update request status
             await client.query(
-                'UPDATE connection_requests SET status = \'accepted\' WHERE id = $1',
-                [requestId]
+                'UPDATE connection_requests SET status = \'accepted\' WHERE id = $1 AND receiver_id = $2 AND status = \'pending\'',
+                [requestId, receiverId]
             );
 
             // Create connection (bidirectional entry not needed since we check both ways, but user1 < user2 is a good pattern)
-            const [u1, u2] = senderId < receiverId ? [senderId, receiverId] : [receiverId, senderId];
+            const [u1, u2] = normalizePair(pendingRequest.sender_id, pendingRequest.receiver_id);
             await client.query(
                 'INSERT INTO connections (user1_id, user2_id) VALUES ($1, $2) ON CONFLICT DO NOTHING',
                 [u1, u2]
@@ -226,32 +241,35 @@ async function acceptRequest(requestId, senderId, receiverId) {
             return { success: true };
         } catch (err) {
             await client.query('ROLLBACK');
+            if (err.message === 'Only the recipient can accept a pending request') throw err;
             dbAvailable = false;
         } finally {
             client.release();
         }
     }
 
-    return localAcceptRequest(requestId, senderId, receiverId);
+    return localAcceptRequest(requestId, receiverId);
 }
 
 /**
  * Reject a connection request
  */
-async function rejectRequest(requestId) {
+async function rejectRequest(requestId, receiverId) {
     if (dbAvailable) {
         try {
             const result = await pool.query(
-                'UPDATE connection_requests SET status = \'rejected\' WHERE id = $1 RETURNING *',
-                [requestId]
+                'UPDATE connection_requests SET status = \'rejected\' WHERE id = $1 AND receiver_id = $2 AND status = \'pending\' RETURNING *',
+                [requestId, receiverId]
             );
+            if (!result.rows[0]) throw new Error('Only the recipient can reject a pending request');
             return result.rows[0];
         } catch (err) {
+            if (err.message === 'Only the recipient can reject a pending request') throw err;
             dbAvailable = false;
         }
     }
 
-    return localRejectRequest(requestId);
+    return localRejectRequest(requestId, receiverId);
 }
 
 /**

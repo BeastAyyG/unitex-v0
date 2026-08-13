@@ -14,8 +14,7 @@
 
 import { useState, useCallback } from 'react';
 import { useAuth } from '@/context/useAuth';
-import { getDoc, doc } from 'firebase/firestore';
-import { db } from '@/lib/firebase';
+import { auth } from '@/lib/firebase';
 import { validateMediaFile, type MediaType } from '@/lib/media';
 
 const MEDIA_SERVICE_URL = import.meta.env.VITE_MEDIA_SERVICE_URL?.trim().replace(/\/+$/, '');
@@ -60,21 +59,17 @@ export function useMediaUpload() {
             }
 
             // ── Get usercode from Firestore ──────────────────────────────────
-            const userSnap = await getDoc(doc(db, 'users', currentUser.uid));
-            const usercode = userSnap.data()?.usercode;
-
-            if (!usercode) throw new Error('Usercode not found. Please complete profile setup.');
-
             // ── Build form data ──────────────────────────────────────────────
             const formData = new FormData();
             formData.append('file', file);
-            formData.append('uid', currentUser.uid);
-            formData.append('usercode', usercode);
+            const token = await auth.currentUser?.getIdToken();
+            if (!token) throw new Error('Your session has expired. Please sign in again.');
 
             // ── Upload with XHR for progress tracking ────────────────────────
             const response = await new Promise<UploadResult>((resolve, reject) => {
                 const xhr = new XMLHttpRequest();
                 xhr.open('POST', `${MEDIA_SERVICE_URL}/upload`);
+                xhr.setRequestHeader('Authorization', `Bearer ${token}`);
 
                 xhr.upload.onprogress = (e) => {
                     if (e.lengthComputable) {

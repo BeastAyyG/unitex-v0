@@ -263,7 +263,7 @@ export async function awardExp(uid: string, amount: number, reason: string = '')
         await addDoc(collection(db, 'activity_log'), {
             uid, action: reason, exp: amount, createdAt: serverTimestamp()
         });
-    } catch {}
+    } catch { /* Firestore unavailable or request denied. */ }
 }
 
 // ─── COMMUNITIES ──────────────────────────────────────────────────────────────
@@ -353,7 +353,7 @@ export function subscribeToNotifications(uid: string, callback: (notifs: Documen
 }
 
 export async function markNotificationAsRead(notifId: string) {
-    try { await updateDoc(doc(db, 'notifications', notifId), { read: true }); } catch {}
+    try { await updateDoc(doc(db, 'notifications', notifId), { read: true }); } catch { /* Firestore unavailable or request denied. */ }
 }
 
 export async function markAllNotificationsAsRead(uid: string) {
@@ -363,7 +363,7 @@ export async function markAllNotificationsAsRead(uid: string) {
         const batch = writeBatch(db);
         snap.docs.forEach(d => batch.update(d.ref, { read: true }));
         await batch.commit();
-    } catch {}
+    } catch { /* Firestore unavailable or request denied. */ }
 }
 
 export async function createNotification(data: {
@@ -380,7 +380,7 @@ export async function createNotification(data: {
             read: false,
             createdAt: serverTimestamp()
         });
-    } catch {}
+    } catch { /* Firestore unavailable or request denied. */ }
 }
 
 // ─── VAULT ────────────────────────────────────────────────────────────────────
@@ -399,7 +399,7 @@ export async function addVaultItem(uid: string, data: DocumentData) {
 }
 
 export async function deleteVaultItem(itemId: string) {
-    try { await deleteDoc(doc(db, 'vault', itemId)); } catch {}
+    try { await deleteDoc(doc(db, 'vault', itemId)); } catch { /* Firestore unavailable or request denied. */ }
 }
 
 // ─── EVENTS ───────────────────────────────────────────────────────────────────
@@ -415,7 +415,7 @@ export async function rsvpEvent(eventId: string, uid: string) {
     try {
         await setDoc(doc(db, 'events', eventId, 'rsvps', uid), { rsvpAt: serverTimestamp() });
         await updateDoc(doc(db, 'events', eventId), { attendees: increment(1) });
-    } catch {}
+    } catch { /* Firestore unavailable or request denied. */ }
 }
 
 export async function createEvent(data: any) {
@@ -449,7 +449,7 @@ export async function enrollCourse(courseId: string, uid: string) {
     try {
         await setDoc(doc(db, 'users', uid, 'enrolled_courses', courseId), { enrolledAt: serverTimestamp(), progress: 0 });
         await updateDoc(doc(db, 'courses', courseId), { students: increment(1) });
-    } catch {}
+    } catch { /* Firestore unavailable or request denied. */ }
 }
 
 export function subscribeToEnrolledCourses(uid: string, callback: (courses: DocumentData[]) => void): Unsubscribe {
@@ -467,7 +467,7 @@ export async function toggleResourceSave(resourceId: string, uid: string, isSave
         } else {
             await setDoc(ref, { savedAt: serverTimestamp() });
         }
-    } catch {}
+    } catch { /* Firestore unavailable or request denied. */ }
 }
 
 export function subscribeToSavedResources(uid: string, callback: (savedIds: Set<string>) => void): Unsubscribe {
@@ -508,7 +508,7 @@ export async function sendConnectionRequest(fromUid: string, fromName: string, t
             content: `${fromName} wants to connect with you.`,
             actionUrl: '/networking', requestId: reqRef.id, read: false, createdAt: serverTimestamp()
         });
-    } catch {}
+    } catch { /* Firestore unavailable or request denied. */ }
 }
 
 export async function acceptConnectionRequest(requestId: string, fromUid: string, toUid: string, toName: string) {
@@ -533,11 +533,11 @@ export async function acceptConnectionRequest(requestId: string, fromUid: string
             content: `${toName} accepted your connection request.`,
             actionUrl: `/profile/${toUid}`, read: false, createdAt: serverTimestamp()
         });
-    } catch {}
+    } catch { /* Firestore unavailable or request denied. */ }
 }
 
 export async function rejectConnectionRequest(requestId: string) {
-    try { await updateDoc(doc(db, 'network_requests', requestId), { status: 'rejected', updatedAt: serverTimestamp() }); } catch {}
+    try { await updateDoc(doc(db, 'network_requests', requestId), { status: 'rejected', updatedAt: serverTimestamp() }); } catch { /* Firestore unavailable or request denied. */ }
 }
 
 export function subscribeToPendingRequests(uid: string, callback: (reqs: any[]) => void): Unsubscribe {

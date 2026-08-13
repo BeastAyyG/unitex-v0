@@ -9,6 +9,9 @@
     "media-service",
     "blockchain"
   ],
+  "overrides": {
+    "fast-xml-parser": "5.10.1"
+  },
   "scripts": {
     "dev": "concurrently -k -s first -n \"CLIENT,SERVER,MEDIA,CHAIN\" -c \"blue,green,magenta,yellow\" \"npm run dev -w client\" \"npm run dev -w server\" \"npm run dev -w media-service\" \"npm run node -w blockchain\"",
     "install-all": "npm install && npm install --prefix client && npm install --prefix server && npm install --prefix media-service && npm install --prefix blockchain"
