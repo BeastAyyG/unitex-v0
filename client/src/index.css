@@ -172,6 +172,8 @@ a, button, select, input, textarea, [role="button"] {
 }
 
 .brand-wordmark {
+    display: inline-flex;
+    align-items: baseline;
     font-family: 'Syne', sans-serif;
     font-size: 1.45rem;
     font-weight: 850;
@@ -179,7 +181,16 @@ a, button, select, input, textarea, [role="button"] {
     line-height: 1;
     text-transform: uppercase;
 }
-.brand-wordmark span { color: var(--color-accent-purple); }
+.brand-wordmark span {
+    display: inline-block;
+    margin-left: .02em;
+    color: var(--color-accent-purple);
+    font-size: 1.42em;
+    line-height: .6;
+    text-shadow: 2px 2px 0 var(--color-accent-yellow);
+    transform: translate(2px, -4px) rotate(-9deg);
+    transform-origin: left bottom;
+}
 
 .landing-page { width: 100%; overflow: hidden; }
 .landing-hero { min-height: 590px; padding: 76px clamp(24px, 7vw, 112px); background: var(--color-text); color: white; display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(260px, .85fr); gap: 8vw; align-items: center; position: relative; }
