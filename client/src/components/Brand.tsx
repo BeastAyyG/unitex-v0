@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { cn } from '@/lib/utils';
 
 type BrandMarkProps = {
@@ -30,10 +31,27 @@ type BrandLockupProps = BrandMarkProps & {
 };
 
 export function BrandLockup({ className, compact = false, size }: BrandLockupProps) {
+    const [jumpFrame, setJumpFrame] = useState(0);
+
+    useEffect(() => {
+        const frameDelays = [700, 150, 150, 180];
+        let frame = 0;
+        let timeoutId: number;
+
+        const advance = () => {
+            frame = (frame + 1) % frameDelays.length;
+            setJumpFrame(frame);
+            timeoutId = window.setTimeout(advance, frameDelays[frame]);
+        };
+
+        timeoutId = window.setTimeout(advance, frameDelays[0]);
+        return () => window.clearTimeout(timeoutId);
+    }, []);
+
     return (
         <span className={cn('brand-lockup', className)}>
             <BrandMark size={size ?? (compact ? 30 : 36)} />
-            <span className="brand-wordmark">Unite<span>X</span></span>
+            <span className={cn('brand-wordmark', `brand-wordmark--jump-${jumpFrame}`)}>Unite<span>X</span></span>
         </span>
     );
 }

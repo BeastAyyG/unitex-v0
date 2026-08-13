@@ -193,11 +193,12 @@ a, button, select, input, textarea, [role="button"] {
 }
 
 .brand-wordmark span {
-    animation: brand-x-jump 1.35s cubic-bezier(.2, .9, .25, 1) infinite;
-    animation-duration: 1.35s !important;
-    animation-iteration-count: infinite !important;
     transition: transform .28s cubic-bezier(.2, .9, .25, 1.35), text-shadow .28s ease;
 }
+
+.brand-wordmark--jump-1 span { transform: translate(3px, -13px) rotate(-14deg) scale(1.08); }
+.brand-wordmark--jump-2 span { transform: translate(2px, -1px) rotate(-5deg) scale(.94); }
+.brand-wordmark--jump-3 span { transform: translate(3px, -7px) rotate(-11deg) scale(1.03); }
 
 .brand-lockup:hover .brand-wordmark span,
 .brand-lockup:focus-within .brand-wordmark span {
@@ -211,18 +212,10 @@ a, button, select, input, textarea, [role="button"] {
     transform: translate(3px, -2px) rotate(-4deg) scale(.96);
 }
 
-@keyframes brand-x-jump {
-    0%, 100% { transform: translate(2px, -4px) rotate(-9deg); }
-    35% { transform: translate(3px, -13px) rotate(-14deg) scale(1.08); }
-    58% { transform: translate(2px, -1px) rotate(-5deg) scale(.94); }
-    76% { transform: translate(3px, -7px) rotate(-11deg) scale(1.03); }
-}
-
 @layer utilities {
     @media (prefers-reduced-motion: reduce) {
         .brand-wordmark span {
-            animation-duration: 1.35s !important;
-            animation-iteration-count: infinite !important;
+            transition-duration: .2s !important;
         }
     }
 }
