@@ -42,23 +42,23 @@ export function NotificationsList({ isSheet = false }: { isSheet?: boolean }) {
             )}
 
             {!isSheet && (
-                <header className="flex justify-between items-end mb-8 border-b border-[var(--color-surface)] pb-8">
+                <header className="flex flex-col items-start gap-4 mb-8 border-b border-[var(--color-surface)] pb-8 sm:flex-row sm:items-end sm:justify-between">
                     <div>
-                        <h1 className="text-6xl font-black tracking-tighter text-[var(--color-text)] uppercase leading-[0.8] mb-2">
+                        <h1 className="text-5xl sm:text-6xl font-black tracking-tighter text-[var(--color-text)] uppercase leading-[0.8] mb-2">
                             Inbox
                         </h1>
                         <p className="text-sm font-mono text-[var(--color-text)] opacity-60 uppercase tracking-widest pl-1">
                             System Notifications
                         </p>
                     </div>
-                    <div className="flex gap-2">
+                    <div className="flex w-full flex-wrap gap-2 sm:w-auto sm:flex-nowrap">
                         <button
                             onClick={handleMarkAllRead}
-                            className="px-4 py-2 border border-[var(--color-surface)] hover:border-[var(--color-text)] text-[10px] font-bold uppercase tracking-widest transition-colors flex items-center gap-2"
+                            className="flex-1 px-3 py-2 border border-[var(--color-surface)] hover:border-[var(--color-text)] text-[10px] font-bold uppercase tracking-widest transition-colors flex items-center justify-center gap-2 whitespace-nowrap sm:flex-none sm:px-4"
                         >
                             <Bell size={12} /> Mark all Read
                         </button>
-                        <button className="px-4 py-2 bg-[var(--color-text)] text-white hover:bg-[var(--color-accent)] text-[10px] font-bold uppercase tracking-widest transition-colors">
+                        <button className="flex-1 px-3 py-2 bg-[var(--color-text)] text-white hover:bg-[var(--color-accent)] text-[10px] font-bold uppercase tracking-widest transition-colors whitespace-nowrap sm:flex-none sm:px-4">
                             Settings
                         </button>
                     </div>
@@ -119,15 +119,15 @@ export function NotificationsList({ isSheet = false }: { isSheet?: boolean }) {
                                     </div>
 
                                     {/* Content */}
-                                    <div className="flex-1 pt-0.5">
-                                        <div className="flex justify-between items-start mb-1">
-                                            <span className="font-bold text-[10px] uppercase tracking-widest text-[var(--color-text)] group-hover:text-[var(--color-accent)] transition-colors">
+                                    <div className="min-w-0 flex-1 pt-0.5">
+                                        <div className="flex items-start justify-between gap-2 mb-1">
+                                            <span className="min-w-0 truncate font-bold text-[10px] uppercase tracking-widest text-[var(--color-text)] group-hover:text-[var(--color-accent)] transition-colors">
                                                 {notif.type}
                                             </span>
-                                            <span className="text-[9px] text-gray-400 font-mono mt-0.5 uppercase tracking-wider">{notif.time}</span>
+                                            <span className="shrink-0 whitespace-nowrap text-[9px] text-gray-400 font-mono mt-0.5 uppercase tracking-wider">{notif.time}</span>
                                         </div>
 
-                                        <p className="text-xs text-[var(--color-text)] font-medium leading-relaxed line-clamp-2">
+                                        <p className="break-words text-xs text-[var(--color-text)] font-medium leading-relaxed line-clamp-2">
                                             {notif.user && <span className="font-bold border-b border-transparent group-hover:border-[var(--color-text)] transition-colors mr-1">{notif.user}</span>}
                                             {notif.content}
                                         </p>
@@ -161,15 +161,15 @@ export function NotificationsList({ isSheet = false }: { isSheet?: boolean }) {
                                     </div>
 
                                     {/* Content */}
-                                    <div className="flex-1 pt-0.5">
-                                        <div className="flex justify-between items-start mb-1">
-                                            <span className="font-bold text-[10px] uppercase tracking-widest text-gray-500 group-hover:text-[var(--color-accent)] transition-colors">
+                                    <div className="min-w-0 flex-1 pt-0.5">
+                                        <div className="flex items-start justify-between gap-2 mb-1">
+                                            <span className="min-w-0 truncate font-bold text-[10px] uppercase tracking-widest text-gray-500 group-hover:text-[var(--color-accent)] transition-colors">
                                                 {notif.type}
                                             </span>
-                                            <span className="text-[9px] text-gray-400 font-mono mt-0.5 uppercase tracking-wider">{notif.time}</span>
+                                            <span className="shrink-0 whitespace-nowrap text-[9px] text-gray-400 font-mono mt-0.5 uppercase tracking-wider">{notif.time}</span>
                                         </div>
 
-                                        <p className="text-xs text-gray-500 font-medium leading-relaxed group-hover:text-[var(--color-text)] transition-colors line-clamp-2">
+                                        <p className="break-words text-xs text-gray-500 font-medium leading-relaxed group-hover:text-[var(--color-text)] transition-colors line-clamp-2">
                                             {notif.user && <span className="font-bold border-b border-transparent group-hover:border-[var(--color-text)] transition-colors mr-1">{notif.user}</span>}
                                             {notif.content}
                                         </p>

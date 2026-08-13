@@ -146,7 +146,7 @@ export function Header() {
                         ))}
 
                         {/* Extra Sub-nav items for Mobile */}
-                        <div className="grid grid-cols-4 gap-2 mt-2 pt-4 border-t-2 border-[var(--color-text)] border-dashed">
+                        <div className="grid grid-cols-3 gap-2 mt-2 pt-4 border-t-2 border-[var(--color-text)] border-dashed">
                             {iconNavs.map((item) => (
                                 <NavLink
                                     key={item.path}
@@ -160,8 +160,8 @@ export function Header() {
                                     <item.icon size={18} className="mb-1" />
                                     <span>{item.label}</span>
                                     {item.badge && item.badge > 0 ? (
-                                        <span className="absolute -top-1 -right-1 min-w-5 h-5 px-1 border-2 border-[var(--color-text)] bg-[var(--color-accent-red)] text-white text-[8px] font-bold flex items-center justify-center">
-                                            {item.badge}
+                                        <span className="absolute top-1 right-1 min-w-5 h-5 px-1 border-2 border-[var(--color-text)] bg-[var(--color-accent-red)] text-white text-[8px] font-bold flex items-center justify-center">
+                                            {item.badge > 9 ? '9+' : item.badge}
                                         </span>
                                     ) : null}
                                 </NavLink>
