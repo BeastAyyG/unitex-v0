@@ -9,6 +9,7 @@ import { toast } from 'sonner';
 import { Dialog, DialogContent, DialogTitle } from '../components/ui/dialog';
 import { Button } from '../components/ui/button';
 import { motion, AnimatePresence } from 'framer-motion';
+import { BrandLockup } from '@/components/Brand';
 
 const STEPS = [
     { id: 1, name: 'Identity', icon: Shield },
@@ -237,12 +238,7 @@ export const Onboarding = () => {
             <div className="flex-1 flex flex-col md:flex-row max-w-7xl mx-auto w-full z-10 p-6 md:p-12 gap-12">
                 {/* Left Progress Tracker */}
                 <div className="md:w-64 shrink-0 flex flex-col">
-                    <div className="flex items-center gap-3 mb-16">
-                        <div className="w-10 h-10 bg-[var(--color-accent)] flex items-center justify-center rounded-lg rotate-3">
-                            <Zap size={20} className="text-white fill-white" />
-                        </div>
-                        <span className="text-2xl font-black tracking-tighter uppercase italic text-[var(--color-text)]">UniteX</span>
-                    </div>
+                    <BrandLockup className="mb-16" size={40} />
 
                     <div className="space-y-6">
                         {STEPS.map((s) => {

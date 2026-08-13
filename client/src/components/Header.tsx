@@ -6,6 +6,7 @@ import { useAuth } from '@/context/useAuth';
 import { useNotifications } from '@/context/NotificationContext';
 import { Dialog, DialogContent, DialogTrigger, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import CreatePost from '@/components/CreatePost';
+import { BrandLockup } from '@/components/Brand';
 import { toast } from 'sonner';
 
 export function Header() {
@@ -35,8 +36,7 @@ export function Header() {
                 {/* Logo */}
                 <div className="flex-shrink-0 flex items-center">
                     <NavLink to="/" className="flex items-center gap-2 group">
-                        <span className="brand-mark" aria-hidden="true"><span /></span>
-                        <span className="brand-wordmark">Unite<span>X</span></span>
+                        <BrandLockup compact />
                     </NavLink>
                 </div>
 

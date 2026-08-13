@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { Zap, Mail, Phone, Lock, ChevronRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
+import { BrandLockup } from '@/components/Brand';
 
 export default function Login() {
     const { signInWithGoogle, signInWithEmail, signUpWithEmail, signInWithPhone, verifyOtp, signInAsGuest } = useAuth();
@@ -123,17 +124,7 @@ export default function Login() {
                 <div className="max-w-md w-full mx-auto space-y-8">
                     
                     {/* Logo */}
-                    <div className="flex items-center gap-3">
-                        {/* Architectural Logo SVG for UniteX */}
-                        <svg width="120" height="40" viewBox="0 0 120 40" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-[var(--color-text)]">
-                            <path d="M10 30V10H16V22C16 26.4183 19.5817 30 24 30C28.4183 30 32 26.4183 32 22V10H38V30H32V25.5C30.2 28.2 27.3 30 24 30H10Z" fill="currentColor"/>
-                            <path d="M46 10H52V30H46V10Z" fill="currentColor"/>
-                            <path d="M58 10H64V14H58V10ZM58 16H64V30H58V16Z" fill="currentColor"/>
-                            <path d="M70 16H66V10H80V16H76V30H70V16Z" fill="currentColor"/>
-                            <path d="M86 10H102V16H92V18H100V24H92V26H102V32H86V10Z" fill="currentColor"/>
-                            <path d="M106 10H112L116 16L120 10H126L120 19L126 30H120L116 23L112 30H106L112 19L106 10Z" fill="currentColor"/>
-                        </svg>
-                    </div>
+                    <BrandLockup size={40} />
 
                     <div className="space-y-4">
                         <h1 className="text-4xl md:text-5xl font-syne font-bold tracking-tighter text-[var(--color-text)] uppercase leading-[0.9]">

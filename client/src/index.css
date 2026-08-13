@@ -158,37 +158,28 @@ a, button, select, input, textarea, [role="button"] {
     border-radius: 0 !important;
 }
 
-.brand-mark {
-    width: 30px;
-    height: 30px;
+.brand-lockup {
     display: inline-flex;
-    align-items: flex-end;
-    justify-content: center;
-    background: var(--color-text);
-    position: relative;
-    overflow: hidden;
+    align-items: center;
+    gap: 10px;
+    color: var(--color-text);
 }
 
-.brand-mark::before, .brand-mark::after, .brand-mark span {
-    content: "";
+.brand-mark {
     display: block;
-    position: absolute;
-    bottom: 6px;
-    width: 4px;
-    background: var(--color-accent-yellow);
+    flex: none;
+    filter: drop-shadow(2px 2px 0 rgba(25, 25, 25, .22));
 }
-.brand-mark::before { height: 13px; left: 8px; }
-.brand-mark span { height: 20px; left: 13px; }
-.brand-mark::after { height: 10px; left: 18px; }
 
 .brand-wordmark {
     font-family: 'Syne', sans-serif;
-    font-size: 1.35rem;
-    font-weight: 800;
-    letter-spacing: -0.08em;
+    font-size: 1.45rem;
+    font-weight: 850;
+    letter-spacing: -0.09em;
     line-height: 1;
+    text-transform: uppercase;
 }
-.brand-wordmark span { color: var(--color-accent-orange); }
+.brand-wordmark span { color: var(--color-accent-purple); }
 
 .landing-page { width: 100%; overflow: hidden; }
 .landing-hero { min-height: 590px; padding: 76px clamp(24px, 7vw, 112px); background: var(--color-text); color: white; display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(260px, .85fr); gap: 8vw; align-items: center; position: relative; }
