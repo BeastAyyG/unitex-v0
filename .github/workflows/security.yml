@@ -22,11 +22,13 @@ jobs:
           node-version: 20
           cache: npm
       - run: npm ci
-      - run: npm run build --workspace=client
-      - run: npm run lint --workspace=client
+      # Vercel installs from client/, so test the exact lockfile it will deploy.
+      - run: npm ci --prefix client --workspaces=false --legacy-peer-deps
+      - run: npm run build --prefix client
+      - run: npm run lint --prefix client
       - run: npm run test --workspace=server
       - run: node scripts/security-policy-check.mjs
-      - run: npm audit --omit=dev --audit-level=high --workspace=client
+      - run: npm audit --prefix client --audit-level=high
       - run: npm audit --omit=dev --audit-level=high --workspace=server
       - run: npm audit --omit=dev --audit-level=high --workspace=media-service
 
