@@ -192,23 +192,23 @@ a, button, select, input, textarea, [role="button"] {
     transform-origin: left bottom;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-    .brand-wordmark span {
-        animation: brand-x-jump 2.8s cubic-bezier(.2, .9, .25, 1) infinite;
-        transition: transform .28s cubic-bezier(.2, .9, .25, 1.35), text-shadow .28s ease;
-    }
+.brand-wordmark span {
+    animation: brand-x-jump 2.8s cubic-bezier(.2, .9, .25, 1) infinite;
+    animation-duration: 2.8s !important;
+    animation-iteration-count: infinite !important;
+    transition: transform .28s cubic-bezier(.2, .9, .25, 1.35), text-shadow .28s ease;
+}
 
-    .brand-lockup:hover .brand-wordmark span,
-    .brand-lockup:focus-within .brand-wordmark span {
-        animation: none;
-        text-shadow: 3px 3px 0 var(--color-accent-yellow);
-        transform: translate(5px, -7px) rotate(-14deg) scale(1.08);
-    }
+.brand-lockup:hover .brand-wordmark span,
+.brand-lockup:focus-within .brand-wordmark span {
+    animation: none;
+    text-shadow: 3px 3px 0 var(--color-accent-yellow);
+    transform: translate(5px, -7px) rotate(-14deg) scale(1.08);
+}
 
-    .brand-lockup:active .brand-wordmark span {
-        animation: none;
-        transform: translate(3px, -2px) rotate(-4deg) scale(.96);
-    }
+.brand-lockup:active .brand-wordmark span {
+    animation: none;
+    transform: translate(3px, -2px) rotate(-4deg) scale(.96);
 }
 
 @keyframes brand-x-jump {
