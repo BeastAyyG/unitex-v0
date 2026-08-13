@@ -55,7 +55,7 @@ function Home() {
 
     const sortedPosts = React.useMemo(() => {
         const now = Date.now();
-        let postsToSort = [...posts];
+        const postsToSort = [...posts];
 
         if (activeSort === 'hot') {
             postsToSort.sort((a, b) => {
@@ -99,6 +99,7 @@ function Home() {
                 role: 'Member',
                 content,
                 mediaURL: media ? media.url : undefined,
+                mediaType: media?.type,
             });
             await createNotification({
                 recipientUid: currentUser?.uid || 'anonymous',

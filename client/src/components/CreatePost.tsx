@@ -1,6 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Image, Link, Smile, Hash, X, ChevronDown, Send, FileText, Globe, Plus } from 'lucide-react';
+import { Image, Link, X, Send, FileText, Globe, Plus, Music2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { ACCEPTED_MEDIA_TYPES, getMediaType, validateMediaFile, type MediaType } from '@/lib/media';
+import { toast } from 'sonner';
 
 const POST_LABELS = [
     { id: 'progress', label: 'Progress', color: 'bg-emerald-100 text-emerald-800 border-emerald-200' },
@@ -12,7 +14,7 @@ const POST_LABELS = [
 ];
 
 export interface CreatePostMedia {
-    type: 'image' | 'video';
+    type: MediaType;
     url: string;
 }
 
@@ -26,11 +28,12 @@ function CreatePost({ initialExpanded = false, onPost }: { initialExpanded?: boo
     const [customLabels, setCustomLabels] = useState<{ id: string; label: string; color: string }[]>([]);
     const [showCustomInput, setShowCustomInput] = useState(false);
     const fileInputRef = useRef<HTMLInputElement>(null);
+    const submittedPreviewRef = useRef<string | null>(null);
 
     // Clean up object URL on unmount or when preview changes
     useEffect(() => {
         return () => {
-            if (mediaPreview) {
+            if (mediaPreview && mediaPreview !== submittedPreviewRef.current) {
                 URL.revokeObjectURL(mediaPreview);
             }
         };
@@ -39,6 +42,12 @@ function CreatePost({ initialExpanded = false, onPost }: { initialExpanded?: boo
     const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (!file) return;
+
+        const validationError = validateMediaFile(file);
+        if (validationError) {
+            toast.error(validationError);
+            return;
+        }
 
         // Revoke previous preview URL
         if (mediaPreview) {
@@ -84,9 +93,12 @@ function CreatePost({ initialExpanded = false, onPost }: { initialExpanded?: boo
 
     const handlePost = () => {
         if ((content.trim() || mediaFile) && onPost) {
+            const mediaType = mediaFile ? getMediaType(mediaFile) : null;
             const media: CreatePostMedia | undefined = mediaPreview && mediaFile
-                ? { type: mediaFile.type.startsWith('video') ? 'video' : 'image', url: mediaPreview }
+                ? { type: mediaType || 'image', url: mediaPreview }
                 : undefined;
+            // Keep a submitted blob URL alive for the locally-rendered post.
+            submittedPreviewRef.current = mediaPreview;
             onPost(content, selectedLabel, media);
             setContent('');
             setSelectedLabel(null);
@@ -105,7 +117,7 @@ function CreatePost({ initialExpanded = false, onPost }: { initialExpanded?: boo
             <input
                 ref={fileInputRef}
                 type="file"
-                accept="image/*,video/*"
+                accept={ACCEPTED_MEDIA_TYPES}
                 className="hidden"
                 onChange={handleFileSelect}
             />
@@ -168,10 +180,14 @@ function CreatePost({ initialExpanded = false, onPost }: { initialExpanded?: boo
                             >
                                 <X size={16} />
                             </button>
-                            {mediaFile.type.startsWith('video') ? (
+                            {getMediaType(mediaFile) === 'video' ? (
                                 <video src={mediaPreview} controls className="w-full max-h-[280px] object-contain bg-black" />
+                            ) : getMediaType(mediaFile) === 'audio' ? (
+                                <div className="p-6 bg-[var(--color-accent-yellow)]">
+                                    <audio src={mediaPreview} controls className="w-full" />
+                                </div>
                             ) : (
-                                <img src={mediaPreview} alt="Upload preview" className="w-full max-h-[280px] object-cover" />
+                                <img src={mediaPreview} alt="Upload preview" className="w-full max-h-[280px] object-contain bg-black" />
                             )}
                             <div className="px-3 py-2 text-[10px] font-syne font-bold text-[var(--color-text)] uppercase tracking-widest border-t-2 border-[var(--color-text)] bg-white flex items-center justify-between">
                                 <span className="truncate max-w-[70%]">{mediaFile.name}</span>
@@ -242,7 +258,7 @@ function CreatePost({ initialExpanded = false, onPost }: { initialExpanded?: boo
                                             : "border-[var(--color-text)] bg-white hover:bg-[var(--color-accent-yellow)] text-[var(--color-text)]"
                                     )}
                                 >
-                                    <Image size={16} /> {mediaFile ? 'Change' : 'Photo'}
+                                    {mediaFile && getMediaType(mediaFile) === 'audio' ? <Music2 size={16} /> : <Image size={16} />} {mediaFile ? 'Change' : 'Media'}
                                 </button>
                                 <button className="h-10 px-4 flex items-center gap-2 border-2 border-[var(--color-text)] bg-white hover:bg-[var(--color-accent-yellow)] hover-lift transition-all text-xs font-syne font-bold uppercase tracking-widest text-[var(--color-text)]">
                                     <Link size={16} /> Link

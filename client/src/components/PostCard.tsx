@@ -21,7 +21,7 @@ export interface Post {
     timestamp: string;
     label?: string;
     media?: {
-        type: 'image' | 'video';
+        type: 'image' | 'video' | 'audio';
         url: string;
     };
     source?: {
@@ -248,8 +248,12 @@ function PostCard({ post }: PostCardProps) {
                         <div className="absolute inset-0 bg-black/5 group-hover:bg-transparent transition-all z-10 pointer-events-none"></div>
                         {post.media.type === 'image' ? (
                             <img src={post.media.url} alt="Post attachment" className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out grayscale hover:grayscale-0" />
-                        ) : (
+                        ) : post.media.type === 'video' ? (
                             <video src={post.media.url} controls className="w-full h-full object-contain bg-black" />
+                        ) : (
+                            <div className="h-full w-full flex items-center justify-center p-4 bg-[var(--color-accent-yellow)]">
+                                <audio src={post.media.url} controls className="w-full" />
+                            </div>
                         )}
                     </div>
                 )}

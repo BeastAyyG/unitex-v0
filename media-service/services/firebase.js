@@ -38,7 +38,7 @@ export function initFirebase() {
 export async function saveMediaMetadata(data) {
     if (!db) throw new Error('Firebase not initialized');
 
-    const { uid, usercode, filename, mediaURL, fileHash, fileSizeBytes, mimeType, isVideo, createdAt } = data;
+    const { uid, usercode, filename, mediaURL, fileHash, fileSizeBytes, mimeType, mediaType, isVideo, createdAt } = data;
 
     const payload = {
         uid,
@@ -48,6 +48,7 @@ export async function saveMediaMetadata(data) {
         fileHash,          // SHA-256 — used for blockchain proof + duplicate detection
         fileSizeBytes,
         mimeType,
+        mediaType,
         isVideo,
         createdAt,
         blockchainProof: null, // Updated after tx is confirmed

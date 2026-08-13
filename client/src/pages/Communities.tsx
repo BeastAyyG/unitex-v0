@@ -75,7 +75,7 @@ function Communities() {
         : communities.filter(c => c.category === activeCategory);
 
     return (
-        <div className="pt-4 pb-10 max-w-7xl mx-auto px-4 md:px-8">
+        <div className="font-outfit pt-4 pb-10 max-w-7xl mx-auto px-4 md:px-8">
             {/* Header Section */}
             <header className="flex flex-col md:flex-row justify-between items-end mb-4 border-b border-[var(--color-surface)] pb-4 gap-6">
                 <div>

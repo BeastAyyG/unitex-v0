@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Search, TrendingUp, Users, Radio, Zap, ArrowUpRight, Clock, Star, MessageSquare, Heart, Share2, MoreHorizontal, Settings, Flame, Globe, Sparkles, Plus, Shield, Cpu, ChevronUp, ChevronDown, CheckCircle2, Navigation, Activity } from 'lucide-react';
+import { Search, TrendingUp, Users, Radio, Zap, ArrowUpRight, Clock, Star, MessageSquare, Heart, Share2, MoreHorizontal, Settings, Flame, Globe, Plus, Shield, Cpu, ChevronUp, ChevronDown, CheckCircle2, Navigation, Activity } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Carousel } from '@/components/ui/carousel';
 import { NavLink } from 'react-router-dom';
@@ -300,12 +300,11 @@ export default function Discover() {
     }, [trendingPosts]);
 
     return (
-        <div className="max-w-[1536px] mx-auto px-6 pt-2 pb-8">
+        <div className="font-outfit max-w-[1536px] mx-auto px-6 pt-2 pb-8">
             {/* Header Area: Improved Hierarchy (Title → Search) */}
             <header className="mb-4 space-y-3">
                 <div className="flex items-center gap-3">
-                    <Sparkles className="text-[var(--color-accent)]" size={28} />
-                    <h1 className="text-3xl font-bold capitalize tracking-tighter text-[var(--color-text)] leading-none">
+                    <h1 className="text-4xl md:text-5xl font-bold uppercase tracking-tight text-[var(--color-text)] leading-none">
                         Discovery Grid
                     </h1>
                 </div>
@@ -584,7 +583,7 @@ export default function Discover() {
                     {/* WIDGET: TOP COMMUNITIES */}
                     <MiniWidget 
                         title="Top Communities"
-                        icon={<Sparkles size={14} />}
+                        icon={<Users size={14} />}
                         linkTo="/discover/communities"
                         items={communities.slice(0, 4).map(c => ({
                             sub: `${c.members || 0} online`,

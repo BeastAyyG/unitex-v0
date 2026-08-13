@@ -27,6 +27,35 @@ dotenv.config();
 // ─── App Setup ────────────────────────────────────────────────────────────────
 const app = express();
 const PORT = process.env.PORT || 4001;
+const MAX_UPLOAD_BYTES = 100 * 1024 * 1024;
+const ALLOWED_MIME_TYPES = new Set([
+    'image/jpeg', 'image/png', 'image/webp', 'image/gif', 'image/avif',
+    'video/mp4', 'video/webm', 'video/quicktime', 'video/ogg', 'video/3gpp', 'video/x-m4v',
+    'audio/mpeg', 'audio/mp4', 'audio/ogg', 'audio/wav', 'audio/webm', 'audio/aac', 'audio/flac', 'audio/x-m4a',
+]);
+const MIME_EXTENSIONS = {
+    'video/mp4': '.mp4',
+    'video/webm': '.webm',
+    'video/quicktime': '.mov',
+    'video/ogg': '.ogv',
+    'video/3gpp': '.3gp',
+    'video/x-m4v': '.m4v',
+    'audio/mpeg': '.mp3',
+    'audio/mp4': '.m4a',
+    'audio/ogg': '.ogg',
+    'audio/wav': '.wav',
+    'audio/webm': '.weba',
+    'audio/aac': '.aac',
+    'audio/flac': '.flac',
+    'audio/x-m4a': '.m4a',
+};
+
+function getMediaType(mimeType) {
+    if (mimeType.startsWith('image/')) return 'image';
+    if (mimeType.startsWith('video/')) return 'video';
+    if (mimeType.startsWith('audio/')) return 'audio';
+    return null;
+}
 
 app.use(cors());
 app.use(express.json());
@@ -45,11 +74,10 @@ const storage = multer.memoryStorage();
 const upload = multer({
     storage,
     limits: {
-        fileSize: 50 * 1024 * 1024, // 50MB max
+        fileSize: MAX_UPLOAD_BYTES,
     },
     fileFilter: (req, file, cb) => {
-        const allowed = ['image/jpeg', 'image/png', 'image/webp', 'video/mp4', 'video/quicktime'];
-        if (allowed.includes(file.mimetype)) {
+        if (ALLOWED_MIME_TYPES.has(file.mimetype)) {
             cb(null, true);
         } else {
             cb(new Error(`Unsupported file type: ${file.mimetype}`));
@@ -80,16 +108,18 @@ app.post('/upload', upload.single('file'), async (req, res) => {
             return res.status(400).json({ error: 'No file provided' });
         }
 
-        const isVideo = req.file.mimetype.startsWith('video/');
+        const mediaType = getMediaType(req.file.mimetype);
+        const isVideo = mediaType === 'video';
         const timestamp = Date.now();
-        const ext = isVideo ? path.extname(req.file.originalname) : '.webp';
-        const filename = `${usercode}_${timestamp}${ext}`;
+        const ext = mediaType === 'image' ? '.webp' : (MIME_EXTENSIONS[req.file.mimetype] || '.bin');
+        const safeUsercode = String(usercode).replace(/[^a-z0-9_-]/gi, '_').slice(0, 64) || 'user';
+        const filename = `${safeUsercode}_${timestamp}${ext}`;
         const filePath = path.join(UPLOAD_DIR, filename);
 
         // ── Process file ──────────────────────────────────────────────────────
         let finalBuffer = req.file.buffer;
 
-        if (!isVideo) {
+        if (mediaType === 'image') {
             // Compress and convert image to WebP
             finalBuffer = await sharp(req.file.buffer)
                 .resize({ width: 1920, withoutEnlargement: true })
@@ -117,6 +147,7 @@ app.post('/upload', upload.single('file'), async (req, res) => {
             fileHash,
             fileSizeBytes,
             mimeType: req.file.mimetype,
+            mediaType,
             isVideo,
             createdAt: new Date().toISOString(),
         });
@@ -141,6 +172,7 @@ app.post('/upload', upload.single('file'), async (req, res) => {
             mediaURL,
             fileHash,
             txHash,
+            mediaType,
         });
 
     } catch (err) {
@@ -150,12 +182,21 @@ app.post('/upload', upload.single('file'), async (req, res) => {
 });
 
 // ─── ROUTE: Serve uploaded files ──────────────────────────────────────────────
-app.use('/media', express.static(UPLOAD_DIR));
+app.use('/media', express.static(UPLOAD_DIR, {
+    maxAge: '1y',
+    immutable: true,
+}));
 
 // ─── Error handler ────────────────────────────────────────────────────────────
 app.use((err, req, res, next) => {
     console.error('[Unhandled Error]', err);
-    res.status(500).json({ error: err.message });
+    if (err instanceof multer.MulterError && err.code === 'LIMIT_FILE_SIZE') {
+        return res.status(413).json({ error: 'Media files must be 100 MB or smaller.' });
+    }
+    if (err.message?.startsWith('Unsupported file type:')) {
+        return res.status(415).json({ error: err.message });
+    }
+    res.status(500).json({ error: err.message || 'Upload failed' });
 });
 
 // ─── Start server ─────────────────────────────────────────────────────────────

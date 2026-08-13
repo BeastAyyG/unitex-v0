@@ -286,9 +286,9 @@ const INITIAL_NETWORK: CharacterProfile[] = [
 function Networking() {
     const { currentUser } = useAuth();
     const [activeTab, setActiveTab] = useState<'discovery' | 'requests' | 'network'>('discovery');
-    const [discoveryList, setDiscoveryList] = useState<CharacterProfile[]>([]);
-    const [requestsList, setRequestsList] = useState<CharacterProfile[]>([]);
-    const [networkList, setNetworkList] = useState<CharacterProfile[]>([]);
+    const [discoveryList, setDiscoveryList] = useState<CharacterProfile[]>(INITIAL_DISCOVERY);
+    const [requestsList, setRequestsList] = useState<CharacterProfile[]>(INITIAL_REQUESTS);
+    const [networkList, setNetworkList] = useState<CharacterProfile[]>(INITIAL_NETWORK);
     const [searchTerm, setSearchTerm] = useState('');
     const [searchResults, setSearchResults] = useState<any[]>([]);
     const [isSearching, setIsSearching] = useState(false);
@@ -314,15 +314,19 @@ function Networking() {
         const fetchData = async () => {
             // 1. Get Trending Users
             const trending = await getTrendingUsers(20);
-            const discovery = trending.filter(u => u.id !== currentUser.uid).map(mapUserToProfile);
+            const discovery = trending.length > 0
+                ? trending.filter(u => u.id !== currentUser.uid).map(mapUserToProfile)
+                : INITIAL_DISCOVERY;
             
             // 2. Get Incoming Requests
             const requests = await apiGetRequests(currentUser.uid);
             const requestProfiles = await getUsers(requests.map((r: any) => r.sender_id));
-            const mappedRequests = requestProfiles.map(s => {
-                const req = requests.find((r: any) => r.sender_id === s.id);
-                return { ...mapUserToProfile(s), requestId: req?.id, connectionStatus: 'pending_received' as const };
-            });
+            const mappedRequests = requestProfiles.length > 0
+                ? requestProfiles.map(s => {
+                    const req = requests.find((r: any) => r.sender_id === s.id);
+                    return { ...mapUserToProfile(s), requestId: req?.id, connectionStatus: 'pending_received' as const };
+                })
+                : INITIAL_REQUESTS;
 
             // 3. Get Network (this part is tricky because the SQL backend returns ids, we need profiles)
             // For now, let's just fetch all users and filter (in a real app, you'd have a specific endpoint)
@@ -331,16 +335,25 @@ function Networking() {
             
             setDiscoveryList(discovery);
             setRequestsList(mappedRequests);
+            setNetworkList(INITIAL_NETWORK);
             
             // 4. Fetch status for each discovery user to show correct button
             const updatedDiscovery = await Promise.all(discovery.map(async (p) => {
-                const status = await apiGetStatus(currentUser.uid, p.id);
-                return { ...p, connectionStatus: status };
+                try {
+                    const status = await apiGetStatus(currentUser.uid, p.id);
+                    return { ...p, connectionStatus: status };
+                } catch {
+                    return { ...p, connectionStatus: 'none' as const };
+                }
             }));
-            setDiscoveryList(updatedDiscovery);
+            setDiscoveryList(updatedDiscovery.length > 0 ? updatedDiscovery : INITIAL_DISCOVERY);
         };
 
-        fetchData();
+        fetchData().catch(() => {
+            setDiscoveryList(INITIAL_DISCOVERY);
+            setRequestsList(INITIAL_REQUESTS);
+            setNetworkList(INITIAL_NETWORK);
+        });
 
         // Note: Real-time subscriptions are replaced by the new request-based API.
         // In a production app, we would use WebSockets or React Query for sync.

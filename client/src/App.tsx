@@ -1,27 +1,39 @@
+import { lazy, Suspense } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import Layout from './components/Layout';
-import Home from './pages/Home';
-import Discover from './pages/Discover';
-import Communities from './pages/Communities';
-import CommunityPage from '@/pages/CommunityPage';
-import Events from './pages/Events';
-import Networking from './pages/Networking';
-import Resources from './pages/Resources';
-import Messages from './pages/Messages';
-import Vault from './pages/Vault';
-import Profile from './pages/Profile';
-import Settings from './pages/Settings';
-import Notifications from './pages/Notifications';
-import Dashboard from './pages/Dashboard';
-import OtherProfile from '@/pages/OtherProfile';
-import EventDetail from '@/pages/EventDetail';
-import DiscoverDetail from '@/pages/DiscoverDetail';
-import Login from './pages/Login';
-import { Onboarding } from '@/pages/Onboarding';
 import { NotificationProvider } from './context/NotificationContext';
 import { AuthProvider } from './context/AuthContext';
 import { useAuth } from './context/useAuth';
 import { Toaster } from 'sonner';
+
+const Home = lazy(() => import('./pages/Home'));
+const Discover = lazy(() => import('./pages/Discover'));
+const Communities = lazy(() => import('./pages/Communities'));
+const CommunityPage = lazy(() => import('@/pages/CommunityPage'));
+const Events = lazy(() => import('./pages/Events'));
+const Networking = lazy(() => import('./pages/Networking'));
+const Resources = lazy(() => import('./pages/Resources'));
+const Messages = lazy(() => import('./pages/Messages'));
+const Vault = lazy(() => import('./pages/Vault'));
+const Profile = lazy(() => import('./pages/Profile'));
+const Settings = lazy(() => import('./pages/Settings'));
+const Notifications = lazy(() => import('./pages/Notifications'));
+const Dashboard = lazy(() => import('./pages/Dashboard'));
+const OtherProfile = lazy(() => import('@/pages/OtherProfile'));
+const EventDetail = lazy(() => import('@/pages/EventDetail'));
+const DiscoverDetail = lazy(() => import('@/pages/DiscoverDetail'));
+const Login = lazy(() => import('./pages/Login'));
+const Onboarding = lazy(() => import('@/pages/Onboarding').then(({ Onboarding }) => ({ default: Onboarding })));
+
+function RouteLoading() {
+    return (
+        <div className="min-h-[50vh] flex items-center justify-center p-6 text-center">
+            <span className="font-syne text-xs font-bold uppercase tracking-[0.25em] text-[var(--color-text)]">
+                Loading sequence...
+            </span>
+        </div>
+    );
+}
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
     const { currentUser } = useAuth();
@@ -31,6 +43,7 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
 
 function AppRoutes() {
     return (
+        <Suspense fallback={<RouteLoading />}>
         <Routes>
             <Route path="/login" element={<Login />} />
             <Route path="/onboarding" element={<ProtectedRoute><Onboarding /></ProtectedRoute>} />
@@ -61,6 +74,7 @@ function AppRoutes() {
                 <Route path="settings" element={<Settings />} />
             </Route>
         </Routes>
+        </Suspense>
     );
 }
 

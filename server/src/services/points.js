@@ -1,11 +1,15 @@
 const fs = require('fs');
 const path = require('path');
+const os = require('os');
 const { pool } = require('../db');
 
 // Local storage fallback for development
-const VAULT_PATH = path.join(__dirname, '../../data/points_vault.json');
-if (!fs.existsSync(path.dirname(VAULT_PATH))) {
-    fs.mkdirSync(path.dirname(VAULT_PATH), { recursive: true });
+const VAULT_DIR = process.env.VERCEL === '1'
+    ? path.join(os.tmpdir(), 'unitex')
+    : path.join(__dirname, '../../data');
+const VAULT_PATH = path.join(VAULT_DIR, 'points_vault.json');
+if (!fs.existsSync(VAULT_DIR)) {
+    fs.mkdirSync(VAULT_DIR, { recursive: true });
 }
 
 function readVault() {

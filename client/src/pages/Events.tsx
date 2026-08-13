@@ -111,7 +111,7 @@ function Events() {
                     <FieldDescription>Choose a catchy title for your event.</FieldDescription>
                 </Field>
 
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <Field>
                         <FieldLabel>Date</FieldLabel>
                         <DatePicker date={newEventDate} setDate={setNewEventDate} className="w-full" />

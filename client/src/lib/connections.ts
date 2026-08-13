@@ -1,6 +1,7 @@
 import axios from 'axios';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5002/api';
+const configuredApiUrl = import.meta.env.VITE_API_URL?.trim();
+const API_BASE_URL = (configuredApiUrl || '/api').replace(/\/+$/, '');
 
 export type ConnectionStatus = 'none' | 'pending_sent' | 'pending_received' | 'connected';
 

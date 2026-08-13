@@ -17,5 +17,16 @@ export default defineConfig({
     server: {
         host: true,
         port: 3004,
+    },
+    build: {
+        rollupOptions: {
+            output: {
+                manualChunks(id) {
+                    if (id.includes('node_modules/firebase')) return 'firebase';
+                    if (id.includes('node_modules/recharts')) return 'charts';
+                    if (id.includes('node_modules/framer-motion')) return 'motion';
+                },
+            },
+        },
     }
 })

@@ -16,14 +16,16 @@ import { useState, useCallback } from 'react';
 import { useAuth } from '@/context/useAuth';
 import { getDoc, doc } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
+import { validateMediaFile, type MediaType } from '@/lib/media';
 
-const MEDIA_SERVICE_URL = import.meta.env.VITE_MEDIA_SERVICE_URL || 'http://localhost:4000';
+const MEDIA_SERVICE_URL = import.meta.env.VITE_MEDIA_SERVICE_URL?.trim().replace(/\/+$/, '');
 
 interface UploadResult {
     success: boolean;
     docId: string;
     filename: string;
     mediaURL: string;
+    mediaType?: MediaType;
     fileHash: string;
     txHash: string | null;
 }
@@ -41,12 +43,22 @@ export function useMediaUpload() {
             return null;
         }
 
+        const validationError = validateMediaFile(file);
+        if (validationError) {
+            setError(validationError);
+            return null;
+        }
+
         setUploading(true);
         setProgress(0);
         setError(null);
         setResult(null);
 
         try {
+            if (!MEDIA_SERVICE_URL) {
+                throw new Error('Media uploads are not configured. Set VITE_MEDIA_SERVICE_URL in the deployment environment.');
+            }
+
             // ── Get usercode from Firestore ──────────────────────────────────
             const userSnap = await getDoc(doc(db, 'users', currentUser.uid));
             const usercode = userSnap.data()?.usercode;
@@ -71,11 +83,20 @@ export function useMediaUpload() {
                 };
 
                 xhr.onload = () => {
-                    if (xhr.status === 200) {
-                        resolve(JSON.parse(xhr.responseText));
+                    let payload: UploadResult & { error?: string };
+                    try {
+                        payload = JSON.parse(xhr.responseText);
+                    } catch {
+                        reject(new Error('The media service returned an invalid response.'));
+                        return;
+                    }
+                    if (xhr.status >= 200 && xhr.status < 300) {
+                        resolve({
+                            ...payload,
+                            mediaURL: new URL(payload.mediaURL, `${MEDIA_SERVICE_URL}/`).toString(),
+                        });
                     } else {
-                        const err = JSON.parse(xhr.responseText);
-                        reject(new Error(err.error || 'Upload failed'));
+                        reject(new Error(payload.error || 'Upload failed'));
                     }
                 };
 

@@ -110,7 +110,21 @@ app.use((err, req, res, next) => {
     res.status(500).json({ error: 'Something went wrong!' });
 });
 
-app.listen(port, async () => {
-    if (process.env.DEBUG) console.log(`Server running on port ${port}`);
+// Vercel runs this module as a serverless function, so we export the Express app.
+// Keep the local listener only for direct Node execution.
+async function bootstrap() {
     await initializeDatabase();
+    if (process.env.DEBUG) console.log(`Server ready on port ${port}`);
+}
+
+bootstrap().catch((err) => {
+    console.error('[Server] Failed to bootstrap:', err);
 });
+
+if (require.main === module) {
+    app.listen(port, () => {
+        if (process.env.DEBUG) console.log(`Server running on port ${port}`);
+    });
+}
+
+module.exports = app;
