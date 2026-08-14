@@ -198,7 +198,7 @@ function Profile() {
                                 </h3>
                                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                                     {[
-                                        { title: "UnitEx Design System", type: "Docs", icon: BookOpen },
+                                        { title: "UnitX Design System", type: "Docs", icon: BookOpen },
                                         { title: "2026 Strategy", type: "PDF", icon: Pin },
                                         { title: "UX Flow Case Study", type: "Web", icon: ExternalLink }
                                     ].map((item, i) => (
@@ -423,7 +423,7 @@ function Profile() {
                             </h3>
                             <div className="space-y-6">
                                 {[
-                                    { name: "UnitEx Core", count: 12 },
+                                    { name: "UnitX Core", count: 12 },
                                     { name: "Design Standards", count: 4 }
                                 ].map((team, i) => (
                                     <div key={i} className="group cursor-pointer">
@@ -461,7 +461,7 @@ function Profile() {
                         <div className="space-y-4">
                             {[
                                 { title: "Senior Design Architect", company: "Meta", location: "Menlo Park" },
-                                { title: "Principal Product Lead", company: "UniteX", location: "Remote" }
+                                { title: "Principal Product Lead", company: "UnitX", location: "Remote" }
                             ].map((job, i) => (
                                 <div key={i} className="group cursor-pointer pb-4 border-b-2 border-[var(--color-text)] border-dashed last:border-0 last:pb-0 last:mb-0">
                                     <h4 className="text-xs font-syne font-bold uppercase group-hover:text-[var(--color-accent-purple)] transition-colors">{job.title}</h4>

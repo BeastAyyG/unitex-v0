@@ -51,7 +51,7 @@ export function BrandLockup({ className, compact = false, size }: BrandLockupPro
     return (
         <span className={cn('brand-lockup', className)}>
             <BrandMark size={size ?? (compact ? 30 : 36)} />
-            <span className={cn('brand-wordmark', `brand-wordmark--jump-${jumpFrame}`)}>Unite<span>X</span></span>
+            <span className={cn('brand-wordmark', `brand-wordmark--jump-${jumpFrame}`)}>Unit<span>X</span></span>
         </span>
     );
 }

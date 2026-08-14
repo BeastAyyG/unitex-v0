@@ -323,7 +323,7 @@ export default function Login() {
                              <span className="px-3 py-1 bg-[var(--color-accent-yellow)] border-2 border-[var(--color-text)] text-[10px] font-syne font-bold uppercase tracking-widest text-[var(--color-text)]">Ver 3.0</span>
                         </div>
                         <blockquote className="text-3xl font-syne font-bold leading-[1.1] text-[var(--color-text)] uppercase tracking-tight">
-                            "UniteX Node integration has completely centralized our systems. What used to take days of routing setup is now instant."
+                            "UnitX Node integration has completely centralized our systems. What used to take days of routing setup is now instant."
                         </blockquote>
                     </div>
 

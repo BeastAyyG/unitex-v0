@@ -88,7 +88,7 @@ function Events() {
                     date: newEventDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
                     time,
                     mode: 'Remote',
-                    community: currentUser.displayName || 'UniteX Community',
+                    community: currentUser.displayName || 'UnitX Community',
                     hostUid: currentUser.uid
                 });
                 toast.success("Event created!");

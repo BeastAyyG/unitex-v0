@@ -394,7 +394,7 @@ export const Onboarding = () => {
                                     <div className="space-y-2">
                                         <h3 className="text-lg font-bold">Synchronize Alliance</h3>
                                         <p className="text-xs text-gray-500 leading-relaxed max-w-md mx-auto">
-                                            Connect your contacts to discover peers currently active in the UniteX mesh network.
+                                            Connect your contacts to discover peers currently active in the UnitX mesh network.
                                         </p>
                                     </div>
                                     <button onClick={handleNext} className="mx-auto w-max px-8 py-3 bg-[var(--color-bg)] text-[var(--color-text)] border border-[var(--color-surface)] text-xs font-bold uppercase tracking-widest hover:border-[var(--color-accent)] transition-colors">

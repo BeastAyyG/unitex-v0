@@ -149,7 +149,7 @@ export async function syncUserToRTDB(user: any, profileData?: any) {
     try {
         const userRef = ref(rtdb, `users/${user.uid}`);
         const snapshot = await get(userRef);
-        const baseName = profileData?.displayName || user.displayName || (user.isAnonymous ? 'Guest' : 'UniteX User');
+        const baseName = profileData?.displayName || user.displayName || (user.isAnonymous ? 'Guest' : 'UnitX User');
         const username = profileData?.username || (snapshot.exists() ? snapshot.val().username : await generateUniqueUsername(baseName));
         const usercode = profileData?.userId || profileData?.usercode || (snapshot.exists() ? snapshot.val().usercode : generateUsercode());
         const updateData: any = {

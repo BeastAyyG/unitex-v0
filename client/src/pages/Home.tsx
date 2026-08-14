@@ -42,9 +42,9 @@ function Home() {
                 setPosts(livePosts as Post[]);
             } else if (posts.length === 0) {
                 setPosts([
-                    { id: 'demo-1', author: { id: 'system', name: 'UniteX', avatar: '', role: 'Admin' }, timestamp: '1m ago', content: 'Welcome to UniteX! This is a demo instance running without Firebase. Sign up for a real account to unlock all features.', stats: { likes: 42, support: 12, comments: 7, shares: 0 }, ai: { qualityScore: 95, tags: [] }, createdAtMillis: Date.now() - 1000 },
+                    { id: 'demo-1', author: { id: 'system', name: 'UnitX', avatar: '', role: 'Admin' }, timestamp: '1m ago', content: 'Welcome to UnitX! This is a demo instance running without Firebase. Sign up for a real account to unlock all features.', stats: { likes: 42, support: 12, comments: 7, shares: 0 }, ai: { qualityScore: 95, tags: [] }, createdAtMillis: Date.now() - 1000 },
                     { id: 'demo-2', author: { id: 'system', name: 'Hermes Agent', avatar: '', role: 'AI' }, timestamp: '2m ago', content: 'Hermes Agent is online. Running Ponytail analysis on community engagement patterns. All systems nominal.', stats: { likes: 28, support: 8, comments: 3, shares: 0 }, ai: { qualityScore: 88, tags: [] }, createdAtMillis: Date.now() - 2000 },
-                    { id: 'demo-3', author: { id: 'system', name: 'UnitexBot', avatar: '', role: 'Bot' }, timestamp: '3m ago', content: 'VP Engine active. Quality scoring, anti-spam, and niche routing are operational. Start posting to earn Value Points!', stats: { likes: 15, support: 5, comments: 2, shares: 0 }, ai: { qualityScore: 72, tags: [] }, createdAtMillis: Date.now() - 3000 },
+                    { id: 'demo-3', author: { id: 'system', name: 'UnitX Bot', avatar: '', role: 'Bot' }, timestamp: '3m ago', content: 'VP Engine active. Quality scoring, anti-spam, and niche routing are operational. Start posting to earn Value Points!', stats: { likes: 15, support: 5, comments: 2, shares: 0 }, ai: { qualityScore: 72, tags: [] }, createdAtMillis: Date.now() - 3000 },
                 ] as Post[]);
             }
         });
@@ -104,7 +104,7 @@ function Home() {
             await createNotification({
                 recipientUid: currentUser?.uid || 'anonymous',
                 senderUid: 'system',
-                senderName: 'UniteX Intelligence',
+                senderName: 'UnitX Intelligence',
                 type: 'system',
                 content: `Your post has been analyzed and routed to the network.`,
                 actionUrl: '/'
@@ -132,7 +132,7 @@ function Home() {
 
     const TRENDING_TOPICS = [
         { name: "Design Systems", count: "2.4k posts" },
-        { name: "UniteX V3", count: "1.8k posts" },
+        { name: "UnitX V3", count: "1.8k posts" },
         { name: "Mesh States", count: "956 posts" },
         { name: "Latency Optimization", count: "432 posts" }
     ];

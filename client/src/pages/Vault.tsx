@@ -36,7 +36,7 @@ interface VaultItem {
 const VAULT_ITEMS: VaultItem[] = [
     { 
         id: 'hoodie', 
-        name: 'UniteX "Builder" Hoodie', 
+        name: 'UnitX "Builder" Hoodie',
         description: 'Heavyweight premium cotton with tactical node embroidery.', 
         cost: 4500, 
         icon: ShoppingBag,
@@ -45,7 +45,7 @@ const VAULT_ITEMS: VaultItem[] = [
     },
     { 
         id: 'tech-kit', 
-        name: 'UniteX Tech Kit', 
+        name: 'UnitX Tech Kit',
         description: 'Branded cable organizers, node key, and microfiber cloth.', 
         cost: 1200, 
         icon: Package,
@@ -63,7 +63,7 @@ const VAULT_ITEMS: VaultItem[] = [
     },
     { 
         id: 'sticker-pack', 
-        name: 'UniteX Sticker Pack', 
+        name: 'UnitX Sticker Pack',
         description: 'Limited edition holographic node and brand stickers.', 
         cost: 100, 
         icon: Tag,
@@ -91,7 +91,7 @@ const VAULT_ITEMS: VaultItem[] = [
     { 
         id: 'terminal-theme', 
         name: 'Custom Terminal Theme', 
-        description: 'Exclusive "UniteX Dark" configuration for VSCode & Terminal.', 
+        description: 'Exclusive "UnitX Dark" configuration for VSCode & Terminal.',
         cost: 150, 
         icon: ArrowRight,
         category: 'Access',
@@ -100,7 +100,7 @@ const VAULT_ITEMS: VaultItem[] = [
     { 
         id: 'beta-access', 
         name: 'Beta Feature Access', 
-        description: 'Early access to upcoming UniteX node tools and research.', 
+        description: 'Early access to upcoming UnitX node tools and research.',
         cost: 1000, 
         icon: Zap,
         category: 'Access',
@@ -108,7 +108,7 @@ const VAULT_ITEMS: VaultItem[] = [
     },
     { 
         id: 'event-pass', 
-        name: 'UniteX Pro Summit Pass', 
+        name: 'UnitX Pro Summit Pass',
         description: 'Priority access to all major 2024 summits.', 
         cost: 2000, 
         icon: Zap,
@@ -118,7 +118,7 @@ const VAULT_ITEMS: VaultItem[] = [
     { 
         id: 'priority-support', 
         name: 'Priority Support Access', 
-        description: 'Direct line to the UniteX core engineering team.', 
+        description: 'Direct line to the UnitX core engineering team.',
         cost: 5000, 
         icon: HelpCircle,
         category: 'Access',
