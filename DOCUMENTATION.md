@@ -10,6 +10,7 @@ This page is the starting point for maintaining and deploying UnitX.
 | [VERCEL_DEPLOYMENT.md](VERCEL_DEPLOYMENT.md) | Deploying the client and server to Vercel |
 | [VERCEL_CHECKLIST.md](VERCEL_CHECKLIST.md) | Production release checklist |
 | [SECURITY_TESTING.md](SECURITY_TESTING.md) | Safe security testing and production hardening steps |
+| [PENTEST_REPORT.md](PENTEST_REPORT.md) | Latest non-destructive production security review and findings |
 | [PROJECT_STATUS.md](PROJECT_STATUS.md) | Completed setup work and project history |
 | [.env.example](.env.example) | Required configuration names without any secrets |
 
