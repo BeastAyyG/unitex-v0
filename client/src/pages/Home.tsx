@@ -153,29 +153,6 @@ function Home() {
 
     return (
         <div className="w-full flex flex-col items-center">
-            {/* HERO SECTION */}
-            <section className="relative w-full h-[60vh] md:h-[70vh] bg-[var(--color-text)] flex items-center justify-center overflow-hidden border-b-2 border-[var(--color-text)]">
-                <div className="absolute inset-0 opacity-40 mix-blend-overlay">
-                    <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=2000&auto=format&fit=crop" alt="Hero Background" className="w-full h-full object-cover" />
-                </div>
-                <div className="relative z-10 flex flex-col items-center justify-center text-center px-4">
-                    <h1 className="font-syne text-5xl md:text-7xl lg:text-8xl font-bold text-white mb-6 uppercase tracking-tighter max-w-5xl leading-[0.9]">
-                        Nodes of the uniquely intelligent.
-                    </h1>
-                    <p className="font-outfit text-xl md:text-2xl text-[var(--color-bg)] max-w-2xl font-light mb-10 opacity-90">
-                        An all-inclusive intelligence network providing everything you need to connect, build, and deploy.
-                    </p>
-                    <Dialog open={isPostDialogOpen} onOpenChange={setIsPostDialogOpen}>
-                        <DialogTrigger asChild>
-                            <button className="group relative px-8 py-4 bg-[var(--color-accent-yellow)] text-[var(--color-text)] font-syne font-bold uppercase tracking-widest text-lg md:text-xl border-2 border-[var(--color-text)] shadow-brutal hover-lift overflow-hidden">
-                                <span className="relative z-10">Initialize Sequence</span>
-                                <div className="absolute inset-0 bg-[var(--color-accent-red)] translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-in-out z-0"></div>
-                            </button>
-                        </DialogTrigger>
-                    </Dialog>
-                </div>
-            </section>
-
             {/* MARQUEE SECTION */}
             <section className="w-full bg-[var(--color-accent-green)] border-b-2 border-[var(--color-text)] overflow-hidden flex items-center py-4">
                 <div className="flex whitespace-nowrap animate-marquee">
