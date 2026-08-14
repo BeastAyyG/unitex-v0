@@ -53,6 +53,10 @@ The web application is deployed from the `client/` folder to Vercel. The current
 
 For deployment instructions, required environment variables, and production checks, see [VERCEL_DEPLOYMENT.md](VERCEL_DEPLOYMENT.md) and [VERCEL_CHECKLIST.md](VERCEL_CHECKLIST.md).
 
+### Supabase media storage
+
+UnitX uses the free Supabase project `UnitX Storage` with a private `media` bucket. Firebase authenticates the user, the UnitX API creates a short-lived upload URL, and the browser uploads the file directly to Supabase. Keep `SUPABASE_SECRET_KEY` server-only; only `VITE_SUPABASE_URL` and `VITE_SUPABASE_PUBLISHABLE_KEY` belong in the client deployment. The supported media limit is 50 MB per file.
+
 ## Documentation
 
 Start with [DOCUMENTATION.md](DOCUMENTATION.md) for a guide to every project document.
