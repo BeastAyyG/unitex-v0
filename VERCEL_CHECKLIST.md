@@ -1,5 +1,12 @@
 # Pre-Deployment Checklist for Vercel
 
+## Current public deployment
+
+- Client: `https://client-opal-five-77.vercel.app`
+- API: `https://unitex-server.vercel.app`
+- API health: `https://unitex-server.vercel.app/api/health`
+- Production branch: `agent/optimize-mobile-media`
+
 ## ✅ Before Deploying
 
 ### Client Setup
@@ -8,6 +15,7 @@
 - [ ] Build succeeds: `npm run build` in `/client`
 - [ ] `dist/` folder is created with `index.html`
 - [ ] ESLint passes: `npm run lint` returns no errors
+- [ ] Vercel has the seven `VITE_FIREBASE_*` values, `VITE_API_URL`, `VITE_SUPABASE_URL`, and `VITE_SUPABASE_PUBLISHABLE_KEY`
 
 ### Server Setup
 - [ ] `/server/vercel.json` has correct routes
@@ -15,6 +23,7 @@
 - [ ] `/server/package.json` has `start` script
 - [ ] `src/index.js` listens on `process.env.PORT`
 - [ ] All dependencies in `package.json` are listed
+- [ ] Vercel has `FIREBASE_SERVICE_ACCOUNT`, `CORS_ALLOWED_ORIGINS`, `SUPABASE_URL`, `SUPABASE_SECRET_KEY`, and `SUPABASE_STORAGE_BUCKET`
 
 ### Git & Repository
 - [ ] Code is committed to git
@@ -32,7 +41,7 @@
 cd /workspaces/MVP
 git add .
 git commit -m "Vercel deployment setup"
-git push origin main
+git push origin agent/optimize-mobile-media
 
 # 2. Go to https://vercel.com/new
 # 3. Import GitHub repository
@@ -41,7 +50,7 @@ git push origin main
 # 6. Click Deploy
 ```
 
-**Expected Result:** `https://mvp-client-xxx.vercel.app` ✓
+**Expected Result:** A Vercel client deployment such as `https://client-opal-five-77.vercel.app` ✓
 
 ---
 
@@ -57,7 +66,7 @@ git push origin main
 # 6. Click Deploy
 ```
 
-**Expected Result:** `https://mvp-server-xxx.vercel.app` ✓
+**Expected Result:** A Vercel API deployment such as `https://unitex-server.vercel.app` ✓
 
 ---
 
@@ -66,13 +75,13 @@ git push origin main
 ### Update Client to Use Deployed Server
 In client Vercel dashboard:
 - Go to Settings > Environment Variables
-- Add: `VITE_API_URL=https://mvp-server-xxx.vercel.app`
+- Add: `VITE_API_URL=https://unitex-server.vercel.app`
 - Re-deploy
 
 ### Test Endpoints
 ```bash
 # Test server health
-curl https://mvp-server-xxx.vercel.app/api/health
+curl https://unitex-server.vercel.app/api/health
 
 # Should return:
 # {"status":"ok","timestamp":"2026-03-25T..."}

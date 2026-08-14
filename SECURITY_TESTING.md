@@ -8,8 +8,8 @@ Ship only when the automated security gate is green, no High/Critical dependency
 
 Set these values in the matching deployment environment before enabling real users:
 
-- Client Vercel project: the seven `VITE_FIREBASE_*` values and `VITE_API_URL`.
-- Server Vercel project: `FIREBASE_SERVICE_ACCOUNT`, `CORS_ALLOWED_ORIGINS`, and `INTERNAL_API_KEY`.
+- Client Vercel project: the seven `VITE_FIREBASE_*` values, `VITE_API_URL`, `VITE_SUPABASE_URL`, and `VITE_SUPABASE_PUBLISHABLE_KEY`.
+- Server Vercel project: `FIREBASE_SERVICE_ACCOUNT`, `CORS_ALLOWED_ORIGINS`, `INTERNAL_API_KEY`, `SUPABASE_URL`, `SUPABASE_SECRET_KEY`, and `SUPABASE_STORAGE_BUCKET`.
 - Media service host: Firebase Admin credentials and the same `CORS_ALLOWED_ORIGINS` value.
 
 Do not put any Firebase Admin credential, internal API key, blockchain private key, or database URL in a `VITE_*` variable.
@@ -29,3 +29,9 @@ Do not put any Firebase Admin credential, internal API key, blockchain private k
 - All High/Critical findings are fixed and retested; Medium/Low findings have an owner and due date.
 - Vercel production has the required environment variables, least-privilege service account, CORS allowlists, and a separate staging configuration.
 - The media service is reachable only over HTTPS, requires a Firebase ID token, validates file signatures, and stores data on durable storage rather than Vercel's ephemeral filesystem.
+
+## Current public smoke-test targets
+
+- Client: `https://client-opal-five-77.vercel.app`
+- API health: `https://unitex-server.vercel.app/api/health`
+- Approved browser origin: `https://client-opal-five-77.vercel.app`

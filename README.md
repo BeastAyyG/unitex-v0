@@ -2,7 +2,7 @@
 
 UnitX is a community platform for learning, building, sharing progress, and connecting with other people.
 
-**Live site:** [unitx-app.vercel.app](https://unitx-app.vercel.app)
+**Live site:** [client-opal-five-77.vercel.app](https://client-opal-five-77.vercel.app)
 
 ## What it includes
 
@@ -24,7 +24,7 @@ UnitX is a community platform for learning, building, sharing progress, and conn
 
 ## Run locally
 
-1. Install Node.js 20 or newer and copy `.env.example` to `.env`.
+1. Install Node.js 22 or newer and copy `.env.example` to `.env`.
 2. Install dependencies:
 
    ```bash
@@ -49,13 +49,20 @@ The client runs at `http://localhost:3004` by default.
 
 ## Deployment
 
-The web application is deployed from the `client/` folder to Vercel. The current public link is [unitx-app.vercel.app](https://unitx-app.vercel.app).
+The web application is deployed from the `client/` folder to Vercel. The current public link is [client-opal-five-77.vercel.app](https://client-opal-five-77.vercel.app). The API is deployed from `server/` at [unitex-server.vercel.app](https://unitex-server.vercel.app); its public health check is [unitex-server.vercel.app/api/health](https://unitex-server.vercel.app/api/health).
 
 For deployment instructions, required environment variables, and production checks, see [VERCEL_DEPLOYMENT.md](VERCEL_DEPLOYMENT.md) and [VERCEL_CHECKLIST.md](VERCEL_CHECKLIST.md).
 
 ### Supabase media storage
 
 UnitX uses the free Supabase project `UnitX Storage` with a private `media` bucket. Firebase authenticates the user, the UnitX API creates a short-lived upload URL, and the browser uploads the file directly to Supabase. Keep `SUPABASE_SECRET_KEY` server-only; only `VITE_SUPABASE_URL` and `VITE_SUPABASE_PUBLISHABLE_KEY` belong in the client deployment. The supported media limit is 50 MB per file.
+
+### Production requirements and known limits
+
+- Google/email/phone login and authenticated media uploads remain in demo mode until the seven `VITE_FIREBASE_*` client variables and the server-only `FIREBASE_SERVICE_ACCOUNT` are configured in Vercel. Never commit the service account JSON.
+- Set `CORS_ALLOWED_ORIGINS` to the exact public client origin (`https://client-opal-five-77.vercel.app`) and add any future custom domain explicitly.
+- Connection and points persistence requires `DATABASE_URL`; without it, local/serverless fallback behavior is limited and should not be treated as production storage.
+- The production branch is `agent/optimize-mobile-media`; pushes to it deploy the current public client and API projects.
 
 ## Documentation
 

@@ -1,5 +1,14 @@
 # Deployment Guide for Vercel
 
+## Current UnitX links
+
+- Public client: [https://client-opal-five-77.vercel.app](https://client-opal-five-77.vercel.app)
+- Public API: [https://unitex-server.vercel.app](https://unitex-server.vercel.app)
+- Health check: [https://unitex-server.vercel.app/api/health](https://unitex-server.vercel.app/api/health)
+- Production branch: `agent/optimize-mobile-media`
+
+Pushes to the production branch deploy the connected `client/` and `server/` Vercel projects. Keep Firebase Admin and Supabase secret values in Vercel only; never commit them.
+
 ## Prerequisites
 - GitHub account
 - Vercel account (free tier available)

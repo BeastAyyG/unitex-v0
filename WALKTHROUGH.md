@@ -22,6 +22,9 @@ The login experience has been completely transformed with a high-end, two-column
 - [x] **Build Integrity**: ✅ PASS (Production bundle successfully generated)
 - [x] **Auth Context**: ✅ VERIFIED (Phone auth methods correctly integrated into `AuthContext`)
 - [x] **UI Layout**: ✅ VERIFIED (Responsive two-column grid confirmed)
+- [x] **ESM Vite Configuration**: ✅ VERIFIED (Replaced deprecated `__dirname` alias resolution with `fileURLToPath(new URL('./src', import.meta.url))` in `client/vite.config.ts`)
 
 ## Next Steps
 - **Firebase Console**: Ensure **Phone** is enabled as a sign-in provider and that your authorized domains include the production URL for Recaptcha to work seamlessly in production.
+- **Environment Setup**: Ensure all required environment variables outlined in `VERCEL_CHECKLIST.md` are added to your Vercel deployment project settings.
+- **Public smoke test**: Verify `https://client-opal-five-77.vercel.app` and `https://unitex-server.vercel.app/api/health` before enabling real users.
