@@ -54,3 +54,13 @@ test('points cannot be awarded by a public browser request', async () => {
     });
     assert.equal(response.status, 403);
 });
+
+test('media upload preparation rejects unauthenticated requests', async () => {
+    const response = await request('/api/media/upload-url', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ name: 'photo.png', size: 1024, type: 'image/png' }),
+    });
+    assert.equal(response.status, 401);
+    assert.match(response.body, /Firebase ID token/i);
+});

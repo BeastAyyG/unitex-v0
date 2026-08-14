@@ -1,6 +1,7 @@
 export type MediaType = 'image' | 'video' | 'audio';
 
-export const MAX_MEDIA_FILE_SIZE = 100 * 1024 * 1024;
+// Supabase's free storage plan accepts uploads up to 50 MB per file.
+export const MAX_MEDIA_FILE_SIZE = 50 * 1024 * 1024;
 
 export const ACCEPTED_MEDIA_TYPES = [
     'image/jpeg', 'image/png', 'image/webp', 'image/gif', 'image/avif',
@@ -27,6 +28,6 @@ export function getMediaType(file: Pick<File, 'type' | 'name'>): MediaType | nul
 export function validateMediaFile(file: File): string | null {
     const type = getMediaType(file);
     if (!type) return 'This file type is not supported. Use an image, video, or audio file.';
-    if (file.size > MAX_MEDIA_FILE_SIZE) return 'Media files must be 100 MB or smaller.';
+    if (file.size > MAX_MEDIA_FILE_SIZE) return 'Media files must be 50 MB or smaller.';
     return null;
 }

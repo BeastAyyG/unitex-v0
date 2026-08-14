@@ -1,9 +1,11 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
+const crypto = require('crypto');
 const { pool, initializeDatabase } = require('./db');
 const scraper = require('./scraper');
 const { requireFirebaseAuth, requireInternalKey } = require('./auth');
+const { createDownloadUrl, createUploadUrl } = require('./services/storage');
 
 const app = express();
 const port = process.env.PORT || 5002;
@@ -12,6 +14,25 @@ const allowedOrigins = (process.env.CORS_ALLOWED_ORIGINS || '')
     .split(',')
     .map((origin) => origin.trim())
     .filter(Boolean);
+
+const MAX_MEDIA_FILE_SIZE = 50 * 1024 * 1024;
+const ALLOWED_MEDIA_TYPES = new Set([
+    'image/jpeg', 'image/png', 'image/webp', 'image/gif', 'image/avif',
+    'video/mp4', 'video/webm', 'video/quicktime', 'video/ogg', 'video/3gpp', 'video/x-m4v',
+    'audio/mpeg', 'audio/mp4', 'audio/ogg', 'audio/wav', 'audio/webm', 'audio/aac', 'audio/flac', 'audio/x-m4a',
+]);
+
+function safeMediaName(name) {
+    return String(name || 'file')
+        .normalize('NFKC')
+        .replace(/[^a-zA-Z0-9._-]/g, '_')
+        .replace(/^\.+/, '')
+        .slice(-120) || 'file';
+}
+
+function safeUserPath(uid) {
+    return String(uid).replace(/[^a-zA-Z0-9_-]/g, '_');
+}
 
 function rateLimit({ windowMs, max }) {
     const requests = new Map();
@@ -73,6 +94,68 @@ app.use((req, res, next) => {
 // Health check
 app.get('/api/health', (req, res) => {
     res.json({ status: 'ok', timestamp: new Date() });
+});
+
+// Private media storage. The Firebase-authenticated server creates the short-lived
+// upload URL, while the browser sends the file directly to Supabase Storage.
+app.post('/api/media/upload-url', requireFirebaseAuth, rateLimit({ windowMs: 60_000, max: 10 }), async (req, res) => {
+    const { name, type, size } = req.body || {};
+    const fileSize = Number(size);
+
+    if (typeof name !== 'string' || !name.trim()) {
+        return res.status(400).json({ error: 'A file name is required.' });
+    }
+    if (!ALLOWED_MEDIA_TYPES.has(type)) {
+        return res.status(415).json({ error: 'This media type is not supported.' });
+    }
+    if (!Number.isFinite(fileSize) || fileSize <= 0 || fileSize > MAX_MEDIA_FILE_SIZE) {
+        return res.status(413).json({ error: 'Media files must be 50 MB or smaller.' });
+    }
+
+    const path = `${safeUserPath(req.user.uid)}/${crypto.randomUUID()}-${safeMediaName(name)}`;
+
+    try {
+        const data = await createUploadUrl(path);
+        res.json({
+            path,
+            token: data.token,
+            signedUploadUrl: data.signedUrl,
+            filename: safeMediaName(name),
+        });
+    } catch (error) {
+        console.error('[Media] Unable to create upload URL:', error.message);
+        const status = error.message?.includes('not configured') ? 503 : 500;
+        res.status(status).json({ error: status === 503 ? error.message : 'Unable to prepare media upload.' });
+    }
+});
+
+app.post('/api/media/finalize', requireFirebaseAuth, rateLimit({ windowMs: 60_000, max: 20 }), async (req, res) => {
+    const { path, fileHash, mediaType } = req.body || {};
+    const ownerPrefix = `${safeUserPath(req.user.uid)}/`;
+
+    if (typeof path !== 'string' || !path.startsWith(ownerPrefix) || path.includes('..')) {
+        return res.status(403).json({ error: 'You can only finalize your own media.' });
+    }
+    if (!['image', 'video', 'audio'].includes(mediaType)) {
+        return res.status(400).json({ error: 'A valid media type is required.' });
+    }
+
+    try {
+        const mediaURL = await createDownloadUrl(path);
+        const filename = path.slice(path.lastIndexOf('/') + 1);
+        res.json({
+            success: true,
+            docId: path,
+            filename,
+            mediaURL,
+            mediaType,
+            fileHash: typeof fileHash === 'string' && /^[a-f0-9]{64}$/i.test(fileHash) ? fileHash : '',
+            txHash: null,
+        });
+    } catch (error) {
+        console.error('[Media] Unable to finalize upload:', error.message);
+        res.status(500).json({ error: 'The uploaded media could not be finalized.' });
+    }
 });
 
 // Rewards & Points System
