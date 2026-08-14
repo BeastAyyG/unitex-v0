@@ -59,7 +59,7 @@ UnitX uses the free Supabase project `UnitX Storage` with a private `media` buck
 
 ### Production requirements and known limits
 
-- Google/email/phone login and authenticated media uploads remain in demo mode until the seven `VITE_FIREBASE_*` client variables and the server-only `FIREBASE_SERVICE_ACCOUNT` are configured in Vercel. Never commit the service account JSON.
+- Google/email/guest login and authenticated media uploads remain in demo mode until the seven `VITE_FIREBASE_*` client variables and the server-only `FIREBASE_SERVICE_ACCOUNT` are configured in Vercel. Phone/SMS authentication is intentionally disabled to avoid usage charges. Never commit the service account JSON.
 - Set `CORS_ALLOWED_ORIGINS` to the exact public client origin (`https://client-opal-five-77.vercel.app`) and add any future custom domain explicitly.
 - Connection and points persistence requires `DATABASE_URL`; without it, local/serverless fallback behavior is limited and should not be treated as production storage.
 - The production branch is `agent/optimize-mobile-media`; pushes to it deploy the current public client and API projects.

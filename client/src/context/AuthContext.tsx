@@ -7,9 +7,6 @@ import {
     signOut as firebaseSignOut,
     onAuthStateChanged,
     updateProfile,
-    RecaptchaVerifier,
-    signInWithPhoneNumber,
-    ConfirmationResult,
     signInAnonymously
 } from 'firebase/auth';
 import { doc, setDoc, getDoc, serverTimestamp, onSnapshot } from 'firebase/firestore';
@@ -24,8 +21,6 @@ export interface AuthContextType {
     signInWithGoogle: () => Promise<void>;
     signInWithEmail: (email: string, password: string) => Promise<void>;
     signUpWithEmail: (email: string, password: string, displayName: string) => Promise<void>;
-    signInWithPhone: (phoneNumber: string, recaptchaContainerId: string) => Promise<void>;
-    verifyOtp: (otp: string) => Promise<void>;
     signInAsGuest: () => Promise<void>;
     signOut: () => Promise<void>;
 }
@@ -93,7 +88,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const [currentUser, setCurrentUser] = useState<User | null>(isDemoMode ? MOCK_USER : null);
     const [userData, setUserData] = useState<any | null>(isDemoMode ? MOCK_USER_DATA : null);
     const [loading, setLoading] = useState(true);
-    const [confirmationResult, setConfirmationResult] = useState<ConfirmationResult | null>(null);
 
     useEffect(() => {
         if (isDemoMode) {
@@ -152,27 +146,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         await createUserDocument(result.user);
     };
 
-    const signInWithPhone = async (phoneNumber: string, recaptchaContainerId: string) => {
-        const verifier = new RecaptchaVerifier(auth, recaptchaContainerId, { size: 'invisible' });
-        const result = await signInWithPhoneNumber(auth, phoneNumber, verifier);
-        setConfirmationResult(result);
-    };
-
-    const verifyOtp = async (otp: string) => {
-        if (!confirmationResult) throw new Error('No pending phone verification');
-        const result = await confirmationResult.confirm(otp);
-        await createUserDocument(result.user);
-    };
-
     const signInAsGuest = async () => {
+        if (isDemoMode) {
+            setCurrentUser(MOCK_USER);
+            setUserData(MOCK_USER_DATA);
+            setLoading(false);
+            return;
+        }
+
         try {
             const result = await signInAnonymously(auth);
             await createUserDocument(result.user);
         } catch (err) {
-            console.warn('Firebase unavailable, entering demo mode');
-            setCurrentUser(MOCK_USER);
-            setUserData(MOCK_USER_DATA);
-            setLoading(false);
+            console.warn('Firebase guest authentication failed:', err);
+            throw err instanceof Error ? err : new Error('Guest authentication failed.');
         }
     };
 
@@ -193,8 +180,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             signInWithGoogle,
             signInWithEmail,
             signUpWithEmail,
-            signInWithPhone,
-            verifyOtp,
             signInAsGuest,
             signOut
         }}>

@@ -1,5 +1,5 @@
 import { initializeApp, FirebaseApp } from "firebase/app";
-import { getAuth, GoogleAuthProvider, RecaptchaVerifier, signInWithPhoneNumber, connectAuthEmulator, Auth } from "firebase/auth";
+import { getAuth, GoogleAuthProvider, connectAuthEmulator, Auth } from "firebase/auth";
 import { getFirestore, connectFirestoreEmulator, Firestore } from "firebase/firestore";
 import { getDatabase, connectDatabaseEmulator, Database } from "firebase/database";
 
@@ -58,5 +58,4 @@ export const db = _db as Firestore;
 export const rtdb = _rtdb as Database;
 export const googleProvider = _auth ? new GoogleAuthProvider() : null;
 
-export { RecaptchaVerifier, signInWithPhoneNumber };
 export default app;
