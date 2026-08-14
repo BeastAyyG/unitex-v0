@@ -249,6 +249,9 @@ app.post('/api/points/award', requireInternalKey, rateLimit({ windowMs: 60_000, 
 
 // Basic error handling
 app.use((err, req, res, next) => {
+    if (err.message === 'Origin is not allowed by CORS policy.') {
+        return res.status(403).json({ error: err.message });
+    }
     console.error(err.stack);
     res.status(500).json({ error: 'Something went wrong!' });
 });

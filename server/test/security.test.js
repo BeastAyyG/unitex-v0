@@ -1,4 +1,5 @@
 process.env.VERCEL = '1';
+process.env.CORS_ALLOWED_ORIGINS = 'https://allowed.example';
 
 const assert = require('node:assert/strict');
 const { after, before, test } = require('node:test');
@@ -36,6 +37,14 @@ test('health endpoint sends defensive headers', async () => {
     assert.equal(response.headers['x-content-type-options'], 'nosniff');
     assert.equal(response.headers['x-frame-options'], 'DENY');
     assert.equal(response.headers['referrer-policy'], 'strict-origin-when-cross-origin');
+});
+
+test('disallowed browser origins receive a clear CORS denial', async () => {
+    const response = await request('/api/health', {
+        headers: { origin: 'https://evil.example' },
+    });
+    assert.equal(response.status, 403);
+    assert.match(response.body, /Origin is not allowed/i);
 });
 
 test('connection mutations reject unauthenticated requests', async () => {
