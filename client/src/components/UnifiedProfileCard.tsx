@@ -41,7 +41,8 @@ export function UnifiedProfileCard() {
         }
     }, [currentUser]);
 
-    const profileUrl = `https://unitex.io/profile/${username || currentUser?.uid || 'guest'}`;
+    const publicId = usercode || currentUser?.uid || 'guest';
+    const profileUrl = `${window.location.origin}/u/${encodeURIComponent(publicId)}`;
 
     const copyProfileUrl = () => {
         navigator.clipboard.writeText(profileUrl);
