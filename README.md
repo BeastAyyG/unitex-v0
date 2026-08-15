@@ -4,6 +4,16 @@ UnitX is a community platform for learning, building, sharing progress, and conn
 
 **Live site:** [client-opal-five-77.vercel.app](https://client-opal-five-77.vercel.app)
 
+## Screenshots
+
+### UnitX workspace
+
+![UnitX workspace](docs/screenshots/home.jpg)
+
+### Public shareable profile
+
+![UnitX public profile](docs/screenshots/public-profile.jpg)
+
 ## What it includes
 
 - Activity feed, profiles, communities, events, messages, and notifications
