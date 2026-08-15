@@ -5,9 +5,16 @@
 - Public client: [https://client-opal-five-77.vercel.app](https://client-opal-five-77.vercel.app)
 - Public API: [https://unitex-server.vercel.app](https://unitex-server.vercel.app)
 - Health check: [https://unitex-server.vercel.app/api/health](https://unitex-server.vercel.app/api/health)
+- Public profile example: [https://client-opal-five-77.vercel.app/u/DEMO01](https://client-opal-five-77.vercel.app/u/DEMO01)
 - Production branch: `agent/optimize-mobile-media`
 
 Pushes to the production branch deploy the connected `client/` and `server/` Vercel projects. Keep Firebase Admin and Supabase secret values in Vercel only; never commit them.
+
+The client is publicly reachable, but the workspace routes remain protected by Firebase authentication. Shareable profiles use `/u/<public-id>` and read only the safe summary in `public_profiles`. Once Firebase is configured, deploy the rules from the repository root with:
+
+```bash
+firebase deploy --only firestore:rules
+```
 
 ## Prerequisites
 - GitHub account

@@ -22,6 +22,22 @@ service cloud.firestore {
       }
     }
 
+    // Public route data is intentionally separated from private user records.
+    // Anonymous visitors can fetch one known profile ID, but cannot list the
+    // collection or read private fields from users/{userId}.
+    match /public_profiles/{publicId} {
+      allow get: if true;
+      allow list: if false;
+      allow create: if signedIn()
+        && request.auth.uid == request.resource.data.uid
+        && (publicId == request.resource.data.publicId || publicId == request.auth.uid);
+      allow update: if signedIn()
+        && resource.data.uid == request.auth.uid
+        && request.resource.data.uid == resource.data.uid
+        && (publicId == request.resource.data.publicId || publicId == request.auth.uid);
+      allow delete: if signedIn() && resource.data.uid == request.auth.uid;
+    }
+
     match /posts/{postId} {
       allow read: if true;
       allow create: if signedIn() && request.resource.data.author.id == request.auth.uid;

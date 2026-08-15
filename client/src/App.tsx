@@ -20,6 +20,7 @@ const Settings = lazy(() => import('./pages/Settings'));
 const Notifications = lazy(() => import('./pages/Notifications'));
 const Dashboard = lazy(() => import('./pages/Dashboard'));
 const OtherProfile = lazy(() => import('@/pages/OtherProfile'));
+const PublicProfile = lazy(() => import('./pages/PublicProfile'));
 const EventDetail = lazy(() => import('@/pages/EventDetail'));
 const DiscoverDetail = lazy(() => import('@/pages/DiscoverDetail'));
 const Login = lazy(() => import('./pages/Login'));
@@ -46,6 +47,8 @@ function AppRoutes() {
         <Suspense fallback={<RouteLoading />}>
         <Routes>
             <Route path="/login" element={<Login />} />
+            <Route path="/u/:publicId" element={<PublicProfile />} />
+            <Route path="/join/:publicId" element={<PublicProfile />} />
             <Route path="/onboarding" element={<ProtectedRoute><Onboarding /></ProtectedRoute>} />
             <Route
                 path="/"

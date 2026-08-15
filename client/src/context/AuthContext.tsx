@@ -13,6 +13,7 @@ import { doc, setDoc, getDoc, serverTimestamp, onSnapshot } from 'firebase/fires
 import { auth, db, googleProvider, isDemoMode } from '@/lib/firebase';
 import { syncUserToRTDB } from '@/lib/rtdb';
 import { generateUsercode, generateSafeHandle } from '@/lib/intelligence/identity';
+import { syncPublicProfile } from '@/lib/firestore';
 
 export interface AuthContextType {
     currentUser: User | null;
@@ -75,9 +76,16 @@ async function createUserDocument(user: User) {
                 badges: [],
                 hasSeenCredentials: false,
                 onboardingCompleted: false,
+                publicProfile: true,
                 createdAt: serverTimestamp(),
             });
         }
+        const profileData = snap.exists() ? (snap.data() || {}) : ((await getDoc(userRef)).data() || {});
+        await syncPublicProfile(user.uid, {
+            ...profileData,
+            displayName: profileData.displayName || user.displayName || 'UnitX User',
+            photoURL: profileData.photoURL || user.photoURL || '',
+        });
         await syncUserToRTDB(user);
     } catch (err) {
         console.warn('Could not create user document:', err);
@@ -107,7 +115,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
                 if (user) {
                     const userDocRef = doc(db, 'users', user.uid);
                     unsubscribeData = onSnapshot(userDocRef, (snap) => {
-                        if (snap.exists()) setUserData(snap.data());
+                        if (snap.exists()) {
+                            const data = snap.data();
+                            setUserData(data);
+                            void syncPublicProfile(user.uid, {
+                                ...data,
+                                displayName: data.displayName || user.displayName || 'UnitX User',
+                                photoURL: data.photoURL || user.photoURL || '',
+                            });
+                        }
                     });
                 } else {
                     setUserData(null);

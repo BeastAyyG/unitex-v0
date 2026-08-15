@@ -51,6 +51,16 @@ The client runs at `http://localhost:3004` by default.
 
 The web application is deployed from the `client/` folder to Vercel. The current public link is [client-opal-five-77.vercel.app](https://client-opal-five-77.vercel.app). The API is deployed from `server/` at [unitex-server.vercel.app](https://unitex-server.vercel.app); its public health check is [unitex-server.vercel.app/api/health](https://unitex-server.vercel.app/api/health).
 
+### Public profile links
+
+The site itself is reachable by anyone, while the main workspace remains login-protected. Each account can share a public profile link in this format:
+
+`https://client-opal-five-77.vercel.app/u/<public-id>`
+
+For example, the demo profile is [client-opal-five-77.vercel.app/u/DEMO01](https://client-opal-five-77.vercel.app/u/DEMO01). Public pages expose only the profile summary stored in `public_profiles`; messages, settings, rewards, uploads, and private account data stay protected.
+
+After enabling Firebase, deploy [firestore.rules](firestore.rules) once with `firebase deploy --only firestore:rules`. A signed-in account automatically creates or refreshes its public profile summary.
+
 For deployment instructions, required environment variables, and production checks, see [VERCEL_DEPLOYMENT.md](VERCEL_DEPLOYMENT.md) and [VERCEL_CHECKLIST.md](VERCEL_CHECKLIST.md).
 
 ### Supabase media storage

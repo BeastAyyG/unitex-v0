@@ -47,7 +47,8 @@ function Profile() {
         }
     }, [currentUser]);
 
-    const profileUrl = `https://unitex.io/profile/${currentUser?.uid || 'user'}`;
+    const publicId = userData?.userId || userData?.usercode || currentUser?.uid || 'user';
+    const profileUrl = `${window.location.origin}/u/${encodeURIComponent(publicId)}`;
     const copyProfileUrl = () => {
         navigator.clipboard.writeText(profileUrl);
         toast.success("Profile URL copied!");

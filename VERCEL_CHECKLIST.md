@@ -15,6 +15,8 @@
 - [ ] Build succeeds: `npm run build` in `/client`
 - [ ] `dist/` folder is created with `index.html`
 - [ ] ESLint passes: `npm run lint` returns no errors
+- [ ] Anonymous browser can open `/u/DEMO01` and copy/share the public link
+- [ ] Anonymous browser is not given access to `/messages`, `/settings`, or media upload actions
 - [ ] Vercel has the seven `VITE_FIREBASE_*` values, `VITE_API_URL`, `VITE_SUPABASE_URL`, and `VITE_SUPABASE_PUBLISHABLE_KEY`
 
 ### Server Setup
@@ -24,6 +26,7 @@
 - [ ] `src/index.js` listens on `process.env.PORT`
 - [ ] All dependencies in `package.json` are listed
 - [ ] Vercel has `FIREBASE_SERVICE_ACCOUNT`, `CORS_ALLOWED_ORIGINS`, `SUPABASE_URL`, `SUPABASE_SECRET_KEY`, and `SUPABASE_STORAGE_BUCKET`
+- [ ] Firebase rules are deployed: `firebase deploy --only firestore:rules`
 
 ### Git & Repository
 - [ ] Code is committed to git

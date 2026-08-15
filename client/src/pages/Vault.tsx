@@ -178,7 +178,7 @@ function Vault() {
     };
 
     const copyReferral = () => {
-        navigator.clipboard.writeText(`${window.location.origin}/join/${currentUser?.uid || ''}`);
+        navigator.clipboard.writeText(`${window.location.origin}/u/${encodeURIComponent(currentUser?.uid || '')}`);
         toast.success('Referral link copied!');
     };
 
@@ -443,7 +443,7 @@ function Vault() {
                         </p>
                         <div className="flex gap-3">
                             <div className="px-5 py-4 bg-white/5 border border-white/10 text-xs font-mono text-white/40 flex-1 flex items-center">
-                                unitex.io/join/alexander_552
+                                client-opal-five-77.vercel.app/u/DEMO01
                             </div>
                             <button 
                                 onClick={copyReferral}
