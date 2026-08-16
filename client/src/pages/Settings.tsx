@@ -190,7 +190,7 @@ function Settings() {
                                         <FieldLabel className="uppercase tracking-widest opacity-40 text-[10px] font-bold mb-3">Current password</FieldLabel>
                                         <div className="relative group">
                                             <Shield className="absolute left-4 top-1/2 -translate-y-1/2 opacity-20 text-[var(--color-text)] group-focus-within:text-[#6366f1] transition-all" size={18} />
-                                            <Input type="password" placeholder="••••••••" className="pl-12 h-14 bg-white border border-[var(--color-surface)] rounded-lg font-medium text-sm tracking-widest transition-all focus:ring-0 focus:border-[#6366f1] shadow-sm" />
+                                            <Input type="password" placeholder="••••••••" className="pl-12 h-14 bg-white border border-[var(--color-surface)] rounded-lg font-medium text-sm tracking-widest transition-all focus:ring-0 focus:border-[#6366f1] shadow-brutal-sm" />
                                         </div>
                                     </Field>
 
@@ -198,11 +198,11 @@ function Settings() {
                                         <FieldLabel className="uppercase tracking-widest opacity-40 text-[10px] font-bold mb-3">New password</FieldLabel>
                                         <div className="relative group">
                                             <Lock className="absolute left-4 top-1/2 -translate-y-1/2 opacity-20 text-[var(--color-text)] group-focus-within:text-[var(--color-accent)] transition-all" size={18} />
-                                            <Input type="password" placeholder="Enter new secret" className="pl-12 h-14 bg-white border border-[var(--color-surface)] rounded-lg font-medium text-sm tracking-widest transition-all focus:ring-0 focus:border-[var(--color-accent)] shadow-sm" />
+                                            <Input type="password" placeholder="Enter new secret" className="pl-12 h-14 bg-white border border-[var(--color-surface)] rounded-lg font-medium text-sm tracking-widest transition-all focus:ring-0 focus:border-[var(--color-accent)] shadow-brutal-sm" />
                                         </div>
                                     </Field>
 
-                                    <Button className="w-full h-16 bg-[var(--color-text)] text-white hover:bg-[var(--color-accent)] font-bold uppercase tracking-widest rounded-lg shadow-md transition-all active:scale-[0.98] text-xs">
+                                    <Button className="w-full h-16 bg-[var(--color-text)] text-white hover:bg-[var(--color-accent)] font-bold uppercase tracking-widest rounded-lg shadow-brutal-sm transition-all active:scale-[0.98] text-xs">
                                         Update Security Protocol
                                     </Button>
                                 </div>
@@ -221,7 +221,7 @@ function Settings() {
                                 <div>
                                     <label className="block text-[10px] font-bold mb-4 uppercase tracking-widest opacity-40">Identity Visualizer</label>
                                     <div className="flex flex-col sm:flex-row items-center sm:items-center gap-6">
-                                        <div className="w-24 h-24 rounded-lg bg-cover bg-center border border-[var(--color-surface)] shadow-sm relative group" 
+                                        <div className="w-24 h-24 rounded-lg bg-cover bg-center border border-[var(--color-surface)] shadow-brutal-sm relative group"
                                              style={{ backgroundImage: `url(${currentUser?.photoURL || 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?q=80&w=256&h=256&auto=format&fit=crop'})` }}>
                                              <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center cursor-pointer">
                                                  <Camera size={20} className="text-white" />
@@ -229,7 +229,7 @@ function Settings() {
                                              </div>
                                         </div>
                                         <div className="space-y-3">
-                                            <Button disabled={updating} onClick={() => document.querySelector<HTMLInputElement>('input[type="file"]')?.click()} className="bg-[var(--color-text)] text-white hover:bg-[var(--color-accent)] py-2.5 px-6 h-auto text-[10px] font-bold uppercase tracking-widest rounded-none transition-all shadow-sm">
+                                            <Button disabled={updating} onClick={() => document.querySelector<HTMLInputElement>('input[type="file"]')?.click()} className="bg-[var(--color-text)] text-white hover:bg-[var(--color-accent)] py-2.5 px-6 h-auto text-[10px] font-bold uppercase tracking-widest rounded-none transition-all shadow-brutal-sm">
                                                 Update Frame
                                             </Button>
                                             <p className="text-[10px] opacity-40 uppercase font-bold tracking-widest">JPG or PNG • Max 2MB</p>
@@ -241,7 +241,7 @@ function Settings() {
                                     <FieldLabel className="uppercase tracking-widest opacity-40 text-[10px] font-bold mb-3">Display Name</FieldLabel>
                                     <div className="relative group">
                                         <UserIcon className="absolute left-4 top-1/2 -translate-y-1/2 opacity-20 text-[var(--color-text)] group-focus-within:text-[var(--color-accent)] group-focus-within:opacity-100 transition-all" size={16} />
-                                        <Input value={displayName} onChange={(e) => setDisplayName(e.target.value)} placeholder="Full Name" className="pl-12 h-14 bg-white border border-[var(--color-surface)] rounded-lg font-medium text-sm transition-all focus:ring-0 focus:border-[var(--color-accent)] shadow-sm" />
+                                        <Input value={displayName} onChange={(e) => setDisplayName(e.target.value)} placeholder="Full Name" className="pl-12 h-14 bg-white border border-[var(--color-surface)] rounded-lg font-medium text-sm transition-all focus:ring-0 focus:border-[var(--color-accent)] shadow-brutal-sm" />
                                     </div>
                                 </Field>
 
@@ -249,7 +249,7 @@ function Settings() {
                                     <FieldLabel className="uppercase tracking-widest opacity-40 text-[10px] font-bold mb-3">Protocol Handle (@)</FieldLabel>
                                     <div className="relative group">
                                         <AtSign className="absolute left-4 top-1/2 -translate-y-1/2 opacity-20 text-[var(--color-text)] group-focus-within:text-[var(--color-accent)] group-focus-within:opacity-100 transition-all" size={16} />
-                                        <Input value={username} onChange={(e) => setUsername(e.target.value)} placeholder="username" className="pl-12 h-14 bg-white border border-[var(--color-surface)] rounded-lg font-medium text-sm transition-all focus:ring-0 focus:border-[var(--color-accent)] shadow-sm" />
+                                        <Input value={username} onChange={(e) => setUsername(e.target.value)} placeholder="username" className="pl-12 h-14 bg-white border border-[var(--color-surface)] rounded-lg font-medium text-sm transition-all focus:ring-0 focus:border-[var(--color-accent)] shadow-brutal-sm" />
                                     </div>
                                 </Field>
 
@@ -266,7 +266,7 @@ function Settings() {
                                     <FieldLabel className="uppercase tracking-widest opacity-40 text-[10px] font-bold mb-3">Base Location</FieldLabel>
                                     <div className="relative group">
                                         <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 opacity-20 text-[var(--color-text)] group-focus-within:text-[var(--color-accent)] group-focus-within:opacity-100 transition-all" size={16} />
-                                        <Input value={location} onChange={(e) => setLocation(e.target.value)} placeholder="Physical Node Location" className="pl-12 h-14 bg-white border border-[var(--color-surface)] rounded-lg font-medium text-sm transition-all focus:ring-0 focus:border-[var(--color-accent)] shadow-sm" />
+                                        <Input value={location} onChange={(e) => setLocation(e.target.value)} placeholder="Physical Node Location" className="pl-12 h-14 bg-white border border-[var(--color-surface)] rounded-lg font-medium text-sm transition-all focus:ring-0 focus:border-[var(--color-accent)] shadow-brutal-sm" />
                                     </div>
                                 </Field>
 
@@ -277,11 +277,11 @@ function Settings() {
                                     </div>
                                     <div className="relative group">
                                         <MessageSquare className="absolute left-4 top-5 opacity-20 text-[var(--color-text)] group-focus-within:text-[var(--color-accent)] group-focus-within:opacity-100 transition-all" size={16} />
-                                        <Textarea value={bio} onChange={(e) => setBio(e.target.value)} maxLength={280} placeholder="Share your focus area..." className="pl-12 pt-4 min-h-[140px] bg-white border border-[var(--color-surface)] rounded-lg font-medium text-sm resize-none transition-all focus:ring-0 focus:border-[var(--color-accent)] shadow-sm" />
+                                        <Textarea value={bio} onChange={(e) => setBio(e.target.value)} maxLength={280} placeholder="Share your focus area..." className="pl-12 pt-4 min-h-[140px] bg-white border border-[var(--color-surface)] rounded-lg font-medium text-sm resize-none transition-all focus:ring-0 focus:border-[var(--color-accent)] shadow-brutal-sm" />
                                     </div>
                                 </Field>
 
-                                <Button onClick={handleSaveProfile} disabled={updating} className="w-full h-16 bg-[var(--color-accent)] text-white hover:opacity-90 font-bold uppercase tracking-widest rounded-lg shadow-sm transition-all active:scale-[0.98] text-xs">
+                                <Button onClick={handleSaveProfile} disabled={updating} className="w-full h-16 bg-[var(--color-accent)] text-white hover:opacity-90 font-bold uppercase tracking-widest rounded-lg shadow-brutal-sm transition-all active:scale-[0.98] text-xs">
                                     {updating ? 'Processing Synchronization...' : 'Commit Persona Changes'}
                                 </Button>
                             </div>
@@ -402,7 +402,7 @@ function Settings() {
                             <p className="text-[10px] font-bold uppercase tracking-widest opacity-40 mb-8 max-w-sm leading-loose">Historical data of your contributions and accumulated influence.</p>
                             
                             <div className="grid grid-cols-2 gap-4 mb-8">
-                                <div className="p-6 border border-[var(--color-surface)] bg-white shadow-sm">
+                                <div className="p-6 border border-[var(--color-surface)] bg-white shadow-brutal-sm">
                                     <span className="text-[10px] font-bold uppercase tracking-widest opacity-40">Total EXP</span>
                                     <div className="text-3xl font-black mt-2 text-[var(--color-accent)]">{rewards.exp.toLocaleString()}</div>
                                     <div className="w-full h-1 bg-gray-100 mt-4 overflow-hidden">
@@ -410,7 +410,7 @@ function Settings() {
                                     </div>
                                     <p className="text-[8px] font-bold uppercase tracking-widest opacity-30 mt-2">Level {rewards.level} · {rewards.title}</p>
                                 </div>
-                                <div className="p-6 border border-[var(--color-surface)] bg-white shadow-sm">
+                                <div className="p-6 border border-[var(--color-surface)] bg-white shadow-brutal-sm">
                                     <span className="text-[10px] font-bold uppercase tracking-widest opacity-40">Total VP</span>
                                     <div className="text-3xl font-black mt-2 text-indigo-500">{rewards.vp.toLocaleString()}</div>
                                     <p className="text-[8px] font-bold uppercase tracking-widest opacity-30 mt-6 italic">Convertible to network perks.</p>
@@ -445,7 +445,7 @@ function Settings() {
                             <h2 className="text-3xl font-bold mb-4 tracking-tight">Growth Engine</h2>
                             <p className="text-[10px] font-bold uppercase tracking-widest opacity-40 mb-8 max-w-sm leading-loose">Invite new nodes to the Alliance and earn unique rewards.</p>
                             
-                            <div className="p-8 bg-[var(--color-text)] text-white shadow-xl relative overflow-hidden mb-8">
+                            <div className="p-8 bg-[var(--color-text)] text-white shadow-brutal relative overflow-hidden mb-8">
                                 <div className="flex flex-col gap-6 relative z-10">
                                     <div>
                                         <h3 className="text-xl font-bold uppercase tracking-tight mb-2">Your Unique Invite Code</h3>
@@ -510,7 +510,7 @@ function Settings() {
                                         <h4 className="text-xs font-bold uppercase tracking-widest text-red-600">Nuclear Protocol</h4>
                                         <p className="text-[10px] text-red-600/60 font-medium tracking-tight">Permanently wipe all node data and credentials.</p>
                                     </div>
-                                    <Button className="h-10 px-8 text-[10px] font-bold uppercase tracking-widest bg-red-600 text-white hover:bg-red-700 rounded-none transition-all shadow-sm">Initialize</Button>
+                                    <Button className="h-10 px-8 text-[10px] font-bold uppercase tracking-widest bg-red-600 text-white hover:bg-red-700 rounded-none transition-all shadow-brutal-sm">Initialize</Button>
                                 </div>
                             </div>
                         </section>
@@ -520,7 +520,7 @@ function Settings() {
             case 'Appearance':
                 return (
                     <div className="flex flex-col items-center justify-center h-[400px] text-[var(--color-text)]">
-                        <div className="border border-[var(--color-surface)] p-12 text-center shadow-sm max-w-md">
+                        <div className="border border-[var(--color-surface)] p-12 text-center shadow-brutal-sm max-w-md">
                             <h2 className="text-2xl font-bold tracking-tight mb-4">{activeSection} Module</h2>
                             <p className="text-[10px] uppercase tracking-widest bg-gray-50 inline-block px-4 py-1 font-bold text-[var(--color-accent)]">Initialization in Progress</p>
                             <p className="mt-8 opacity-40 text-[10px] font-bold uppercase tracking-widest italic">Check back later for system updates.</p>
@@ -546,7 +546,7 @@ function Settings() {
                                     className={cn(
                                         "w-full flex items-center gap-4 px-6 py-4 transition-all duration-200 group border border-transparent rounded-lg",
                                         activeSection === section.id
-                                            ? "bg-white text-[var(--color-text)] border-[var(--color-surface)] shadow-sm"
+                                            ? "bg-white text-[var(--color-text)] border-[var(--color-surface)] shadow-brutal-sm"
                                             : "text-gray-400 hover:text-[var(--color-text)] hover:bg-white/50"
                                     )}
                                 >
@@ -578,7 +578,7 @@ function Settings() {
                     </aside>
 
                     {/* Content Area */}
-                    <main className="flex-1 max-w-2xl bg-white border border-[var(--color-surface)] p-6 lg:p-8 shadow-sm rounded-lg min-h-[600px]">
+                    <main className="flex-1 max-w-2xl bg-white border border-[var(--color-surface)] p-6 lg:p-8 shadow-brutal-sm rounded-lg min-h-[600px]">
                         {renderContent()}
                     </main>
                 </div>

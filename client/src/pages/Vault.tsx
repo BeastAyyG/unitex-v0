@@ -190,7 +190,7 @@ function Vault() {
             <div className="max-w-4xl mx-auto space-y-12">
                 
                 {/* 1. Vault Store Header (Non-Sticky as requested) */}
-                <div className="bg-white border border-[var(--color-surface)] shadow-sm">
+                <div className="bg-white border border-[var(--color-surface)] shadow-brutal-sm">
                     <div className="p-6 md:p-10 flex flex-col md:flex-row md:items-center justify-between gap-8">
                         <div>
                             <div className="flex items-center gap-2 text-gray-400 mb-2">
@@ -225,7 +225,7 @@ function Vault() {
                                 onClick={() => setActiveTab('store')}
                                 className={cn(
                                     "px-6 py-2.5 text-[10px] font-bold capitalize tracking-wider transition-all",
-                                    activeTab === 'store' ? "bg-white shadow-sm text-[var(--color-text)]" : "text-gray-400 hover:text-[var(--color-text)]"
+                                    activeTab === 'store' ? "bg-white shadow-brutal-sm text-[var(--color-text)]" : "text-gray-400 hover:text-[var(--color-text)]"
                                 )}
                             >
                                 Store
@@ -234,7 +234,7 @@ function Vault() {
                                 onClick={() => setActiveTab('instructions')}
                                 className={cn(
                                     "px-6 py-2.5 text-[10px] font-bold capitalize tracking-wider transition-all",
-                                    activeTab === 'instructions' ? "bg-white shadow-sm text-[var(--color-text)]" : "text-gray-400 hover:text-[var(--color-text)]"
+                                    activeTab === 'instructions' ? "bg-white shadow-brutal-sm text-[var(--color-text)]" : "text-gray-400 hover:text-[var(--color-text)]"
                                 )}
                             >
                                 How to earn
@@ -260,7 +260,7 @@ function Vault() {
                                             onClick={() => setActiveCategory(cat)}
                                             className={cn(
                                                 "px-4 py-2 text-[10px] font-bold capitalize tracking-wider transition-all",
-                                                activeCategory === cat ? "bg-white shadow-sm text-[var(--color-text)]" : "text-gray-400 hover:text-[var(--color-text)]"
+                                                activeCategory === cat ? "bg-white shadow-brutal-sm text-[var(--color-text)]" : "text-gray-400 hover:text-[var(--color-text)]"
                                             )}
                                         >
                                             {cat}
@@ -276,7 +276,7 @@ function Vault() {
                                         <div 
                                             key={item.id} 
                                             className={cn(
-                                                "bg-white border p-8 group transition-all shadow-sm relative overflow-hidden flex flex-col justify-between min-h-[340px]",
+                                                "bg-white border p-8 group transition-all shadow-brutal-sm relative overflow-hidden flex flex-col justify-between min-h-[340px]",
                                                 isAffordable ? "border-[var(--color-surface)] hover:border-[var(--color-accent)]" : "border-dashed border-gray-100 opacity-80"
                                             )}
                                         >
@@ -350,7 +350,7 @@ function Vault() {
                     <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 space-y-10">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
                             {/* How to Earn */}
-                            <div className="bg-white border border-[var(--color-surface)] p-10 shadow-sm">
+                            <div className="bg-white border border-[var(--color-surface)] p-10 shadow-brutal-sm">
                                 <h3 className="text-xs font-bold capitalize tracking-wider text-[var(--color-text)] mb-10 flex items-center gap-4">
                                     <TrendingUp size={16} className="text-[var(--color-accent)]" /> 1. Acquire VP
                                 </h3>
@@ -370,7 +370,7 @@ function Vault() {
                             </div>
 
                             {/* How to Exchange */}
-                            <div className="bg-white border border-[var(--color-surface)] p-10 shadow-sm">
+                            <div className="bg-white border border-[var(--color-surface)] p-10 shadow-brutal-sm">
                                 <h3 className="text-xs font-bold capitalize tracking-wider text-[var(--color-text)] mb-10 flex items-center gap-4">
                                     <ShoppingBag size={16} className="text-[var(--color-accent)]" /> 2. Exchange VP
                                 </h3>
@@ -413,7 +413,7 @@ function Vault() {
                             </div>
 
                             {/* Earning Tip */}
-                            <div className="bg-[var(--color-text)] text-white p-10 shadow-xl border-l-[6px] border-[var(--color-accent)]">
+                            <div className="bg-[var(--color-text)] text-white p-10 shadow-brutal border-l-[6px] border-[var(--color-accent)]">
                                 <h3 className="text-[10px] font-bold capitalize tracking-wider text-white/30 mb-10">Maximum output</h3>
                                 <div className="space-y-8">
                                     <p className="text-base font-medium leading-relaxed italic text-gray-200">
@@ -430,7 +430,7 @@ function Vault() {
                 )}
 
                 {/* 🚀 Alliance Expansion (Preserved Section) */}
-                <div className="bg-[var(--color-text)] text-white p-12 shadow-2xl flex flex-col lg:flex-row items-center justify-between gap-10">
+                <div className="bg-[var(--color-text)] text-white p-12 shadow-brutal flex flex-col lg:flex-row items-center justify-between gap-10">
                     <div className="flex-1">
                         <div className="flex items-center gap-4 mb-4">
                             <div className="p-3 bg-[var(--color-accent)] text-black">
@@ -455,7 +455,7 @@ function Vault() {
                     </div>
                     <div className="flex -space-x-5 px-4">
                         {[1, 2, 3, 4, 5].map(i => (
-                            <div key={i} className="w-16 h-16 bg-gray-900 border-2 border-black group cursor-pointer relative overflow-hidden transition-transform hover:scale-110 z-10 hover:z-20 shadow-2xl">
+                            <div key={i} className="w-16 h-16 bg-gray-900 border-2 border-black group cursor-pointer relative overflow-hidden transition-transform hover:scale-110 z-10 hover:z-20 shadow-brutal">
                                 <img src={`https://i.pravatar.cc/150?u=${i+10}`} alt="user" className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" />
                                 <div className="absolute inset-0 bg-[var(--color-accent)] opacity-0 group-hover:opacity-20 transition-opacity" />
                             </div>

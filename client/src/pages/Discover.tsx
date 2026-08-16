@@ -15,7 +15,7 @@ import { calculateEngagementScore, applyTimeDecay, getRecommendationReason } fro
 // COMPONENT: News Post (Main Feed)
 // --------------------------------------------------------------------------
 const NewsPost = ({ category, source, time, title, content, image, tags, readTime, reason }: { category: string, source: string, time: string, title: string, content: string, image?: string, tags: string[], readTime: string, reason?: string }) => (
-    <div className="bg-white border border-[var(--color-surface)] p-4 md:p-6 shadow-sm rounded-lg text-[var(--color-text)] flex flex-col md:flex-row gap-4 group hover:border-gray-300 transition-colors">
+    <div className="bg-white border border-[var(--color-surface)] p-4 md:p-6 shadow-brutal-sm rounded-lg text-[var(--color-text)] flex flex-col md:flex-row gap-4 group hover:border-gray-300 transition-colors">
         <div className="flex-1 w-full min-w-0 flex flex-col">
             <div className="flex items-center justify-between flex-wrap gap-2 mb-3">
                 <div className="flex items-center gap-2.5">
@@ -79,11 +79,11 @@ const TrendingSlide = ({ title, desc, image, tag, linkTo, isBreaking }: { title:
         
         <div className="absolute inset-0 p-6 md:p-10 flex flex-col justify-center bg-gradient-to-r from-white via-white/90 to-transparent w-full md:w-2/3 pointer-events-none">
             <div className="flex items-center gap-2 mb-4">
-                <span className="inline-block px-2.5 py-1 bg-[var(--color-accent)]/10 text-[var(--color-accent)] text-[10px] font-bold capitalize tracking-wider w-max border border-[var(--color-accent)]/20 shadow-sm">
+                <span className="inline-block px-2.5 py-1 bg-[var(--color-accent)]/10 text-[var(--color-accent)] text-[10px] font-bold capitalize tracking-wider w-max border border-[var(--color-accent)]/20 shadow-brutal-sm">
                     {tag}
                 </span>
                 {isBreaking && (
-                    <span className="inline-block px-2.5 py-1 bg-red-500 text-white text-[10px] font-black uppercase tracking-widest w-max shadow-sm">
+                    <span className="inline-block px-2.5 py-1 bg-red-500 text-white text-[10px] font-black uppercase tracking-widest w-max shadow-brutal-sm">
                         Breaking
                     </span>
                 )}
@@ -97,7 +97,7 @@ const TrendingSlide = ({ title, desc, image, tag, linkTo, isBreaking }: { title:
             <div className="pointer-events-auto">
                 <button 
                     onClick={(e) => { e.stopPropagation(); window.location.href = linkTo; }}
-                    className="inline-flex items-center gap-2 px-5 py-2.5 bg-white text-[var(--color-text)] text-xs font-bold capitalize tracking-wider hover:bg-gray-100 transition-colors rounded-lg w-max group/btn border border-[var(--color-surface)] shadow-sm"
+                    className="inline-flex items-center gap-2 px-5 py-2.5 bg-white text-[var(--color-text)] text-xs font-bold capitalize tracking-wider hover:bg-gray-100 transition-colors rounded-lg w-max group/btn border border-[var(--color-surface)] shadow-brutal-sm"
                 >
                     Read Full Story
                     <ArrowUpRight size={14} className="group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-transform" />
@@ -127,7 +127,7 @@ const CategoryFilter = ({ topics, selectedCategory, onSelect }: { topics: any[],
                         className={cn(
                             "flex-shrink-0 px-5 py-2.5 text-[10px] font-bold uppercase tracking-widest transition-all duration-300 border rounded-lg flex items-center gap-2",
                             (selectedCategory === cat || (cat === 'All' && !selectedCategory))
-                                ? "bg-[var(--color-accent)] text-white border-[var(--color-accent)] shadow-sm scale-105"
+                                ? "bg-[var(--color-accent)] text-white border-[var(--color-accent)] shadow-brutal-sm scale-105"
                                 : "bg-white text-gray-500 border-[var(--color-surface)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
                         )}
                     >
@@ -151,7 +151,7 @@ interface MiniWidgetProps {
 }
 
 const MiniWidget = ({ title, icon, items, linkTo, className }: MiniWidgetProps) => (
-    <div className={cn("bg-white border border-[var(--color-surface)] p-5 shadow-sm rounded-lg text-[var(--color-text)] relative overflow-hidden group/mirror cursor-default shrink-0 flex flex-col justify-between", className)}>
+    <div className={cn("bg-white border border-[var(--color-surface)] p-5 shadow-brutal-sm rounded-lg text-[var(--color-text)] relative overflow-hidden group/mirror cursor-default shrink-0 flex flex-col justify-between", className)}>
         {/* Windows Widget Mirror Reflection Effect */}
         <div className="absolute top-0 bottom-0 left-[-100%] w-[100%] bg-gradient-to-r from-transparent via-white/60 to-transparent skew-x-12 group-hover/mirror:animate-[shine_1.5s_ease-in-out_infinite] pointer-events-none z-0 mix-blend-overlay group-active/mirror:-translate-x-full transition-all duration-700" style={{ backgroundImage: 'linear-gradient(110deg, transparent 20%, rgba(200,200,220,0.4) 40%, rgba(255,255,255,0.6) 50%, rgba(200,200,220,0.4) 60%, transparent 80%)', transform: 'translateX(-150%)' }} />
         
@@ -331,12 +331,12 @@ export default function Discover() {
                                         navigate(`/search?q=${encodeURIComponent(localSearch)}`);
                                     }
                                 }}
-                                className="w-full bg-white border border-[var(--color-surface)] rounded-lg py-3.5 pl-12 pr-4 text-sm font-bold focus:bg-white focus:outline-none focus:border-[var(--color-accent)] transition-colors placeholder:text-gray-400 text-[var(--color-text)] shadow-sm"
+                                className="w-full bg-white border border-[var(--color-surface)] rounded-lg py-3.5 pl-12 pr-4 text-sm font-bold focus:bg-white focus:outline-none focus:border-[var(--color-accent)] transition-colors placeholder:text-gray-400 text-[var(--color-text)] shadow-brutal-sm"
                             />
                             
                             {/* INLINE SEARCH RESULTS */}
                             {localSearch.length >= 2 && (
-                                <div className="absolute top-full left-0 right-0 mt-2 bg-white border border-[var(--color-surface)] shadow-xl z-50 max-h-[400px] overflow-y-auto no-scrollbar">
+                                <div className="absolute top-full left-0 right-0 mt-2 bg-white border border-[var(--color-surface)] shadow-brutal z-50 max-h-[400px] overflow-y-auto no-scrollbar">
                                     {isSearching ? (
                                         <div className="p-4 text-center text-xs font-bold text-gray-400 uppercase tracking-widest animate-pulse">
                                             Scanning Network...
@@ -432,8 +432,8 @@ export default function Discover() {
                             </div>
 
                             {/* Arrow Navigation (Always visible for click-based moments, with active scale) */}
-                            <Carousel.PrevTrigger className="hidden md:flex border-[var(--color-surface)] bg-white/90 shadow-sm transition-all hover:bg-gray-100 hover:scale-105 active:scale-90 active:bg-gray-200" />
-                            <Carousel.NextTrigger className="hidden md:flex border-[var(--color-surface)] bg-white/90 shadow-sm transition-all hover:bg-gray-100 hover:scale-105 active:scale-90 active:bg-gray-200" />
+                            <Carousel.PrevTrigger className="hidden md:flex border-[var(--color-surface)] bg-white/90 shadow-brutal-sm transition-all hover:bg-gray-100 hover:scale-105 active:scale-90 active:bg-gray-200" />
+                            <Carousel.NextTrigger className="hidden md:flex border-[var(--color-surface)] bg-white/90 shadow-brutal-sm transition-all hover:bg-gray-100 hover:scale-105 active:scale-90 active:bg-gray-200" />
                         </Carousel.Root>
                     </section>
 

@@ -126,6 +126,45 @@ body {
     cursor: crosshair;
 }
 
+h1, h2, h3, h4 {
+    font-family: 'Syne', sans-serif;
+}
+
+/* Keep every route in the same sharp, editorial UnitX visual language. */
+@layer utilities {
+    .shadow-sm {
+        box-shadow: 3px 3px 0px 0px rgba(25, 25, 25, 1) !important;
+    }
+
+    .shadow-md {
+        box-shadow: 4px 4px 0px 0px rgba(25, 25, 25, 1) !important;
+    }
+
+    .shadow-lg,
+    .shadow-xl {
+        box-shadow: 5px 5px 0px 0px rgba(25, 25, 25, 1) !important;
+    }
+
+    .shadow-2xl {
+        box-shadow: 7px 7px 0px 0px rgba(25, 25, 25, 1) !important;
+    }
+}
+
+@layer components {
+    /* White bordered panels are the shared surface primitive on every route. */
+    div[class~="bg-white"][class*="border"]:not([class~="shadow-none"]),
+    section[class~="bg-white"][class*="border"]:not([class~="shadow-none"]),
+    article[class~="bg-white"][class*="border"]:not([class~="shadow-none"]) {
+        box-shadow: 3px 3px 0px 0px rgba(25, 25, 25, 1);
+    }
+
+    input[class~="bg-white"],
+    textarea[class~="bg-white"],
+    select[class~="bg-white"] {
+        box-shadow: 2px 2px 0px 0px rgba(25, 25, 25, 1);
+    }
+}
+
 a, button, select, input, textarea, [role="button"] {
     cursor: pointer;
 }

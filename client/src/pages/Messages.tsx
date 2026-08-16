@@ -75,7 +75,7 @@ function Messages() {
     return (
         <div className="pt-4 sm:pt-8 max-w-7xl mx-auto min-h-[calc(100dvh-4rem)] lg:h-[calc(100vh-6rem)] flex flex-col lg:flex-row gap-4 lg:gap-6 px-3 sm:px-6">
             {/* Thread List */}
-            <div className="w-full lg:w-[340px] flex flex-col h-[min(42vh,360px)] lg:h-full shrink-0 border border-[var(--color-surface)] bg-white shadow-sm overflow-hidden rounded-lg">
+            <div className="w-full lg:w-[340px] flex flex-col h-[min(42vh,360px)] lg:h-full shrink-0 border border-[var(--color-surface)] bg-white shadow-brutal-sm overflow-hidden rounded-lg">
                 <div className="p-4 sm:p-5 border-b border-[var(--color-surface)] bg-gray-50/50 rounded-lg">
                     <h1 className="text-xl font-bold tracking-tight mb-4 text-[var(--color-text)]">Messages</h1>
                     <div className="relative group">
@@ -147,7 +147,7 @@ function Messages() {
             </div>
 
             {/* Chat Area */}
-            <div className="flex-1 min-h-[420px] bg-white border border-[var(--color-surface)] flex flex-col h-full relative shadow-sm overflow-hidden text-[var(--color-text)]">
+            <div className="flex-1 min-h-[420px] bg-white border border-[var(--color-surface)] flex flex-col h-full relative shadow-brutal-sm overflow-hidden text-[var(--color-text)]">
                 {activeChatMeta ? (
                     <>
                         <div className="h-16 border-b border-[var(--color-surface)] flex items-center justify-between px-4 sm:px-6 bg-white shrink-0">
@@ -194,8 +194,8 @@ function Messages() {
                                     <div className={cn(
                                         "p-4 text-sm leading-relaxed transition-all rounded-lg",
                                         isMe
-                                            ? "bg-[var(--color-text)] text-white shadow-sm"
-                                            : "bg-white border border-[var(--color-surface)] text-[var(--color-text)] shadow-sm"
+                                            ? "bg-[var(--color-text)] text-white shadow-brutal-sm"
+                                            : "bg-white border border-[var(--color-surface)] text-[var(--color-text)] shadow-brutal-sm"
                                     )}>
                                         {msg.text}
                                     </div>

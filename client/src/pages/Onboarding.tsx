@@ -249,7 +249,7 @@ export const Onboarding = () => {
                                 <div key={s.id} className="flex items-center gap-4 group">
                                     <div className={cn(
                                         "w-8 h-8 rounded-lg flex items-center justify-center border transition-all duration-300",
-                                        isActive ? "bg-[var(--color-accent)] border-[var(--color-accent)] text-white shadow-lg" : 
+                                        isActive ? "bg-[var(--color-accent)] border-[var(--color-accent)] text-white shadow-brutal" :
                                         isPast ? "bg-emerald-50 text-emerald-600 border-emerald-200" : "bg-white border-gray-200 text-gray-400"
                                     )}>
                                         {isPast ? <Check size={14} strokeWidth={3} /> : <Icon size={14} />}
@@ -267,7 +267,7 @@ export const Onboarding = () => {
                 </div>
 
                 {/* Right Content Area */}
-                <div className="flex-1 flex flex-col max-w-2xl bg-white border border-[var(--color-surface)] shadow-sm relative overflow-hidden">
+                <div className="flex-1 flex flex-col max-w-2xl bg-white border border-[var(--color-surface)] shadow-brutal-sm relative overflow-hidden">
                     {/* Top Accent Line */}
                     <div className="absolute top-0 left-0 w-full h-1 bg-[var(--color-accent)]" />
                     
@@ -457,7 +457,7 @@ export const Onboarding = () => {
                                                     onClick={() => toggleTopic(topic)}
                                                     className={cn(
                                                         "px-4 py-2 border text-xs font-bold uppercase tracking-wider transition-all",
-                                                        isSelected ? "bg-[var(--color-accent)] border-[var(--color-accent)] text-white shadow-sm" : "bg-white border-[var(--color-surface)] text-gray-500 hover:border-gray-300"
+                                                        isSelected ? "bg-[var(--color-accent)] border-[var(--color-accent)] text-white shadow-brutal-sm" : "bg-white border-[var(--color-surface)] text-gray-500 hover:border-gray-300"
                                                     )}
                                                 >
                                                     {topic}

@@ -480,7 +480,7 @@ function Networking() {
                             placeholder="Search by name, @code or ID..."
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
-                            className="w-full bg-white border border-[var(--color-surface)] pl-10 pr-4 py-2 text-xs font-medium outline-none focus:border-[var(--color-accent)] shadow-sm transition-all rounded-lg"
+                            className="w-full bg-white border border-[var(--color-surface)] pl-10 pr-4 py-2 text-xs font-medium outline-none focus:border-[var(--color-accent)] shadow-brutal-sm transition-all rounded-lg"
                         />
                         {isSearching && (
                             <div className="absolute right-3 top-1/2 -translate-y-1/2">
@@ -496,7 +496,7 @@ function Networking() {
                                 className={cn(
                                     "px-6 py-2 text-xs font-bold uppercase tracking-widest rounded-lg transition-all duration-300",
                                     activeTab === tab
-                                        ? "bg-[var(--color-accent)] text-white shadow-sm"
+                                        ? "bg-[var(--color-accent)] text-white shadow-brutal-sm"
                                         : "text-[var(--color-text)] opacity-60 hover:opacity-100 hover:bg-white/50"
                                 )}
                                 onClick={() => setActiveTab(tab as any)}
@@ -514,7 +514,7 @@ function Networking() {
                 (searchTerm.length >= 2 ? searchResults : activeList).length > 0 ? (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                         {(searchTerm.length >= 2 ? searchResults : activeList).map((char: any) => (
-                            <div key={char.id} className="flex flex-col h-[480px] border border-[var(--color-surface)] bg-white group hover:border-[var(--color-text)] transition-all duration-300 rounded-lg overflow-hidden relative shadow-sm hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,0.05)]">
+                            <div key={char.id} className="flex flex-col h-[480px] border border-[var(--color-surface)] bg-white group hover:border-[var(--color-text)] transition-all duration-300 rounded-lg overflow-hidden relative shadow-brutal-sm hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,0.05)]">
 
 
                                 <NavLink to={`/profile/${char.id}`} className="h-[48%] relative overflow-hidden bg-[var(--color-text)] block">
@@ -522,7 +522,7 @@ function Networking() {
                                     <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-text)] via-transparent to-transparent" />
 
                                     <div className="absolute bottom-4 left-4 right-4 animate-in slide-in-from-bottom-2 duration-500">
-                                        <h2 className="text-xl font-bold text-white uppercase tracking-tight leading-none mb-1 drop-shadow-md">
+                                        <h2 className="text-xl font-bold text-white uppercase tracking-tight leading-none mb-1 drop-shadow-brutal-sm">
                                             {char.displayName || char.name}
                                         </h2>
                                         <p className="text-white/80 font-mono text-[10px] uppercase tracking-wider bg-[var(--color-text)] inline-block px-2 py-1">
@@ -572,7 +572,7 @@ function Networking() {
                                         onClick={() => char.connectionStatus === 'none' && handleConnect(char)}
                                         disabled={char.connectionStatus !== 'none'}
                                         className={cn(
-                                            "w-full h-10 mt-6 text-[10px] font-bold uppercase tracking-widest flex items-center justify-center gap-2 transition-all rounded-lg border border-transparent shadow-sm",
+                                            "w-full h-10 mt-6 text-[10px] font-bold uppercase tracking-widest flex items-center justify-center gap-2 transition-all rounded-lg border border-transparent shadow-brutal-sm",
                                             char.connectionStatus === 'none' && "bg-orange-500 hover:bg-orange-600 text-white hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px]",
                                             char.connectionStatus === 'pending_sent' && "bg-gray-100 text-gray-400 cursor-not-allowed",
                                             char.connectionStatus === 'connected' && "bg-emerald-500 text-white cursor-default"
@@ -605,9 +605,9 @@ function Networking() {
                 activeList.length > 0 ? (
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                         {activeList.map(char => (
-                            <div key={char.id} className="flex items-center p-4 bg-white border border-[var(--color-surface)] hover:border-[var(--color-accent)] transition-all duration-300 rounded-lg group hover:shadow-sm">
+                            <div key={char.id} className="flex items-center p-4 bg-white border border-[var(--color-surface)] hover:border-[var(--color-accent)] transition-all duration-300 rounded-lg group hover:shadow-brutal-sm">
                                 <NavLink to={`/profile/${char.id}`} className="mr-4 shrink-0">
-                                    <Avatar className="h-14 w-14 border border-[var(--color-surface)] shadow-sm rounded-lg">
+                                    <Avatar className="h-14 w-14 border border-[var(--color-surface)] shadow-brutal-sm rounded-lg">
                                         <AvatarImage src={char.image} alt={char.name} className="rounded-lg" />
                                         <AvatarFallback className="rounded-lg">{char.initials}</AvatarFallback>
                                     </Avatar>
@@ -655,7 +655,7 @@ function Networking() {
                                             </button>
                                             <button
                                                 onClick={() => handleAccept(char)}
-                                                className="h-8 w-8 flex items-center justify-center bg-[var(--color-text)] hover:bg-[var(--color-accent)] text-white rounded-lg transition-colors shadow-sm" title="Accept"
+                                                className="h-8 w-8 flex items-center justify-center bg-[var(--color-text)] hover:bg-[var(--color-accent)] text-white rounded-lg transition-colors shadow-brutal-sm" title="Accept"
                                             >
                                                 <Check size={14} />
                                             </button>

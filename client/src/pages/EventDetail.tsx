@@ -41,7 +41,7 @@ function EventDetail() {
                 <ArrowLeft size={14} className="group-hover:-translate-x-1 transition-transform" /> Back
             </button>
 
-            <div className="bg-white border border-[var(--color-surface)] rounded-none overflow-hidden shadow-sm">
+            <div className="bg-white border border-[var(--color-surface)] rounded-none overflow-hidden shadow-brutal-sm">
                 {/* Header */}
                 <div className="bg-[var(--color-surface)]/10 p-8 md:p-10 border-b border-[var(--color-surface)]">
                     <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-8">
@@ -123,7 +123,7 @@ function EventDetail() {
                     <aside className="space-y-8">
                         <div>
                             <h3 className="text-[9px] font-bold uppercase tracking-widest text-gray-400 mb-4 pb-2 border-b border-[var(--color-surface)] inline-block">Hosted by</h3>
-                            <Link to={`/profile/${event.host.id}`} className="flex items-center gap-4 p-4 bg-white border border-[var(--color-surface)] shadow-sm group cursor-pointer hover:border-[var(--color-accent)] transition-all rounded-lg">
+                            <Link to={`/profile/${event.host.id}`} className="flex items-center gap-4 p-4 bg-white border border-[var(--color-surface)] shadow-brutal-sm group cursor-pointer hover:border-[var(--color-accent)] transition-all rounded-lg">
                                 <Avatar className="w-10 h-10 rounded-lg border border-[var(--color-surface)]">
                                     <AvatarImage src={event.host.avatar} className="grayscale group-hover:grayscale-0 transition-all" />
                                     <AvatarFallback>{event.host.name[0]}</AvatarFallback>

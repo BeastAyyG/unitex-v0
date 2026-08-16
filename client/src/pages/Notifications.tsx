@@ -105,7 +105,7 @@ export function NotificationsList({ isSheet = false }: { isSheet?: boolean }) {
                                     )}
 
                                     {/* Icon Badge */}
-                                    <div className={`w-8 h-8 flex items-center justify-center shrink-0 border border-[var(--color-text)] transition-transform group-hover:scale-110 shadow-sm ${notif.type === 'like' ? 'bg-rose-50 text-[var(--color-text)]' :
+                                    <div className={`w-8 h-8 flex items-center justify-center shrink-0 border border-[var(--color-text)] transition-transform group-hover:scale-110 shadow-brutal-sm ${notif.type === 'like' ? 'bg-rose-50 text-[var(--color-text)]' :
                                         notif.type === 'follow' ? 'bg-blue-50 text-[var(--color-text)]' :
                                             notif.type === 'support' ? 'bg-green-50 text-[var(--color-text)]' :
                                                 'bg-purple-50 text-[var(--color-text)]'
@@ -151,7 +151,7 @@ export function NotificationsList({ isSheet = false }: { isSheet?: boolean }) {
                                         }`}
                                 >
                                     {/* Icon Badge */}
-                                    <div className={`w-8 h-8 flex items-center justify-center shrink-0 border border-[var(--color-text)] transition-transform group-hover:scale-110 shadow-sm bg-gray-50 text-gray-400 group-hover:text-[var(--color-text)]`}>
+                                    <div className={`w-8 h-8 flex items-center justify-center shrink-0 border border-[var(--color-text)] transition-transform group-hover:scale-110 shadow-brutal-sm bg-gray-50 text-gray-400 group-hover:text-[var(--color-text)]`}>
                                         {notif.type === 'comment' && <MessageSquare size={14} strokeWidth={2.5} />}
                                         {notif.type === 'support' && <HeartHandshake size={14} strokeWidth={2.5} />}
                                         {notif.type === 'like' && <Heart size={14} strokeWidth={2.5} />}

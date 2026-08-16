@@ -67,7 +67,7 @@ export default function CommunityPage() {
             
             {/* Nav Header */}
             <div className="py-6 flex items-center gap-4 mb-4">
-                <Link to="/communities" className="p-3 hover:bg-gray-50 transition-all rounded-lg border border-[var(--color-surface)] shadow-sm">
+                <Link to="/communities" className="p-3 hover:bg-gray-50 transition-all rounded-lg border border-[var(--color-surface)] shadow-brutal-sm">
                     <ArrowLeft size={18} />
                 </Link>
                 <div className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">
@@ -76,13 +76,13 @@ export default function CommunityPage() {
             </div>
 
             {/* Community Identity Header */}
-            <header className="relative mb-10 border border-[var(--color-surface)] bg-white overflow-hidden shadow-sm rounded-lg">
+            <header className="relative mb-10 border border-[var(--color-surface)] bg-white overflow-hidden shadow-brutal-sm rounded-lg">
                 <div className="h-64 relative bg-[var(--color-surface)]">
                      <img src={community.image} alt={community.name} className="w-full h-full object-cover opacity-80 grayscale hover:grayscale-0 transition-all duration-700" />
                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                      
                      <div className="absolute bottom-8 left-8 md:left-12 flex items-end gap-8">
-                         <Avatar className="h-32 w-32 md:h-40 md:w-40 border border-white shadow-md rounded-lg bg-white">
+                         <Avatar className="h-32 w-32 md:h-40 md:w-40 border border-white shadow-brutal-sm rounded-lg bg-white">
                              <AvatarImage src={community.logo} className="object-cover transition-all" />
                              <AvatarFallback className="rounded-lg bg-[var(--color-text)] text-white font-bold text-4xl">{community.name.substring(0, 2)}</AvatarFallback>
                          </Avatar>
@@ -115,7 +115,7 @@ export default function CommunityPage() {
                 <div className="lg:col-span-3 space-y-6">
                     
                     {/* Adaptive Composer */}
-                    <section className={cn("border border-[var(--color-surface)] bg-white p-8 transition-all duration-300 shadow-sm rounded-lg")}>
+                    <section className={cn("border border-[var(--color-surface)] bg-white p-8 transition-all duration-300 shadow-brutal-sm rounded-lg")}>
                         {!composerOpen ? (
                              <div className="flex items-center gap-6 cursor-text group" onClick={() => setComposerOpen(true)}>
                                  <Avatar className="h-10 w-10 rounded-lg border border-gray-100 shrink-0">
@@ -176,7 +176,7 @@ export default function CommunityPage() {
                                         </div>
 
                                         {/* Dynamic Fields */}
-                                        <div className="space-y-6 bg-white p-6 border border-[var(--color-surface)] shadow-sm rounded-lg">
+                                        <div className="space-y-6 bg-white p-6 border border-[var(--color-surface)] shadow-brutal-sm rounded-lg">
                                             {selectedIntent === 'ask' && (
                                                 <>
                                                     <Field><textarea placeholder="1. Problem Description (be specific)" className="w-full min-h-[100px] text-xs font-bold uppercase tracking-widest bg-gray-50 border border-gray-100 p-4 focus:bg-white focus:outline-none resize-none rounded-lg" /></Field>
@@ -187,8 +187,8 @@ export default function CommunityPage() {
                                         </div>
 
                                         <div className="mt-6 flex justify-end gap-4">
-                                            <Button variant="outline" className="rounded-lg border border-[var(--color-surface)] text-gray-400 font-bold uppercase tracking-widest text-[10px] px-6 h-12 shadow-sm hover:bg-gray-50" onClick={() => {setComposerOpen(false); setSelectedIntent(null)}}>Discard Buffer</Button>
-                                            <Button className="rounded-lg bg-[var(--color-text)] hover:bg-[var(--color-accent)] text-white font-bold uppercase tracking-widest text-[10px] px-10 h-12 shadow-sm">Broadcast Knowledge</Button>
+                                            <Button variant="outline" className="rounded-lg border border-[var(--color-surface)] text-gray-400 font-bold uppercase tracking-widest text-[10px] px-6 h-12 shadow-brutal-sm hover:bg-gray-50" onClick={() => {setComposerOpen(false); setSelectedIntent(null)}}>Discard Buffer</Button>
+                                            <Button className="rounded-lg bg-[var(--color-text)] hover:bg-[var(--color-accent)] text-white font-bold uppercase tracking-widest text-[10px] px-10 h-12 shadow-brutal-sm">Broadcast Knowledge</Button>
                                         </div>
                                     </div>
                                 )}
@@ -224,7 +224,7 @@ export default function CommunityPage() {
                              const isShared = sharedPostId === post.id;
                              
                              return (
-                                 <article key={post.id} className="border border-[var(--color-surface)] bg-white hover:border-[var(--color-accent)] transition-all duration-300 relative overflow-hidden group flex flex-col shadow-sm rounded-lg">
+                                 <article key={post.id} className="border border-[var(--color-surface)] bg-white hover:border-[var(--color-accent)] transition-all duration-300 relative overflow-hidden group flex flex-col shadow-brutal-sm rounded-lg">
                                      
                                      {/* Signal Layer Striping */}
                                      {post.score > 100 && <div className="absolute top-0 left-0 w-full h-[2px] bg-[var(--color-accent)]" />}
@@ -350,7 +350,7 @@ export default function CommunityPage() {
 
                 {/* Sidebar - About Community */}
                 <div className="hidden lg:block space-y-6">
-                    <div className="border border-[var(--color-surface)] bg-white p-8 sticky top-24 shadow-sm rounded-lg">
+                    <div className="border border-[var(--color-surface)] bg-white p-8 sticky top-24 shadow-brutal-sm rounded-lg">
                         <h4 className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-6 border-b border-[var(--color-surface)] pb-4">Protocol // Rules</h4>
                         
                         <div className="space-y-4 mb-6 text-sm text-gray-600 leading-relaxed font-medium">
