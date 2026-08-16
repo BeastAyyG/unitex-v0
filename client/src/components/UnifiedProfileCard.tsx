@@ -41,7 +41,8 @@ export function UnifiedProfileCard() {
         }
     }, [currentUser]);
 
-    const profileUrl = `https://unitex.io/profile/${username || currentUser?.uid || 'guest'}`;
+    const publicId = usercode || currentUser?.uid || 'guest';
+    const profileUrl = `${window.location.origin}/u/${encodeURIComponent(publicId)}`;
 
     const copyProfileUrl = () => {
         navigator.clipboard.writeText(profileUrl);
@@ -49,13 +50,13 @@ export function UnifiedProfileCard() {
     };
 
     return (
-        <div className="bg-white border border-[var(--color-surface)] overflow-hidden flex flex-col shadow-sm">
+        <div className="bg-white border border-[var(--color-surface)] overflow-hidden flex flex-col shadow-brutal-sm">
             {/* Banner/Header Portion */}
             <div className="h-16 bg-gradient-to-r from-[var(--color-surface)] to-[#F4511C]/10 w-full" />
 
             {/* Photo Underneath Left-Aligned */}
             <NavLink to="/profile" className="px-4 -mt-8 mb-4 block hover:opacity-80 transition-opacity">
-                <Avatar className="w-16 h-16 rounded-lg border-2 border-white shadow-sm">
+                <Avatar className="w-16 h-16 rounded-lg border-2 border-white shadow-brutal-sm">
                     <AvatarImage src={photoURL} />
                     <AvatarFallback className="bg-[#09090b] text-white rounded-lg">{displayName.charAt(0)}</AvatarFallback>
                 </Avatar>

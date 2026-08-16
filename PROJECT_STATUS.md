@@ -15,6 +15,6 @@
     - [x] Integrate Profile.tsx [x]
     - [x] Integrate Communities.tsx [x]
     - [x] Integrate Settings.tsx [x]
-    - [x] Redesign Login.tsx & Add Phone Auth [x]
+    - [x] Redesign Login.tsx with free Google/email/guest auth [x]
     - [x] Setup Firebase Hosting [x]
 - [x] Document repository structure and CI/CD tips

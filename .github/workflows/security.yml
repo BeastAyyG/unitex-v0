@@ -1,0 +1,56 @@
+name: Security Gate
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  schedule:
+    - cron: '23 3 * * 1'
+
+permissions:
+  contents: read
+  security-events: write
+
+jobs:
+  dependency-and-policy:
+    name: Dependency, policy, and regression checks
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      # Vercel installs from client/, so test the exact lockfile it will deploy.
+      - run: npm ci --prefix client --workspaces=false --legacy-peer-deps
+      - run: npm run build --prefix client
+      - run: npm run lint --prefix client
+      - run: npm run test --workspace=server
+      - run: node scripts/security-policy-check.mjs
+      - run: npm audit --prefix client --audit-level=high
+      - run: npm audit --omit=dev --audit-level=high --workspace=server
+      - run: npm audit --omit=dev --audit-level=high --workspace=media-service
+
+  secrets:
+    name: Secret scan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  codeql:
+    name: CodeQL
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: github/codeql-action/init@v3
+        with:
+          languages: javascript-typescript
+          queries: security-extended,security-and-quality
+      - uses: github/codeql-action/autobuild@v3
+      - uses: github/codeql-action/analyze@v3

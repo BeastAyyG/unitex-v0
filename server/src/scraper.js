@@ -4,6 +4,7 @@ const cron = require('node-cron');
 const axios = require('axios');
 const path = require('path');
 const fs = require('fs');
+const os = require('os');
 
 const parser = new Parser();
 
@@ -18,16 +19,29 @@ const FEEDS = [
 // Initialize Firebase Admin
 let db = null;
 try {
-    const serviceAccountPath = path.resolve(__dirname, '../../service-account.json');
-    
     let sa = null;
-    if (fs.existsSync(serviceAccountPath)) {
-        sa = JSON.parse(fs.readFileSync(serviceAccountPath, 'utf8'));
-    } else {
-        console.warn(`[Discovery] Service account missing at ${serviceAccountPath}. Searching root...`);
-        const rootPath = path.resolve(__dirname, '../../../service-account.json');
-        if (fs.existsSync(rootPath)) {
-            sa = JSON.parse(fs.readFileSync(rootPath, 'utf8'));
+
+    // First try loading from environment variable (ideal for Vercel/production)
+    if (process.env.FIREBASE_SERVICE_ACCOUNT) {
+        try {
+            sa = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
+            if (process.env.DEBUG) console.log('[Discovery] Loaded service account from environment variable.');
+        } catch (jsonErr) {
+            console.error('❌ [Discovery] Failed to parse FIREBASE_SERVICE_ACCOUNT env variable:', jsonErr.message);
+        }
+    }
+
+    // Fallback to local file paths
+    if (!sa) {
+        const serviceAccountPath = path.resolve(__dirname, '../../service-account.json');
+        if (fs.existsSync(serviceAccountPath)) {
+            sa = JSON.parse(fs.readFileSync(serviceAccountPath, 'utf8'));
+        } else {
+            console.warn(`[Discovery] Service account missing at ${serviceAccountPath}. Searching root...`);
+            const rootPath = path.resolve(__dirname, '../../../service-account.json');
+            if (fs.existsSync(rootPath)) {
+                sa = JSON.parse(fs.readFileSync(rootPath, 'utf8'));
+            }
         }
     }
 
@@ -40,7 +54,7 @@ try {
         db = admin.firestore();
         if (!db) console.error('[Discovery] admin.firestore() returned null');
     } else {
-        console.warn('[Discovery] No service account found. Discover feed running in mock mode.');
+        console.warn('[Discovery] No service account credentials found. Discover feed running in mock mode.');
     }
 } catch (error) {
     console.error('❌ [Discovery] Initialization error:', error.message);
@@ -155,11 +169,13 @@ async function scrapeFeeds() {
     if (process.env.DEBUG) console.log('--- Scrape Finished ---');
 }
 
-// Schedule: Every 30 minutes
-// '0,30 * * * *'
-cron.schedule('0,30 * * * *', () => {
-    scrapeFeeds();
-});
+// Vercel serverless functions should not keep a cron scheduler alive.
+if (process.env.VERCEL !== '1') {
+    // Schedule: Every 30 minutes
+    cron.schedule('0,30 * * * *', () => {
+        scrapeFeeds();
+    });
+}
 
 async function runMockScrape() {
     if (process.env.DEBUG) console.log('[Discovery] Running Mock Scrape Protocol...');
@@ -184,9 +200,12 @@ async function runMockScrape() {
         }
     ];
     
-    // Write to a local fallback file that the frontend can check
-    const fallbackPath = path.join(__dirname, '../../data/discover_fallback.json');
-    if (!fs.existsSync(path.dirname(fallbackPath))) fs.mkdirSync(path.dirname(fallbackPath), { recursive: true });
+    // Write to a writable temp location in serverless runtimes.
+    const fallbackRoot = process.env.VERCEL === '1'
+        ? path.join(os.tmpdir(), 'unitex')
+        : path.join(__dirname, '../../data');
+    const fallbackPath = path.join(fallbackRoot, 'discover_fallback.json');
+    if (!fs.existsSync(fallbackRoot)) fs.mkdirSync(fallbackRoot, { recursive: true });
     
     fs.writeFileSync(fallbackPath, JSON.stringify(mockData, null, 2));
     if (process.env.DEBUG) console.log(`[Discovery] Mock data saved to: ${fallbackPath}`);

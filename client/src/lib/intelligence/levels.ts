@@ -14,7 +14,7 @@ export function calculateUserLevel(xp: number): LevelData {
     // Safety check for negative XP
     const actualXp = Math.max(0, xp);
 
-    while (true) {
+    for (;;) {
         let step = 0;
         
         if (level <= 5) step = 500;

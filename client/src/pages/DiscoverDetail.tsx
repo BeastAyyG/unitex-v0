@@ -8,7 +8,7 @@ const MOCK_DISCOVER_CONTENT: Record<string, any> = {
         title: "SpaceX Starship Launch: A New Era",
         category: "Science",
         date: "March 24, 2024",
-        author: "Unitex Editorial",
+        author: "UnitX Editorial",
         image: "https://images.unsplash.com/photo-1517976487492-5750f3195933?q=80&w=1200&auto=format&fit=crop",
         content: "SpaceX's Starship, the most powerful rocket ever built, has successfully completed its latest flight test. This milestone brings humanity one step closer to multi-planetary life. The mission profile included several key objectives, from engine relights in space to controlled atmospheric reentry. Observers around the globe watched as the massive vehicle ascended from Starbase, Texas, marking a significant shift in orbital delivery capabilities and cost-efficiency for future deep-space exploration."
     },
@@ -64,7 +64,7 @@ const MOCK_DISCOVER_CONTENT: Record<string, any> = {
         title: "Curriculum Overview",
         category: "Education",
         date: "Ongoing",
-        author: "UnitEx Academy",
+        author: "UnitX Academy",
         image: "https://images.unsplash.com/photo-1434031211128-095490e7e7bb?q=80&w=1200&auto=format&fit=crop",
         content: "Explore our intensive learning paths designed for the next generation of builders. From Computer Science to Psychology, our curriculum is built to provide foundational knowledge and practical skills for the decentralized era."
     }

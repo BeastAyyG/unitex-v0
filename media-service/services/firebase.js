@@ -27,6 +27,20 @@ export function initFirebase() {
     console.log('[Firebase] Admin initialized, project:', process.env.FIREBASE_PROJECT_ID);
 }
 
+export async function verifyIdToken(token) {
+    if (!token) throw new Error('A Firebase ID token is required.');
+    if (!admin.apps.length) throw new Error('Firebase Admin is not configured.');
+    return admin.auth().verifyIdToken(token, true);
+}
+
+export async function getUsercode(uid) {
+    if (!db) throw new Error('Firebase Admin is not configured.');
+    const user = await db.collection('users').doc(uid).get();
+    const usercode = user.exists ? user.data()?.usercode || user.data()?.userId : null;
+    if (!usercode) throw new Error('Complete your profile before uploading media.');
+    return String(usercode);
+}
+
 /**
  * Save media upload metadata to Firestore.
  * Collection: media/{docId}
@@ -38,7 +52,7 @@ export function initFirebase() {
 export async function saveMediaMetadata(data) {
     if (!db) throw new Error('Firebase not initialized');
 
-    const { uid, usercode, filename, mediaURL, fileHash, fileSizeBytes, mimeType, isVideo, createdAt } = data;
+    const { uid, usercode, filename, mediaURL, fileHash, fileSizeBytes, mimeType, mediaType, isVideo, createdAt } = data;
 
     const payload = {
         uid,
@@ -48,6 +62,7 @@ export async function saveMediaMetadata(data) {
         fileHash,          // SHA-256 — used for blockchain proof + duplicate detection
         fileSizeBytes,
         mimeType,
+        mediaType,
         isVideo,
         createdAt,
         blockchainProof: null, // Updated after tx is confirmed

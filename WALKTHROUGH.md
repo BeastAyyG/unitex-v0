@@ -1,6 +1,6 @@
 # Login Redesign & Advanced Auth Walkthrough
 
-The login experience has been completely transformed with a high-end, two-column dark aesthetic and the addition of Phone Number authentication.
+The login experience has been completely transformed with a high-end, two-column dark aesthetic and a free-by-default Google/email authentication flow.
 
 ## Key Enhancements
 
@@ -9,19 +9,23 @@ The login experience has been completely transformed with a high-end, two-column
 - **Dark Aesthetic**: Switched to a deep charcoal (`#09090b`) background with glassmorphism effects and the vibrant `#F4511C` brand accent.
 - **Micro-interactions**: Added smooth entrance animations and hover states for all interactive elements.
 
-### 2. 📱 Phone Authentication
-- **Multi-Method Auth**: Users can now choose between **Email**, **Phone**, or **Google** login via a sleek tab switcher.
-- **OTP Verification**: Integrated Firebase Phone Auth with an invisible Recaptcha and a 6-digit OTP verification step.
-- **Auto-Sync**: Like other methods, phone-verified users are automatically synced with their Firestore profile documents.
+### 2. 🔐 Free Authentication
+- **Google Sign-In**: Uses Firebase's Google provider without SMS charges.
+- **Email Sign-In**: Supports free email/password registration and login.
+- **Guest Access**: Supports Firebase anonymous accounts for low-friction exploration.
+- **Phone/SMS Auth**: Intentionally disabled so the default path does not incur SMS charges.
 
 ### 3. 🔐 Security & UX
-- **Invisible Recaptcha**: Security is handled silently in the background without interrupting the user flow.
+- **Provider Boundary**: Authentication failures do not silently turn a configured production session into a demo user.
 - **Protected Routing**: The application remains fully secured, redirecting any unauthenticated access back to the new login experience.
 
 ## Verification Progress
 - [x] **Build Integrity**: ✅ PASS (Production bundle successfully generated)
-- [x] **Auth Context**: ✅ VERIFIED (Phone auth methods correctly integrated into `AuthContext`)
+- [x] **Auth Context**: ✅ VERIFIED (Google, email, and guest auth paths are explicit)
 - [x] **UI Layout**: ✅ VERIFIED (Responsive two-column grid confirmed)
+- [x] **ESM Vite Configuration**: ✅ VERIFIED (Replaced deprecated `__dirname` alias resolution with `fileURLToPath(new URL('./src', import.meta.url))` in `client/vite.config.ts`)
 
 ## Next Steps
-- **Firebase Console**: Ensure **Phone** is enabled as a sign-in provider and that your authorized domains include the production URL for Recaptcha to work seamlessly in production.
+- **Firebase Console**: Enable only **Google** and **Email/Password**, keep the project on Spark, and add the production URL to authorized domains.
+- **Environment Setup**: Ensure all required environment variables outlined in `VERCEL_CHECKLIST.md` are added to your Vercel deployment project settings.
+- **Public smoke test**: Verify `https://client-opal-five-77.vercel.app` and `https://unitex-server.vercel.app/api/health` before enabling real users.

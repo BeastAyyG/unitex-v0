@@ -42,9 +42,9 @@ function Home() {
                 setPosts(livePosts as Post[]);
             } else if (posts.length === 0) {
                 setPosts([
-                    { id: 'demo-1', author: { id: 'system', name: 'UniteX', avatar: '', role: 'Admin' }, timestamp: '1m ago', content: 'Welcome to UniteX! This is a demo instance running without Firebase. Sign up for a real account to unlock all features.', stats: { likes: 42, support: 12, comments: 7, shares: 0 }, ai: { qualityScore: 95, tags: [] }, createdAtMillis: Date.now() - 1000 },
+                    { id: 'demo-1', author: { id: 'system', name: 'UnitX', avatar: '', role: 'Admin' }, timestamp: '1m ago', content: 'Welcome to UnitX! This is a demo instance running without Firebase. Sign up for a real account to unlock all features.', stats: { likes: 42, support: 12, comments: 7, shares: 0 }, ai: { qualityScore: 95, tags: [] }, createdAtMillis: Date.now() - 1000 },
                     { id: 'demo-2', author: { id: 'system', name: 'Hermes Agent', avatar: '', role: 'AI' }, timestamp: '2m ago', content: 'Hermes Agent is online. Running Ponytail analysis on community engagement patterns. All systems nominal.', stats: { likes: 28, support: 8, comments: 3, shares: 0 }, ai: { qualityScore: 88, tags: [] }, createdAtMillis: Date.now() - 2000 },
-                    { id: 'demo-3', author: { id: 'system', name: 'UnitexBot', avatar: '', role: 'Bot' }, timestamp: '3m ago', content: 'VP Engine active. Quality scoring, anti-spam, and niche routing are operational. Start posting to earn Value Points!', stats: { likes: 15, support: 5, comments: 2, shares: 0 }, ai: { qualityScore: 72, tags: [] }, createdAtMillis: Date.now() - 3000 },
+                    { id: 'demo-3', author: { id: 'system', name: 'UnitX Bot', avatar: '', role: 'Bot' }, timestamp: '3m ago', content: 'VP Engine active. Quality scoring, anti-spam, and niche routing are operational. Start posting to earn Value Points!', stats: { likes: 15, support: 5, comments: 2, shares: 0 }, ai: { qualityScore: 72, tags: [] }, createdAtMillis: Date.now() - 3000 },
                 ] as Post[]);
             }
         });
@@ -55,7 +55,7 @@ function Home() {
 
     const sortedPosts = React.useMemo(() => {
         const now = Date.now();
-        let postsToSort = [...posts];
+        const postsToSort = [...posts];
 
         if (activeSort === 'hot') {
             postsToSort.sort((a, b) => {
@@ -99,11 +99,12 @@ function Home() {
                 role: 'Member',
                 content,
                 mediaURL: media ? media.url : undefined,
+                mediaType: media?.type,
             });
             await createNotification({
                 recipientUid: currentUser?.uid || 'anonymous',
                 senderUid: 'system',
-                senderName: 'UniteX Intelligence',
+                senderName: 'UnitX Intelligence',
                 type: 'system',
                 content: `Your post has been analyzed and routed to the network.`,
                 actionUrl: '/'
@@ -131,7 +132,7 @@ function Home() {
 
     const TRENDING_TOPICS = [
         { name: "Design Systems", count: "2.4k posts" },
-        { name: "UniteX V3", count: "1.8k posts" },
+        { name: "UnitX V3", count: "1.8k posts" },
         { name: "Mesh States", count: "956 posts" },
         { name: "Latency Optimization", count: "432 posts" }
     ];
@@ -152,29 +153,6 @@ function Home() {
 
     return (
         <div className="w-full flex flex-col items-center">
-            {/* HERO SECTION */}
-            <section className="relative w-full h-[60vh] md:h-[70vh] bg-[var(--color-text)] flex items-center justify-center overflow-hidden border-b-2 border-[var(--color-text)]">
-                <div className="absolute inset-0 opacity-40 mix-blend-overlay">
-                    <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=2000&auto=format&fit=crop" alt="Hero Background" className="w-full h-full object-cover" />
-                </div>
-                <div className="relative z-10 flex flex-col items-center justify-center text-center px-4">
-                    <h1 className="font-syne text-5xl md:text-7xl lg:text-8xl font-bold text-white mb-6 uppercase tracking-tighter max-w-5xl leading-[0.9]">
-                        Nodes of the uniquely intelligent.
-                    </h1>
-                    <p className="font-outfit text-xl md:text-2xl text-[var(--color-bg)] max-w-2xl font-light mb-10 opacity-90">
-                        An all-inclusive intelligence network providing everything you need to connect, build, and deploy.
-                    </p>
-                    <Dialog open={isPostDialogOpen} onOpenChange={setIsPostDialogOpen}>
-                        <DialogTrigger asChild>
-                            <button className="group relative px-8 py-4 bg-[var(--color-accent-yellow)] text-[var(--color-text)] font-syne font-bold uppercase tracking-widest text-lg md:text-xl border-2 border-[var(--color-text)] shadow-brutal hover-lift overflow-hidden">
-                                <span className="relative z-10">Initialize Sequence</span>
-                                <div className="absolute inset-0 bg-[var(--color-accent-red)] translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-in-out z-0"></div>
-                            </button>
-                        </DialogTrigger>
-                    </Dialog>
-                </div>
-            </section>
-
             {/* MARQUEE SECTION */}
             <section className="w-full bg-[var(--color-accent-green)] border-b-2 border-[var(--color-text)] overflow-hidden flex items-center py-4">
                 <div className="flex whitespace-nowrap animate-marquee">

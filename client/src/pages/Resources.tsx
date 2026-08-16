@@ -297,7 +297,7 @@ function Resources() {
                         {filteredCourses.map(course => {
                             const levelCfg = LEVEL_CONFIG[course.level] || LEVEL_CONFIG['Beginner'];
                             return (
-                                <div key={course.id} className="group flex flex-col bg-white border border-[var(--color-surface)] shadow-sm hover:border-[var(--color-accent)] transition-all overflow-hidden">
+                                <div key={course.id} className="group flex flex-col bg-white border border-[var(--color-surface)] shadow-brutal-sm hover:border-[var(--color-accent)] transition-all overflow-hidden">
                                     <div className="aspect-[16/9] relative overflow-hidden bg-gray-100">
                                         <img src={course.image} alt={course.title}
                                             className="w-full h-full object-cover grayscale transition-all duration-700 group-hover:grayscale-0 group-hover:scale-105" />
@@ -435,7 +435,7 @@ function Resources() {
                             const Icon = RESOURCE_TYPE_ICONS[resource.type] || FileText;
                             const isSaved = resource.saved;
                             return (
-                                <div key={resource.id} className="group bg-white border border-[var(--color-surface)] p-6 hover:border-[var(--color-accent)] transition-all shadow-sm cursor-pointer">
+                                <div key={resource.id} className="group bg-white border border-[var(--color-surface)] p-6 hover:border-[var(--color-accent)] transition-all shadow-brutal-sm cursor-pointer">
                                     <div className="flex items-start gap-4">
                                         <div className="w-10 h-10 bg-gray-50 border border-gray-100 flex items-center justify-center shrink-0 group-hover:bg-[var(--color-accent)] group-hover:text-white group-hover:border-transparent transition-all">
                                             <Icon size={16} />

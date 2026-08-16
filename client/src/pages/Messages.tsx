@@ -73,10 +73,10 @@ function Messages() {
     const activeChatMeta = parseChatMetadata(activeChat);
 
     return (
-        <div className="pt-8 max-w-7xl mx-auto h-[calc(100vh-6rem)] flex gap-6 px-6">
+        <div className="pt-4 sm:pt-8 max-w-7xl mx-auto min-h-[calc(100dvh-4rem)] lg:h-[calc(100vh-6rem)] flex flex-col lg:flex-row gap-4 lg:gap-6 px-3 sm:px-6">
             {/* Thread List */}
-            <div className="w-[340px] flex flex-col h-full border border-[var(--color-surface)] bg-white shadow-sm overflow-hidden rounded-lg">
-                <div className="p-5 border-b border-[var(--color-surface)] bg-gray-50/50 rounded-lg">
+            <div className="w-full lg:w-[340px] flex flex-col h-[min(42vh,360px)] lg:h-full shrink-0 border border-[var(--color-surface)] bg-white shadow-brutal-sm overflow-hidden rounded-lg">
+                <div className="p-4 sm:p-5 border-b border-[var(--color-surface)] bg-gray-50/50 rounded-lg">
                     <h1 className="text-xl font-bold tracking-tight mb-4 text-[var(--color-text)]">Messages</h1>
                     <div className="relative group">
                         <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[var(--color-accent)] transition-colors" />
@@ -101,7 +101,7 @@ function Messages() {
                                 key={chat.id}
                                 onClick={() => setActiveChatId(chat.id)}
                                 className={cn(
-                                    "group relative p-5 cursor-pointer transition-all duration-200",
+                                    "group relative p-4 sm:p-5 cursor-pointer transition-all duration-200",
                                     activeChatId === chat.id
                                         ? "bg-[var(--color-surface)]/30 border-r-2 border-[var(--color-accent)]"
                                         : "hover:bg-gray-50"
@@ -147,10 +147,10 @@ function Messages() {
             </div>
 
             {/* Chat Area */}
-            <div className="flex-1 bg-white border border-[var(--color-surface)] flex flex-col h-full relative shadow-sm overflow-hidden text-[var(--color-text)]">
+            <div className="flex-1 min-h-[420px] bg-white border border-[var(--color-surface)] flex flex-col h-full relative shadow-brutal-sm overflow-hidden text-[var(--color-text)]">
                 {activeChatMeta ? (
                     <>
-                        <div className="h-16 border-b border-[var(--color-surface)] flex items-center justify-between px-6 bg-white shrink-0">
+                        <div className="h-16 border-b border-[var(--color-surface)] flex items-center justify-between px-4 sm:px-6 bg-white shrink-0">
                             <div className="flex items-center gap-3">
                                 <NavLink to={activeChatMeta.isGroup ? "/communities" : `/profile/${activeChatMeta.userId}`} className="flex items-center gap-3 hover:opacity-80 transition-opacity">
                                     <div className="w-10 h-10 bg-[var(--color-surface)] flex items-center justify-center font-bold text-xs text-[var(--color-text)] rounded-lg">
@@ -170,7 +170,7 @@ function Messages() {
                                     </div>
                                 </NavLink>
                             </div>
-                            <div className="flex items-center gap-4 text-gray-400">
+                            <div className="flex items-center gap-3 sm:gap-4 text-gray-400">
                                 <Phone size={18} className="hover:text-[var(--color-text)] cursor-pointer transition-colors" />
                                 <Video size={18} className="hover:text-[var(--color-text)] cursor-pointer transition-colors" />
                                 <div className="w-px h-4 bg-[var(--color-surface)]" />
@@ -178,7 +178,7 @@ function Messages() {
                             </div>
                         </div>
 
-                        <div className="flex-1 overflow-y-auto p-8 space-y-6 custom-scrollbar bg-gray-50/30">
+                        <div className="flex-1 overflow-y-auto p-4 sm:p-8 space-y-6 custom-scrollbar bg-gray-50/30">
                             {currentMessages.length === 0 && (
                                 <div className="text-center text-xs text-gray-400 font-bold uppercase tracking-widest mt-10">
                                     Send a message to start chatting!
@@ -188,14 +188,14 @@ function Messages() {
                                 const isMe = msg.uid === currentUser?.uid;
                                 return (
                                 <div key={msg.id} className={cn(
-                                    "flex flex-col max-w-[70%]",
+                                    "flex flex-col max-w-[85%] sm:max-w-[70%]",
                                     isMe ? "ml-auto items-end" : "mr-auto items-start"
                                 )}>
                                     <div className={cn(
                                         "p-4 text-sm leading-relaxed transition-all rounded-lg",
                                         isMe
-                                            ? "bg-[var(--color-text)] text-white shadow-sm"
-                                            : "bg-white border border-[var(--color-surface)] text-[var(--color-text)] shadow-sm"
+                                            ? "bg-[var(--color-text)] text-white shadow-brutal-sm"
+                                            : "bg-white border border-[var(--color-surface)] text-[var(--color-text)] shadow-brutal-sm"
                                     )}>
                                         {msg.text}
                                     </div>

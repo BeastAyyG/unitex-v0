@@ -1,6 +1,8 @@
 # Login Redesign & Advanced Auth Plan
 
-Redesign the login/signup experience to match the requested two-column dark aesthetic and enable Phone Number authentication alongside Google and Email.
+Redesign the login/signup experience to match the requested two-column dark aesthetic and enable free Google/email authentication.
+
+> Current status: Phone/SMS authentication was intentionally removed from the live implementation because SMS verification is not part of the always-free path. The notes below preserve the original design history only.
 
 ## User Review Required
 

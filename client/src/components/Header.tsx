@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import { Menu, X, Bell, MessageSquare, Settings } from 'lucide-react';
+import { Menu, X, Bell, MessageSquare, Settings, Home as HomeIcon, Compass, Users, CalendarDays, Network, Archive, Plus } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/context/useAuth';
 import { useNotifications } from '@/context/NotificationContext';
 import { Dialog, DialogContent, DialogTrigger, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import CreatePost from '@/components/CreatePost';
+import { BrandLockup } from '@/components/Brand';
 import { toast } from 'sonner';
 
 export function Header() {
@@ -15,11 +16,12 @@ export function Header() {
     const [isPostDialogOpen, setIsPostDialogOpen] = useState(false);
 
     const navItems = [
-        { path: '/discover', label: 'Nodes' },
-        { path: '/communities', label: 'Alliances' },
-        { path: '/events', label: 'Events' },
-        { path: '/networking', label: 'Connect' },
-        { path: '/vault', label: 'Vault' },
+        { path: '/', label: 'Home', icon: HomeIcon },
+        { path: '/discover', label: 'Discover', icon: Compass },
+        { path: '/communities', label: 'Communities', icon: Users },
+        { path: '/events', label: 'Events', icon: CalendarDays },
+        { path: '/networking', label: 'Network', icon: Network },
+        { path: '/vault', label: 'Vault', icon: Archive },
     ];
 
     const iconNavs = [
@@ -30,45 +32,41 @@ export function Header() {
 
     return (
         <header className="sticky top-0 z-50 w-full bg-[var(--color-bg)] border-b-2 border-[var(--color-text)]">
-            <div className="flex items-center justify-between h-20 px-4 md:px-8">
+            <div className="flex items-center justify-between h-16 sm:h-20 px-3 sm:px-4 md:px-8">
                 {/* Logo */}
                 <div className="flex-shrink-0 flex items-center">
                     <NavLink to="/" className="flex items-center gap-2 group">
-                        {/* Architectural Logo SVG for UniteX */}
-                        <svg width="120" height="40" viewBox="0 0 120 40" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-[var(--color-text)]">
-                            <path d="M10 30V10H16V22C16 26.4183 19.5817 30 24 30C28.4183 30 32 26.4183 32 22V10H38V30H32V25.5C30.2 28.2 27.3 30 24 30H10Z" fill="currentColor"/>
-                            <path d="M46 10H52V30H46V10Z" fill="currentColor"/>
-                            <path d="M58 10H64V14H58V10ZM58 16H64V30H58V16Z" fill="currentColor"/>
-                            <path d="M70 16H66V10H80V16H76V30H70V16Z" fill="currentColor"/>
-                            <path d="M86 10H102V16H92V18H100V24H92V26H102V32H86V10Z" fill="currentColor"/>
-                            <path d="M106 10H112L116 16L120 10H126L120 19L126 30H120L116 23L112 30H106L112 19L106 10Z" fill="currentColor"/>
-                        </svg>
+                        <BrandLockup compact />
                     </NavLink>
                 </div>
 
                 {/* Desktop Nav */}
-                <nav className="hidden lg:flex items-center gap-8">
+                <nav className="hidden lg:flex items-center gap-2" aria-label="Primary navigation">
                     {navItems.map((item) => (
                         <NavLink
                             key={item.path}
                             to={item.path}
                             className={({ isActive }) => cn(
-                                "text-sm font-syne font-bold uppercase tracking-widest transition-colors",
-                                isActive ? "text-[var(--color-accent-orange)]" : "text-[var(--color-text)] hover:text-[var(--color-accent-orange)]"
+                                "relative w-11 h-11 border-2 border-[var(--color-text)] flex items-center justify-center bg-white hover-lift transition-colors group/nav",
+                                isActive ? "bg-[var(--color-accent-yellow)]" : "hover:bg-[var(--color-surface)]"
                             )}
+                            title={item.label}
+                            aria-label={item.label}
                         >
-                            {item.label}
+                            <item.icon size={18} strokeWidth={2.2} />
+                            <span className="sr-only">{item.label}</span>
+                            <span className="absolute top-full mt-2 hidden group-hover/nav:block whitespace-nowrap bg-[var(--color-text)] text-white px-2 py-1 text-[9px] font-bold uppercase tracking-wider z-50">{item.label}</span>
                         </NavLink>
                     ))}
                 </nav>
 
                 {/* Right side: Button, Icons & Profile */}
-                <div className="flex items-center gap-4">
+                <div className="flex items-center gap-2 sm:gap-4">
                     <Dialog open={isPostDialogOpen} onOpenChange={setIsPostDialogOpen}>
                         <DialogTrigger asChild>
-                            <button className="hidden md:block relative overflow-hidden group border-2 border-[var(--color-text)] bg-[var(--color-bg)] px-6 py-2 rounded-none hover-lift shrink-0">
+                            <button aria-label="Create post" className="hidden md:flex w-11 h-11 items-center justify-center relative overflow-hidden group border-2 border-[var(--color-text)] bg-[var(--color-bg)] hover-lift shrink-0">
                                 <span className="relative z-10 font-syne font-bold uppercase tracking-widest text-sm text-[var(--color-text)] group-hover:text-white transition-colors duration-300">
-                                    Create Post
+                                    <Plus size={20} />
                                 </span>
                                 <div className="absolute inset-0 bg-[var(--color-accent-purple)] translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-in-out z-0"></div>
                             </button>
@@ -148,7 +146,7 @@ export function Header() {
                         ))}
 
                         {/* Extra Sub-nav items for Mobile */}
-                        <div className="grid grid-cols-4 gap-2 mt-2 pt-4 border-t-2 border-[var(--color-text)] border-dashed">
+                        <div className="grid grid-cols-3 gap-2 mt-2 pt-4 border-t-2 border-[var(--color-text)] border-dashed">
                             {iconNavs.map((item) => (
                                 <NavLink
                                     key={item.path}
@@ -162,8 +160,8 @@ export function Header() {
                                     <item.icon size={18} className="mb-1" />
                                     <span>{item.label}</span>
                                     {item.badge && item.badge > 0 ? (
-                                        <span className="absolute -top-1 -right-1 min-w-5 h-5 px-1 border-2 border-[var(--color-text)] bg-[var(--color-accent-red)] text-white text-[8px] font-bold flex items-center justify-center">
-                                            {item.badge}
+                                        <span className="absolute top-1 right-1 min-w-5 h-5 px-1 border-2 border-[var(--color-text)] bg-[var(--color-accent-red)] text-white text-[8px] font-bold flex items-center justify-center">
+                                            {item.badge > 9 ? '9+' : item.badge}
                                         </span>
                                     ) : null}
                                 </NavLink>
@@ -185,4 +183,3 @@ export function Header() {
         </header>
     );
 }
-

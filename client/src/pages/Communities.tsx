@@ -75,7 +75,7 @@ function Communities() {
         : communities.filter(c => c.category === activeCategory);
 
     return (
-        <div className="pt-4 pb-10 max-w-7xl mx-auto px-4 md:px-8">
+        <div className="font-outfit pt-4 pb-10 max-w-7xl mx-auto px-4 md:px-8">
             {/* Header Section */}
             <header className="flex flex-col md:flex-row justify-between items-end mb-4 border-b border-[var(--color-surface)] pb-4 gap-6">
                 <div>
@@ -86,7 +86,7 @@ function Communities() {
                         Find your Tribe
                     </p>
                 </div>
-                <Button className="rounded-none font-bold uppercase tracking-widest bg-[var(--color-accent)] text-white border border-[var(--color-accent)] hover:bg-[var(--color-accent)]/90 transition-all h-12 px-8 shadow-sm">
+                <Button className="rounded-none font-bold uppercase tracking-widest bg-[var(--color-accent)] text-white border border-[var(--color-accent)] hover:bg-[var(--color-accent)]/90 transition-all h-12 px-8 shadow-brutal-sm">
                     <Plus size={18} className="mr-2" /> Create Community
                 </Button>
             </header>
@@ -99,7 +99,7 @@ function Communities() {
                         <input
                             type="text"
                             placeholder="Search for Alliances..."
-                            className="w-full h-14 pl-16 pr-6 bg-white border border-[var(--color-surface)] focus:border-[var(--color-accent)] focus:outline-none transition-all font-bold text-xs uppercase tracking-widest rounded-lg shadow-sm"
+                            className="w-full h-14 pl-16 pr-6 bg-white border border-[var(--color-surface)] focus:border-[var(--color-accent)] focus:outline-none transition-all font-bold text-xs uppercase tracking-widest rounded-lg shadow-brutal-sm"
                         />
                     </div>
                 </Field>
@@ -111,7 +111,7 @@ function Communities() {
                             className={cn(
                                 "px-6 py-2.5 text-[10px] font-bold uppercase tracking-widest rounded-lg transition-all border",
                                 activeCategory === cat
-                                    ? "bg-[var(--color-text)] text-white border-[var(--color-text)] shadow-sm"
+                                    ? "bg-[var(--color-text)] text-white border-[var(--color-text)] shadow-brutal-sm"
                                     : "bg-white text-gray-400 border-[var(--color-surface)] hover:text-[var(--color-text)] hover:border-[var(--color-text)]"
                             )}
                         >
@@ -125,7 +125,7 @@ function Communities() {
             {filteredCommunities.length > 0 ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     {filteredCommunities.map(community => (
-                        <div key={community.id} className="group border border-[var(--color-surface)] bg-white hover:border-[var(--color-accent)] transition-all duration-300 shadow-sm rounded-lg overflow-hidden flex flex-col h-[400px]">
+                        <div key={community.id} className="group border border-[var(--color-surface)] bg-white hover:border-[var(--color-accent)] transition-all duration-300 shadow-brutal-sm rounded-lg overflow-hidden flex flex-col h-[400px]">
 
                             {/* Hero Image */}
                             <div className="h-32 relative overflow-hidden bg-[var(--color-text)] border-b border-[var(--color-surface)]">
@@ -143,14 +143,14 @@ function Communities() {
                                     <div className="p-6 flex flex-col flex-1 relative cursor-pointer pt-10">
                                         {/* Floating Avatar Logo (Left) */}
                                         <div className="absolute -top-8 left-6">
-                                            <Avatar className="h-16 w-16 border border-[var(--color-surface)] shadow-sm rounded-lg bg-white">
+                                            <Avatar className="h-16 w-16 border border-[var(--color-surface)] shadow-brutal-sm rounded-lg bg-white">
                                                 <AvatarImage src={community.logo} className="object-cover transition-all" />
                                                 <AvatarFallback className="rounded-lg bg-[var(--color-text)] text-white font-bold">{community.name.substring(0, 2)}</AvatarFallback>
                                             </Avatar>
                                         </div>
 
                                         {/* Floating Member Stack (Right) */}
-                                        <div className="absolute -top-4 right-6 flex -space-x-2 overflow-hidden bg-white border border-[var(--color-surface)] p-1 rounded-lg shadow-sm">
+                                        <div className="absolute -top-4 right-6 flex -space-x-2 overflow-hidden bg-white border border-[var(--color-surface)] p-1 rounded-lg shadow-brutal-sm">
                                             {[1, 2, 3].map((i) => (
                                                 <Avatar key={i} className="inline-block h-6 w-6 rounded-lg border border-white">
                                                     <AvatarImage src={`https://i.pravatar.cc/100?img=${community.id * 5 + i}`} className="object-cover" />
@@ -198,12 +198,12 @@ function Communities() {
                                         </div>
                                     </div>
                                 </DialogTrigger>
-                                <DialogContent className="max-w-3xl p-0 overflow-hidden border-none bg-white rounded-lg shadow-md">
+                                <DialogContent className="max-w-3xl p-0 overflow-hidden border-none bg-white rounded-lg shadow-brutal-sm">
                                     <div className="h-48 relative">
                                         <img src={community.image} alt={community.name} className="w-full h-full object-cover" />
                                         <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
                                         <div className="absolute bottom-6 left-6 flex items-end gap-6">
-                                            <Avatar className="h-24 w-24 border border-white/20 shadow-md rounded-lg">
+                                            <Avatar className="h-24 w-24 border border-white/20 shadow-brutal-sm rounded-lg">
                                                 <AvatarImage src={community.logo} className="rounded-lg object-cover" />
                                                 <AvatarFallback className="rounded-lg bg-[var(--color-text)] text-white font-bold text-2xl">{community.name.substring(0, 2)}</AvatarFallback>
                                             </Avatar>

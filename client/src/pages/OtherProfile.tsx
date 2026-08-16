@@ -41,7 +41,7 @@ function OtherProfile() {
     if (!user) {
         return (
             <div className="min-h-screen flex items-center justify-center bg-[var(--color-bg)] text-[var(--color-text)]">
-                <div className="p-12 bg-white border border-[var(--color-surface)] shadow-sm text-center space-y-6 max-w-md rounded-lg">
+                <div className="p-12 bg-white border border-[var(--color-surface)] shadow-brutal-sm text-center space-y-6 max-w-md rounded-lg">
                     <h1 className="text-4xl font-bold tracking-tight text-red-500 leading-tight">404: Node Missing</h1>
                     <p className="font-medium text-sm opacity-60">The user node you are seeking is either offline or has been purged from the mesh.</p>
                     <NavLink to="/" className="inline-block px-8 py-3 bg-[var(--color-text)] text-white font-bold uppercase tracking-widest hover:bg-[var(--color-accent)] transition-all rounded-lg">Return to Home</NavLink>
@@ -86,14 +86,14 @@ function OtherProfile() {
                 <ArrowLeft size={14} className="group-hover:-translate-x-1 transition-transform" /> Back
             </button>
             {/* 1. HERO SECTION (Identity Layer) */}
-            <div className="bg-white border border-[var(--color-surface)] shadow-sm overflow-hidden mb-4 rounded-lg text-[var(--color-text)]">
+            <div className="bg-white border border-[var(--color-surface)] shadow-brutal-sm overflow-hidden mb-4 rounded-lg text-[var(--color-text)]">
                 <div className="h-48 bg-gradient-to-r from-blue-50/50 to-indigo-50/50 relative">
                     <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(#4f46e5 0.5px, transparent 0.5px)', backgroundSize: '20px 20px' }}></div>
                 </div>
                 
                 <div className="px-8 pb-4 -mt-16 relative flex flex-col md:flex-row items-end justify-between gap-4">
                     <div className="flex flex-col md:flex-row items-end gap-4 text-center md:text-left">
-                        <div className="w-40 h-40 border-8 border-white shadow-lg rounded-lg overflow-hidden bg-white">
+                        <div className="w-40 h-40 border-8 border-white shadow-brutal rounded-lg overflow-hidden bg-white">
                             <img src={user.avatar} className="w-full h-full object-cover" alt={user.name} />
                         </div>
                         
@@ -137,7 +137,7 @@ function OtherProfile() {
                             <TooltipTrigger asChild>
                                 <Button 
                                     className={cn(
-                                        "h-12 px-8 rounded-none font-bold uppercase tracking-widest text-xs transition-all shadow-sm active:scale-95",
+                                        "h-12 px-8 rounded-none font-bold uppercase tracking-widest text-xs transition-all shadow-brutal-sm active:scale-95",
                                         isFollowing ? "bg-white border border-emerald-100 text-emerald-600 hover:bg-emerald-50" : "bg-[var(--color-text)] text-white hover:bg-[var(--color-accent)]"
                                     )}
                                     onClick={() => setIsFollowing(!isFollowing)}
@@ -145,7 +145,7 @@ function OtherProfile() {
                                     {isFollowing ? <><Check size={16} className="mr-2" /> Following</> : "Follow"}
                                 </Button>
                             </TooltipTrigger>
-                            <TooltipContent className="rounded-lg border border-[var(--color-surface)] bg-white text-[var(--color-text)] shadow-xl">
+                            <TooltipContent className="rounded-lg border border-[var(--color-surface)] bg-white text-[var(--color-text)] shadow-brutal">
                                 <p className="text-[10px] font-bold uppercase tracking-wider">Stay updated</p>
                             </TooltipContent>
                         </Tooltip>
@@ -159,7 +159,7 @@ function OtherProfile() {
                                 <Button 
                                     variant="outline" 
                                     className={cn(
-                                        "h-12 w-12 p-0 rounded-lg font-bold border border-[var(--color-surface)] transition-all shadow-sm active:scale-95",
+                                        "h-12 w-12 p-0 rounded-lg font-bold border border-[var(--color-surface)] transition-all shadow-brutal-sm active:scale-95",
                                         isSaved ? "bg-amber-50 text-amber-600 border-amber-100" : "bg-white text-[var(--color-text)] hover:bg-gray-50"
                                     )}
                                     onClick={() => setIsSaved(!isSaved)}
@@ -167,7 +167,7 @@ function OtherProfile() {
                                     <Bookmark size={18} fill={isSaved ? "currentColor" : "none"} />
                                 </Button>
                             </TooltipTrigger>
-                            <TooltipContent className="rounded-lg border border-[var(--color-surface)] bg-white text-[var(--color-text)] shadow-xl">
+                            <TooltipContent className="rounded-lg border border-[var(--color-surface)] bg-white text-[var(--color-text)] shadow-brutal">
                                 <p className="text-[10px] font-bold uppercase tracking-wider">Save to vault</p>
                             </TooltipContent>
                         </Tooltip>
@@ -202,7 +202,7 @@ function OtherProfile() {
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 items-start">
                 {/* 4. LEFT PANEL (Credibility Layer) */}
                 <aside className="lg:col-span-3 space-y-4">
-                    <div className="bg-white border border-[var(--color-surface)] shadow-sm rounded-lg p-4 space-y-6 text-[var(--color-text)]">
+                    <div className="bg-white border border-[var(--color-surface)] shadow-brutal-sm rounded-lg p-4 space-y-6 text-[var(--color-text)]">
                         <div>
                             <h3 className="text-[11px] font-bold uppercase tracking-widest mb-4 flex items-center gap-2 text-gray-400">
                                 <ShieldCheck size={14} className="text-[#6366f1]" /> Credibility
@@ -266,7 +266,7 @@ function OtherProfile() {
                     {activeTab === 'Overview' || activeTab === 'Contributions' ? (
                         <>
                             {posts.map((post: any, i: number) => (
-                                <div key={i} className="bg-white border border-[var(--color-surface)] shadow-sm rounded-lg p-8 space-y-6 hover:shadow-md transition-all group text-[var(--color-text)]">
+                                <div key={i} className="bg-white border border-[var(--color-surface)] shadow-brutal-sm rounded-lg p-8 space-y-6 hover:shadow-brutal-sm transition-all group text-[var(--color-text)]">
                                     <div className="flex justify-between items-start">
                                         <div className="flex items-center gap-3">
                                             <span className="px-3 py-1 bg-[var(--color-surface)] text-[var(--color-text)] text-[9px] font-bold uppercase tracking-widest rounded-lg">
@@ -316,7 +316,7 @@ function OtherProfile() {
                         /* 6. PORTFOLIO TAB (Case Engine) */
                         <div className="space-y-8 animate-in fade-in duration-500 text-[var(--color-text)]">
                             {/* Featured Case */}
-                            <div className="bg-white border border-[var(--color-surface)] shadow-sm rounded-lg p-10 space-y-8 relative overflow-hidden group">
+                            <div className="bg-white border border-[var(--color-surface)] shadow-brutal-sm rounded-lg p-10 space-y-8 relative overflow-hidden group">
                                 <div className="absolute top-0 right-0 p-8 text-black opacity-5 group-hover:scale-110 transition-transform">
                                     <Briefcase size={120} strokeWidth={1} />
                                 </div>
@@ -343,7 +343,7 @@ function OtherProfile() {
                                             </ul>
                                         </div>
                                     </div>
-                                    <Button className="mt-10 h-14 w-full rounded-lg font-bold bg-[var(--color-text)] hover:bg-[var(--color-accent)] text-white uppercase tracking-widest text-xs transition-all shadow-sm">View Full Case Study</Button>
+                                    <Button className="mt-10 h-14 w-full rounded-lg font-bold bg-[var(--color-text)] hover:bg-[var(--color-accent)] text-white uppercase tracking-widest text-xs transition-all shadow-brutal-sm">View Full Case Study</Button>
                                 </div>
                             </div>
                             
@@ -354,7 +354,7 @@ function OtherProfile() {
                                     { title: 'Mobile UX Optimization', res: 'Reduced drop-offs by 22%' },
                                     { title: 'SaaS Dashboard Redesign', res: 'Increased completion speed' },
                                 ].map((proj, i) => (
-                                    <div key={i} className="bg-white border border-[var(--color-surface)] p-8 rounded-lg hover:shadow-md transition-all group">
+                                    <div key={i} className="bg-white border border-[var(--color-surface)] p-8 rounded-lg hover:shadow-brutal-sm transition-all group">
                                         <h4 className="text-lg font-bold tracking-tight mb-4 leading-tight group-hover:text-[var(--color-accent)] transition-colors uppercase">{proj.title}</h4>
                                         <div className="flex items-center gap-2 text-[10px] font-bold text-emerald-600 uppercase tracking-widest bg-emerald-50 border border-emerald-100 px-3 py-1.5 rounded-lg inline-block">
                                             {proj.res}
@@ -366,7 +366,7 @@ function OtherProfile() {
                     ) : (
                         /* Empty States */
                         <div className="bg-gray-50/50 border border-dashed border-[var(--color-surface)] rounded-lg p-20 flex flex-col items-center text-center space-y-4">
-                            <div className="w-16 h-16 bg-white rounded-lg border border-[var(--color-surface)] flex items-center justify-center text-gray-300 shadow-sm">
+                            <div className="w-16 h-16 bg-white rounded-lg border border-[var(--color-surface)] flex items-center justify-center text-gray-300 shadow-brutal-sm">
                                 <Info size={32} />
                             </div>
                             <h3 className="text-xl font-bold opacity-40 uppercase tracking-widest text-[var(--color-text)]">
@@ -386,7 +386,7 @@ function OtherProfile() {
                 {/* 7. RIGHT PANEL (Decision Layer) */}
                 <aside className="lg:col-span-3 space-y-6 lg:sticky lg:top-8 text-[var(--color-text)]">
                     {/* Signal Dashboard */}
-                    <div className="bg-white border border-[var(--color-surface)] shadow-sm rounded-lg p-8 space-y-8">
+                    <div className="bg-white border border-[var(--color-surface)] shadow-brutal-sm rounded-lg p-8 space-y-8">
                         <div>
                             <h3 className="text-[11px] font-bold uppercase tracking-widest mb-4 flex items-center gap-2 text-gray-400">
                                 <BarChart3 size={14} className="text-[#6366f1]" /> Dashboard
@@ -443,13 +443,13 @@ function OtherProfile() {
                                         <Button variant="outline" className="flex-1 h-10 rounded-lg text-[10px] font-bold border border-gray-200 bg-white hover:bg-gray-50 transition-all uppercase tracking-widest">10:00 PM</Button>
                                     </div>
                                 </div>
-                                <Button className="w-full h-12 rounded-lg bg-[var(--color-text)] text-white font-bold uppercase tracking-widest text-[10px] shadow-sm hover:bg-[var(--color-accent)] transition-all">Book Session</Button>
+                                <Button className="w-full h-12 rounded-lg bg-[var(--color-text)] text-white font-bold uppercase tracking-widest text-[10px] shadow-brutal-sm hover:bg-[var(--color-accent)] transition-all">Book Session</Button>
                             </div>
                         </div>
                     </div>
 
                     {/* Suggested Profiles */}
-                    <div className="bg-white border border-[var(--color-surface)] shadow-sm rounded-lg p-8">
+                    <div className="bg-white border border-[var(--color-surface)] shadow-brutal-sm rounded-lg p-8">
                         <h3 className="text-[11px] font-bold uppercase tracking-widest mb-6 text-gray-400">Suggested</h3>
                         <div className="space-y-0">
                             {[

@@ -88,7 +88,7 @@ function Events() {
                     date: newEventDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
                     time,
                     mode: 'Remote',
-                    community: currentUser.displayName || 'UniteX Community',
+                    community: currentUser.displayName || 'UnitX Community',
                     hostUid: currentUser.uid
                 });
                 toast.success("Event created!");
@@ -111,7 +111,7 @@ function Events() {
                     <FieldDescription>Choose a catchy title for your event.</FieldDescription>
                 </Field>
 
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <Field>
                         <FieldLabel>Date</FieldLabel>
                         <DatePicker date={newEventDate} setDate={setNewEventDate} className="w-full" />
@@ -155,7 +155,7 @@ function Events() {
                         <Dialog open={createEventOpen} onOpenChange={setCreateEventOpen}>
                             <DialogTrigger asChild>
                                 <button
-                                    className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest px-6 py-3 transition-all border border-[var(--color-surface)] bg-white text-[var(--color-text)] shadow-sm hover:bg-gray-50 rounded-lg"
+                                    className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest px-6 py-3 transition-all border border-[var(--color-surface)] bg-white text-[var(--color-text)] shadow-brutal-sm hover:bg-gray-50 rounded-lg"
                                 >
                                     <Plus size={16} /> Create Event
                                 </button>
@@ -206,7 +206,7 @@ function Events() {
                         </Drawer>
                     )}
 
-                    <button className="flex items-center gap-2 text-[var(--color-text)] text-xs font-bold uppercase tracking-widest border border-[var(--color-surface)] px-6 py-3 bg-white shadow-sm hover:bg-gray-50 transition-all rounded-lg">
+                    <button className="flex items-center gap-2 text-[var(--color-text)] text-xs font-bold uppercase tracking-widest border border-[var(--color-surface)] px-6 py-3 bg-white shadow-brutal-sm hover:bg-gray-50 transition-all rounded-lg">
                         <Filter size={16} /> Filter
                     </button>
                 </div>
@@ -218,7 +218,7 @@ function Events() {
                     {events.length > 0 ? (
                         events.map((event) => (
                             <div key={event.id} className="group relative">
-                                <Link to={`/events/${event.id}`} className="flex flex-col sm:flex-row bg-white border border-[var(--color-surface)] overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 mb-2 rounded-lg">
+                                <Link to={`/events/${event.id}`} className="flex flex-col sm:flex-row bg-white border border-[var(--color-surface)] overflow-hidden shadow-brutal-sm hover:shadow-brutal-sm transition-all duration-300 mb-2 rounded-lg">
                                     {/* Date Badge */}
                                     <div className="sm:w-32 bg-gray-50 flex flex-row sm:flex-col items-center justify-between sm:justify-center p-2 border-b sm:border-b-0 sm:border-r border-[var(--color-surface)] group-hover:bg-[var(--color-surface)] transition-colors">
                                         <div className="flex flex-col items-center">
@@ -257,7 +257,7 @@ function Events() {
                                                     "px-8 py-3 text-[10px] font-bold uppercase tracking-widest transition-all border border-[var(--color-surface)] rounded-lg relative z-10",
                                                     rsvpedEvents.includes(event.id)
                                                         ? "bg-emerald-50 text-emerald-600 border-emerald-100"
-                                                        : "bg-[var(--color-text)] text-white hover:bg-[var(--color-accent)] shadow-sm"
+                                                        : "bg-[var(--color-text)] text-white hover:bg-[var(--color-accent)] shadow-brutal-sm"
                                                 )}
                                             >
                                                 {rsvpedEvents.includes(event.id) ? "✓ Registered" : "Book Seat"}
@@ -305,7 +305,7 @@ function Events() {
                             </div>
                         </div>
 
-                        <div className="p-8 bg-white border border-[var(--color-surface)] shadow-sm rounded-lg">
+                        <div className="p-8 bg-white border border-[var(--color-surface)] shadow-brutal-sm rounded-lg">
                             <h4 className="font-bold uppercase tracking-widest text-[10px] text-gray-400 mb-4 flex items-center gap-2">
                                 <Sparkles size={14} className="text-[var(--color-accent)]" /> Pro Tip
                             </h4>

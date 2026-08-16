@@ -109,6 +109,60 @@ export async function getUser(uid: string) {
     }
 }
 
+// Keep shareable profile data separate from the private users/{uid} document.
+// This lets anonymous visitors read only fields intended for public display.
+export async function syncPublicProfile(uid: string, profileData: Record<string, any>) {
+    if (!isDbAvailable()) return;
+
+    const rawPublicId = profileData.publicId || profileData.userId || profileData.usercode || uid;
+    const publicId = String(rawPublicId).trim();
+    if (!publicId) return;
+
+    const profile = {
+        uid,
+        publicId,
+        userId: profileData.userId || profileData.usercode || publicId,
+        usercode: profileData.usercode || profileData.userId || publicId,
+        displayName: profileData.displayName || 'UnitX User',
+        username: profileData.username || '',
+        photoURL: profileData.photoURL || '',
+        bio: profileData.bio || '',
+        role: profileData.role || 'Member',
+        location: profileData.location || '',
+        updatedAt: serverTimestamp(),
+    };
+
+    try {
+        await setDoc(doc(db, 'public_profiles', publicId), profile, { merge: true });
+        // A UID alias keeps links working for older accounts and referral links.
+        if (publicId !== uid) {
+            await setDoc(doc(db, 'public_profiles', uid), profile, { merge: true });
+        }
+    } catch {
+        console.warn('Public profile sync unavailable');
+    }
+}
+
+export async function getPublicProfile(publicId: string) {
+    if (!isDbAvailable()) return null;
+
+    let key = '';
+    try {
+        key = decodeURIComponent(publicId).trim();
+    } catch {
+        return null;
+    }
+    if (!key) return null;
+
+    try {
+        const snap = await getDoc(doc(db, 'public_profiles', key));
+        return snap.exists() ? { id: snap.id, ...snap.data() } : null;
+    } catch {
+        console.warn('Public profile lookup unavailable');
+        return null;
+    }
+}
+
 export async function updateUser(uid: string, data: Partial<DocumentData>) {
     try { await setDoc(doc(db, 'users', uid), data, { merge: true }); } catch { console.warn('Firestore unavailable'); }
 }
@@ -263,7 +317,7 @@ export async function awardExp(uid: string, amount: number, reason: string = '')
         await addDoc(collection(db, 'activity_log'), {
             uid, action: reason, exp: amount, createdAt: serverTimestamp()
         });
-    } catch {}
+    } catch { /* Firestore unavailable or request denied. */ }
 }
 
 // ─── COMMUNITIES ──────────────────────────────────────────────────────────────
@@ -353,7 +407,7 @@ export function subscribeToNotifications(uid: string, callback: (notifs: Documen
 }
 
 export async function markNotificationAsRead(notifId: string) {
-    try { await updateDoc(doc(db, 'notifications', notifId), { read: true }); } catch {}
+    try { await updateDoc(doc(db, 'notifications', notifId), { read: true }); } catch { /* Firestore unavailable or request denied. */ }
 }
 
 export async function markAllNotificationsAsRead(uid: string) {
@@ -363,7 +417,7 @@ export async function markAllNotificationsAsRead(uid: string) {
         const batch = writeBatch(db);
         snap.docs.forEach(d => batch.update(d.ref, { read: true }));
         await batch.commit();
-    } catch {}
+    } catch { /* Firestore unavailable or request denied. */ }
 }
 
 export async function createNotification(data: {
@@ -380,7 +434,7 @@ export async function createNotification(data: {
             read: false,
             createdAt: serverTimestamp()
         });
-    } catch {}
+    } catch { /* Firestore unavailable or request denied. */ }
 }
 
 // ─── VAULT ────────────────────────────────────────────────────────────────────
@@ -399,7 +453,7 @@ export async function addVaultItem(uid: string, data: DocumentData) {
 }
 
 export async function deleteVaultItem(itemId: string) {
-    try { await deleteDoc(doc(db, 'vault', itemId)); } catch {}
+    try { await deleteDoc(doc(db, 'vault', itemId)); } catch { /* Firestore unavailable or request denied. */ }
 }
 
 // ─── EVENTS ───────────────────────────────────────────────────────────────────
@@ -415,7 +469,7 @@ export async function rsvpEvent(eventId: string, uid: string) {
     try {
         await setDoc(doc(db, 'events', eventId, 'rsvps', uid), { rsvpAt: serverTimestamp() });
         await updateDoc(doc(db, 'events', eventId), { attendees: increment(1) });
-    } catch {}
+    } catch { /* Firestore unavailable or request denied. */ }
 }
 
 export async function createEvent(data: any) {
@@ -449,7 +503,7 @@ export async function enrollCourse(courseId: string, uid: string) {
     try {
         await setDoc(doc(db, 'users', uid, 'enrolled_courses', courseId), { enrolledAt: serverTimestamp(), progress: 0 });
         await updateDoc(doc(db, 'courses', courseId), { students: increment(1) });
-    } catch {}
+    } catch { /* Firestore unavailable or request denied. */ }
 }
 
 export function subscribeToEnrolledCourses(uid: string, callback: (courses: DocumentData[]) => void): Unsubscribe {
@@ -467,7 +521,7 @@ export async function toggleResourceSave(resourceId: string, uid: string, isSave
         } else {
             await setDoc(ref, { savedAt: serverTimestamp() });
         }
-    } catch {}
+    } catch { /* Firestore unavailable or request denied. */ }
 }
 
 export function subscribeToSavedResources(uid: string, callback: (savedIds: Set<string>) => void): Unsubscribe {
@@ -508,7 +562,7 @@ export async function sendConnectionRequest(fromUid: string, fromName: string, t
             content: `${fromName} wants to connect with you.`,
             actionUrl: '/networking', requestId: reqRef.id, read: false, createdAt: serverTimestamp()
         });
-    } catch {}
+    } catch { /* Firestore unavailable or request denied. */ }
 }
 
 export async function acceptConnectionRequest(requestId: string, fromUid: string, toUid: string, toName: string) {
@@ -533,11 +587,11 @@ export async function acceptConnectionRequest(requestId: string, fromUid: string
             content: `${toName} accepted your connection request.`,
             actionUrl: `/profile/${toUid}`, read: false, createdAt: serverTimestamp()
         });
-    } catch {}
+    } catch { /* Firestore unavailable or request denied. */ }
 }
 
 export async function rejectConnectionRequest(requestId: string) {
-    try { await updateDoc(doc(db, 'network_requests', requestId), { status: 'rejected', updatedAt: serverTimestamp() }); } catch {}
+    try { await updateDoc(doc(db, 'network_requests', requestId), { status: 'rejected', updatedAt: serverTimestamp() }); } catch { /* Firestore unavailable or request denied. */ }
 }
 
 export function subscribeToPendingRequests(uid: string, callback: (reqs: any[]) => void): Unsubscribe {

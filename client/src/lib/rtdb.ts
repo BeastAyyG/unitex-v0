@@ -1,6 +1,7 @@
 import { ref, push, set, get, update, remove, onValue, query, orderByChild, limitToLast, serverTimestamp, DataSnapshot, Unsubscribe } from 'firebase/database';
 import { rtdb } from '@/lib/firebase';
 import { getAuth } from 'firebase/auth';
+import type { MediaType } from '@/lib/media';
 
 const isFirebaseAvailable = () => {
     try { return !!rtdb && !!rtdb.app; } catch { return false; }
@@ -40,6 +41,7 @@ export async function createRealtimePost(data: {
     role: string;
     content: string;
     mediaURL?: string;
+    mediaType?: MediaType;
 }) {
     try {
         const postsRef = ref(rtdb, 'posts');
@@ -74,7 +76,7 @@ export async function createRealtimePost(data: {
             content: data.content,
             label: intentAnalysis.intent,
             level: intentAnalysis.level,
-            media: data.mediaURL ? { type: 'image', url: data.mediaURL } : null,
+            media: data.mediaURL ? { type: data.mediaType || 'image', url: data.mediaURL } : null,
             stats: { likes: 0, support: 0, comments: 0 },
             ai: { qualityScore: qualityAnalysis.qScore, isSpam: qualityAnalysis.isSpam, tags },
             timestamp: serverTimestamp(),
@@ -147,7 +149,7 @@ export async function syncUserToRTDB(user: any, profileData?: any) {
     try {
         const userRef = ref(rtdb, `users/${user.uid}`);
         const snapshot = await get(userRef);
-        const baseName = profileData?.displayName || user.displayName || (user.isAnonymous ? 'Guest' : 'UniteX User');
+        const baseName = profileData?.displayName || user.displayName || (user.isAnonymous ? 'Guest' : 'UnitX User');
         const username = profileData?.username || (snapshot.exists() ? snapshot.val().username : await generateUniqueUsername(baseName));
         const usercode = profileData?.userId || profileData?.usercode || (snapshot.exists() ? snapshot.val().usercode : generateUsercode());
         const updateData: any = {

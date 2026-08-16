@@ -7,15 +7,13 @@ import {
     signOut as firebaseSignOut,
     onAuthStateChanged,
     updateProfile,
-    RecaptchaVerifier,
-    signInWithPhoneNumber,
-    ConfirmationResult,
     signInAnonymously
 } from 'firebase/auth';
 import { doc, setDoc, getDoc, serverTimestamp, onSnapshot } from 'firebase/firestore';
 import { auth, db, googleProvider, isDemoMode } from '@/lib/firebase';
 import { syncUserToRTDB } from '@/lib/rtdb';
 import { generateUsercode, generateSafeHandle } from '@/lib/intelligence/identity';
+import { syncPublicProfile } from '@/lib/firestore';
 
 export interface AuthContextType {
     currentUser: User | null;
@@ -24,8 +22,6 @@ export interface AuthContextType {
     signInWithGoogle: () => Promise<void>;
     signInWithEmail: (email: string, password: string) => Promise<void>;
     signUpWithEmail: (email: string, password: string, displayName: string) => Promise<void>;
-    signInWithPhone: (phoneNumber: string, recaptchaContainerId: string) => Promise<void>;
-    verifyOtp: (otp: string) => Promise<void>;
     signInAsGuest: () => Promise<void>;
     signOut: () => Promise<void>;
 }
@@ -49,7 +45,7 @@ const MOCK_USER_DATA = {
     vp: 300,
     badges: ['early-adopter', 'explorer'],
     role: 'Member',
-    bio: 'Exploring UniteX in demo mode',
+    bio: 'Exploring UnitX in demo mode',
     followers: 0,
     following: 0,
     onboardingCompleted: true,
@@ -66,7 +62,7 @@ async function createUserDocument(user: User) {
                 uid: user.uid,
                 userId,
                 usercode: userId,
-                displayName: user.displayName || (user.isAnonymous ? 'Guest User' : 'UniteX User'),
+                displayName: user.displayName || (user.isAnonymous ? 'Guest User' : 'UnitX User'),
                 username,
                 email: user.email || null,
                 photoURL: user.photoURL || '',
@@ -80,9 +76,16 @@ async function createUserDocument(user: User) {
                 badges: [],
                 hasSeenCredentials: false,
                 onboardingCompleted: false,
+                publicProfile: true,
                 createdAt: serverTimestamp(),
             });
         }
+        const profileData = snap.exists() ? (snap.data() || {}) : ((await getDoc(userRef)).data() || {});
+        await syncPublicProfile(user.uid, {
+            ...profileData,
+            displayName: profileData.displayName || user.displayName || 'UnitX User',
+            photoURL: profileData.photoURL || user.photoURL || '',
+        });
         await syncUserToRTDB(user);
     } catch (err) {
         console.warn('Could not create user document:', err);
@@ -93,7 +96,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const [currentUser, setCurrentUser] = useState<User | null>(isDemoMode ? MOCK_USER : null);
     const [userData, setUserData] = useState<any | null>(isDemoMode ? MOCK_USER_DATA : null);
     const [loading, setLoading] = useState(true);
-    const [confirmationResult, setConfirmationResult] = useState<ConfirmationResult | null>(null);
 
     useEffect(() => {
         if (isDemoMode) {
@@ -113,7 +115,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
                 if (user) {
                     const userDocRef = doc(db, 'users', user.uid);
                     unsubscribeData = onSnapshot(userDocRef, (snap) => {
-                        if (snap.exists()) setUserData(snap.data());
+                        if (snap.exists()) {
+                            const data = snap.data();
+                            setUserData(data);
+                            void syncPublicProfile(user.uid, {
+                                ...data,
+                                displayName: data.displayName || user.displayName || 'UnitX User',
+                                photoURL: data.photoURL || user.photoURL || '',
+                            });
+                        }
                     });
                 } else {
                     setUserData(null);
@@ -152,27 +162,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         await createUserDocument(result.user);
     };
 
-    const signInWithPhone = async (phoneNumber: string, recaptchaContainerId: string) => {
-        const verifier = new RecaptchaVerifier(auth, recaptchaContainerId, { size: 'invisible' });
-        const result = await signInWithPhoneNumber(auth, phoneNumber, verifier);
-        setConfirmationResult(result);
-    };
-
-    const verifyOtp = async (otp: string) => {
-        if (!confirmationResult) throw new Error('No pending phone verification');
-        const result = await confirmationResult.confirm(otp);
-        await createUserDocument(result.user);
-    };
-
     const signInAsGuest = async () => {
+        if (isDemoMode) {
+            setCurrentUser(MOCK_USER);
+            setUserData(MOCK_USER_DATA);
+            setLoading(false);
+            return;
+        }
+
         try {
             const result = await signInAnonymously(auth);
             await createUserDocument(result.user);
         } catch (err) {
-            console.warn('Firebase unavailable, entering demo mode');
-            setCurrentUser(MOCK_USER);
-            setUserData(MOCK_USER_DATA);
-            setLoading(false);
+            console.warn('Firebase guest authentication failed:', err);
+            throw err instanceof Error ? err : new Error('Guest authentication failed.');
         }
     };
 
@@ -193,8 +196,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             signInWithGoogle,
             signInWithEmail,
             signUpWithEmail,
-            signInWithPhone,
-            verifyOtp,
             signInAsGuest,
             signOut
         }}>

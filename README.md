@@ -1,80 +1,96 @@
-# UniteX
+# UnitX
 
-A minimalist social learning platform built with Swiss design principles.
+UnitX is a community platform for learning, building, sharing progress, and connecting with other people.
 
-## Features
+**Live site:** [client-opal-five-77.vercel.app](https://client-opal-five-77.vercel.app)
 
-- **Progress Feed** - Share what you're learning and building
-- **Spaces** - Join communities around topics
-- **Roadmaps** - Structured learning paths with progress tracking
-- **Events** - Attend and reflect on learning events
-- **Vault** - Private space for saved content (dark mode)
-- **Gamification** - XP and badges for consistent effort
+## Screenshots
 
-## Tech Stack
+### UnitX workspace
 
-- **Frontend**: React 18 + Vite 5
-- **Backend**: Node.js 20 + Express 4
-- **Database**: PostgreSQL 15
-- **Containerization**: Docker Compose
+![UnitX workspace](docs/screenshots/home.jpg)
 
-## Getting Started
+### Public shareable profile
 
-### Prerequisites
-- Node.js 18+
-- Docker & Docker Compose
-- Gmail account with App Password (for OTP)
-- 
-### Quick Start
+![UnitX public profile](docs/screenshots/public-profile.jpg)
 
-```bash
-# Start database and API
-docker-compose up -d
+## What it includes
 
-# Start frontend (in new terminal)
-cd client
-npm install
-npm run dev
-```
-### Access
+- Activity feed, profiles, communities, events, messages, and notifications
+- Firebase-backed authentication and real-time data
+- Media upload service with image, audio, and video support
+- Optional blockchain-based media proof records
+- Responsive React interface for desktop and mobile
 
--   **Frontend**: http://localhost:3004
--   **API**: http://localhost:5002/api/health
+## Project structure
 
-## Environment Variables
+| Folder | Purpose |
+| --- | --- |
+| `client/` | React and Vite web application |
+| `server/` | Express API and background jobs |
+| `media-service/` | Docker-based media upload and processing service |
+| `blockchain/` | Hardhat project and media-record contract |
+| `data/` | Local data and supporting assets |
 
-Copy `.env.example` to `.env` and configure:
-```
-DOCKER_USERNAME=your_docker_username
-DOCKER_PASSWORD=your_docker_password
-VITE_API_URL=http://localhost:5000
-DATABASE_URL=postgres://user:password@localhost:5432/unitex
-PORT=5000
-```
+## Run locally
 
-## Design System
+1. Install Node.js 22 or newer and copy `.env.example` to `.env`.
+2. Install dependencies:
 
-- Swiss Minimalism aesthetic
-- High-contrast white/black palette with orange accent
-- DM Sans typography
-- 64px icon-only sidebar
-- 3-step interactive onboarding
+   ```bash
+   npm install
+   npm install --prefix client
+   npm install --prefix server
+   ```
 
-## Color Palette
+3. Start the web app:
 
-| Color | Hex | Usage |
-|-------|-----|-------|
-| Light Gray | `#F4F5F5` | Background |
-| Silver | `#EBEDEE` | Surfaces |
-| Dark | `#31303A` | Text |
-| Orange | `#F4511C` | Accent |
-| Coral | `#FF7F50` | Secondary |
+   ```bash
+   npm run dev --prefix client
+   ```
 
-## CI/CD
+4. Optionally start the API in another terminal:
 
-This project uses GitHub Actions to automatically build and push Docker images on every push to `main`. See `.github/workflows/docker-publish.yml`.
+   ```bash
+   npm run dev --prefix server
+   ```
 
-> Add `DOCKER_USERNAME` and `DOCKER_PASSWORD` to your GitHub repository Secrets.
+The client runs at `http://localhost:3004` by default.
+
+## Deployment
+
+The web application is deployed from the `client/` folder to Vercel. The current public link is [client-opal-five-77.vercel.app](https://client-opal-five-77.vercel.app). The API is deployed from `server/` at [unitex-server.vercel.app](https://unitex-server.vercel.app); its public health check is [unitex-server.vercel.app/api/health](https://unitex-server.vercel.app/api/health).
+
+### Public profile links
+
+The site itself is reachable by anyone, while the main workspace remains login-protected. Each account can share a public profile link in this format:
+
+`https://client-opal-five-77.vercel.app/u/<public-id>`
+
+For example, the demo profile is [client-opal-five-77.vercel.app/u/DEMO01](https://client-opal-five-77.vercel.app/u/DEMO01). Public pages expose only the profile summary stored in `public_profiles`; messages, settings, rewards, uploads, and private account data stay protected.
+
+After enabling Firebase, deploy [firestore.rules](firestore.rules) once with `firebase deploy --only firestore:rules`. A signed-in account automatically creates or refreshes its public profile summary.
+
+For deployment instructions, required environment variables, and production checks, see [VERCEL_DEPLOYMENT.md](VERCEL_DEPLOYMENT.md) and [VERCEL_CHECKLIST.md](VERCEL_CHECKLIST.md).
+
+### Supabase media storage
+
+UnitX uses the free Supabase project `UnitX Storage` with a private `media` bucket. Firebase authenticates the user, the UnitX API creates a short-lived upload URL, and the browser uploads the file directly to Supabase. Keep `SUPABASE_SECRET_KEY` server-only; only `VITE_SUPABASE_URL` and `VITE_SUPABASE_PUBLISHABLE_KEY` belong in the client deployment. The supported media limit is 50 MB per file.
+
+### Production requirements and known limits
+
+- Google/email/guest login and authenticated media uploads remain in demo mode until the seven `VITE_FIREBASE_*` client variables and the server-only `FIREBASE_SERVICE_ACCOUNT` are configured in Vercel. Phone/SMS authentication is intentionally disabled to avoid usage charges. Never commit the service account JSON.
+- Set `CORS_ALLOWED_ORIGINS` to the exact public client origin (`https://client-opal-five-77.vercel.app`) and add any future custom domain explicitly.
+- Connection and points persistence requires `DATABASE_URL`; without it, local/serverless fallback behavior is limited and should not be treated as production storage.
+- The production branch is `agent/optimize-mobile-media`; pushes to it deploy the current public client and API projects.
+
+## Documentation
+
+Start with [DOCUMENTATION.md](DOCUMENTATION.md) for a guide to every project document.
+
+## Security
+
+Never commit `.env`, Firebase service-account files, API keys, database URLs, or blockchain private keys. Follow [SECURITY_TESTING.md](SECURITY_TESTING.md) before releasing changes to production.
 
 ## License
 

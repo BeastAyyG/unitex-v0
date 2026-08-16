@@ -9,6 +9,7 @@ import { toast } from 'sonner';
 import { Dialog, DialogContent, DialogTitle } from '../components/ui/dialog';
 import { Button } from '../components/ui/button';
 import { motion, AnimatePresence } from 'framer-motion';
+import { BrandLockup } from '@/components/Brand';
 
 const STEPS = [
     { id: 1, name: 'Identity', icon: Shield },
@@ -237,12 +238,7 @@ export const Onboarding = () => {
             <div className="flex-1 flex flex-col md:flex-row max-w-7xl mx-auto w-full z-10 p-6 md:p-12 gap-12">
                 {/* Left Progress Tracker */}
                 <div className="md:w-64 shrink-0 flex flex-col">
-                    <div className="flex items-center gap-3 mb-16">
-                        <div className="w-10 h-10 bg-[var(--color-accent)] flex items-center justify-center rounded-lg rotate-3">
-                            <Zap size={20} className="text-white fill-white" />
-                        </div>
-                        <span className="text-2xl font-black tracking-tighter uppercase italic text-[var(--color-text)]">UniteX</span>
-                    </div>
+                    <BrandLockup className="mb-16" size={40} />
 
                     <div className="space-y-6">
                         {STEPS.map((s) => {
@@ -253,7 +249,7 @@ export const Onboarding = () => {
                                 <div key={s.id} className="flex items-center gap-4 group">
                                     <div className={cn(
                                         "w-8 h-8 rounded-lg flex items-center justify-center border transition-all duration-300",
-                                        isActive ? "bg-[var(--color-accent)] border-[var(--color-accent)] text-white shadow-lg" : 
+                                        isActive ? "bg-[var(--color-accent)] border-[var(--color-accent)] text-white shadow-brutal" :
                                         isPast ? "bg-emerald-50 text-emerald-600 border-emerald-200" : "bg-white border-gray-200 text-gray-400"
                                     )}>
                                         {isPast ? <Check size={14} strokeWidth={3} /> : <Icon size={14} />}
@@ -271,7 +267,7 @@ export const Onboarding = () => {
                 </div>
 
                 {/* Right Content Area */}
-                <div className="flex-1 flex flex-col max-w-2xl bg-white border border-[var(--color-surface)] shadow-sm relative overflow-hidden">
+                <div className="flex-1 flex flex-col max-w-2xl bg-white border border-[var(--color-surface)] shadow-brutal-sm relative overflow-hidden">
                     {/* Top Accent Line */}
                     <div className="absolute top-0 left-0 w-full h-1 bg-[var(--color-accent)]" />
                     
@@ -398,7 +394,7 @@ export const Onboarding = () => {
                                     <div className="space-y-2">
                                         <h3 className="text-lg font-bold">Synchronize Alliance</h3>
                                         <p className="text-xs text-gray-500 leading-relaxed max-w-md mx-auto">
-                                            Connect your contacts to discover peers currently active in the UniteX mesh network.
+                                            Connect your contacts to discover peers currently active in the UnitX mesh network.
                                         </p>
                                     </div>
                                     <button onClick={handleNext} className="mx-auto w-max px-8 py-3 bg-[var(--color-bg)] text-[var(--color-text)] border border-[var(--color-surface)] text-xs font-bold uppercase tracking-widest hover:border-[var(--color-accent)] transition-colors">
@@ -461,7 +457,7 @@ export const Onboarding = () => {
                                                     onClick={() => toggleTopic(topic)}
                                                     className={cn(
                                                         "px-4 py-2 border text-xs font-bold uppercase tracking-wider transition-all",
-                                                        isSelected ? "bg-[var(--color-accent)] border-[var(--color-accent)] text-white shadow-sm" : "bg-white border-[var(--color-surface)] text-gray-500 hover:border-gray-300"
+                                                        isSelected ? "bg-[var(--color-accent)] border-[var(--color-accent)] text-white shadow-brutal-sm" : "bg-white border-[var(--color-surface)] text-gray-500 hover:border-gray-300"
                                                     )}
                                                 >
                                                     {topic}
